@@ -1,0 +1,397 @@
+[
+  {
+    "id": "fixture-tet-001",
+    "description": "Nam, 21/01/1985, giờ Tý (10:00), Hà Nội - Tết Ất Sửu, VN sớm 1 tháng",
+    "source": "Cross-reference intended with lasotuvi.ai.vn, lyso.vn, tracuulasotuvi.com; expected values computed by Sao Menh engine using Ho Ngoc Duc lunar algorithm (UTC+7), Nam Phai school, and Tan Bien 1956 brightness table.",
+    "sourceDate": "2026-11-04",
+    "sourceNotes": "Known VN-China divergence: Vietnamese Tết Ất Sửu is 21/01/1985 (Chinese lunar new year is 20/02/1985). Engine uses UTC+7 Vietnamese calendar.",
+    "expectedDiff": true,
+    "expectedDiffReason": "Sources using Chinese calendar (UTC+8) will report Giáp Tý year and a different lunar date for this solar date. Vietnamese sources should agree with this fixture.",
+    "birthInfo": {
+      "gender": "nam",
+      "calendarType": "solar",
+      "year": 1985,
+      "month": 1,
+      "day": 21,
+      "hour": 10,
+      "minute": 0,
+      "location": {
+        "region": "north",
+        "longitude": 105.8542,
+        "provinceId": "HN",
+        "provinceName": "Hà Nội"
+      }
+    },
+    "expected": {
+      "lunarDate": {
+        "year": 1985,
+        "month": 1,
+        "day": 1,
+        "isLeapMonth": false
+      },
+      "fourPillars": {
+        "year": "ẤtSửu",
+        "month": "MậuDần",
+        "day": "CanhThân",
+        "hour": "TânTỵ"
+      },
+      "soulPalaceBranch": "dau",
+      "bodyPalaceBranch": "mui",
+      "fiveElementsClass": {
+        "name": "Thủy Nhị Cục",
+        "element": "thuy",
+        "number": 2
+      },
+      "soulLord": "Văn Khúc",
+      "bodyLord": "Thiên Tướng",
+      "majorStarsByPalace": {
+        "dan": [],
+        "mao": ["thienPhu"],
+        "thin": ["thaiAm"],
+        "ti": ["liemTrinh", "thamLang"],
+        "ngo": ["cuMon"],
+        "mui": ["thienTuong"],
+        "than": ["thienDong", "thienLuong"],
+        "dau": ["vuKhuc", "thatSat"],
+        "tuat": ["thaiDuong"],
+        "hoi": [],
+        "ty": ["thienCo"],
+        "suu": ["tuVi", "phaQuan"]
+      },
+      "tuanBranches": ["tuat", "hoi"],
+      "trietBranches": ["ngo", "mui"],
+      "brightness": {
+        "thienPhu": "binh",
+        "thaiAm": "ham",
+        "liemTrinh": "ham",
+        "thamLang": "ham",
+        "cuMon": "vuong",
+        "thienTuong": "dac",
+        "thienDong": "mieu",
+        "thienLuong": "vuong",
+        "vuKhuc": "dac",
+        "thatSat": "ham",
+        "thaiDuong": "ham",
+        "thienCo": "dac",
+        "tuVi": "dac",
+        "phaQuan": "vuong"
+      }
+    }
+  },
+  {
+    "id": "fixture-tet-002",
+    "description": "Nữ, 17/02/2007, giờ Mùi, TP.HCM - Tết Đinh Hợi, VN sớm 1 ngày",
+    "source": "Cross-reference intended with lasotuvi.ai.vn, lyso.vn, tracuulasotuvi.com; expected values computed by Sao Menh engine using Ho Ngoc Duc lunar algorithm (UTC+7), Nam Phai school, and Tan Bien 1956 brightness table.",
+    "sourceDate": "2026-11-04",
+    "sourceNotes": "Known VN-China divergence: Vietnamese Tết Đinh Hợi is 17/02/2007 (Chinese lunar new year is 18/02/2007). Engine uses UTC+7 Vietnamese calendar.",
+    "expectedDiff": true,
+    "expectedDiffReason": "Sources using Chinese calendar (UTC+8) may report the previous day or different hour boundary. Vietnamese sources should agree with this fixture.",
+    "birthInfo": {
+      "gender": "nu",
+      "calendarType": "solar",
+      "year": 2007,
+      "month": 2,
+      "day": 17,
+      "hour": 14,
+      "minute": 0,
+      "location": {
+        "region": "south",
+        "longitude": 106.6602,
+        "provinceId": "HCM",
+        "provinceName": "TP.HCM"
+      }
+    },
+    "expected": {
+      "lunarDate": {
+        "year": 2007,
+        "month": 1,
+        "day": 1,
+        "isLeapMonth": false
+      },
+      "fourPillars": {
+        "year": "ĐinhHợi",
+        "month": "NhâmDần",
+        "day": "NhâmNgọ",
+        "hour": "ĐinhMùi"
+      },
+      "soulPalaceBranch": "mui",
+      "bodyPalaceBranch": "dau",
+      "fiveElementsClass": {
+        "name": "Thủy Nhị Cục",
+        "element": "thuy",
+        "number": 2
+      },
+      "soulLord": "Vũ Khúc",
+      "bodyLord": "Thiên Cơ",
+      "majorStarsByPalace": {
+        "dan": [],
+        "mao": ["thienPhu"],
+        "thin": ["thaiAm"],
+        "ti": ["liemTrinh", "thamLang"],
+        "ngo": ["cuMon"],
+        "mui": ["thienTuong"],
+        "than": ["thienDong", "thienLuong"],
+        "dau": ["vuKhuc", "thatSat"],
+        "tuat": ["thaiDuong"],
+        "hoi": [],
+        "ty": ["thienCo"],
+        "suu": ["tuVi", "phaQuan"]
+      },
+      "tuanBranches": ["ngo", "mui"],
+      "trietBranches": ["dan", "mao"],
+      "brightness": {
+        "thienPhu": "binh",
+        "thaiAm": "ham",
+        "liemTrinh": "ham",
+        "thamLang": "ham",
+        "cuMon": "vuong",
+        "thienTuong": "dac",
+        "thienDong": "mieu",
+        "thienLuong": "vuong",
+        "vuKhuc": "dac",
+        "thatSat": "ham",
+        "thaiDuong": "ham",
+        "thienCo": "dac",
+        "tuVi": "dac",
+        "phaQuan": "vuong"
+      }
+    }
+  },
+  {
+    "id": "fixture-tet-003",
+    "description": "Nam, 02/02/2030, giờ Tị, Đà Nẵng - Tết Canh Tuất",
+    "source": "Cross-reference intended with lasotuvi.ai.vn, lyso.vn, tracuulasotuvi.com; expected values computed by Sao Menh engine using Ho Ngoc Duc lunar algorithm (UTC+7), Nam Phai school, and Tan Bien 1956 brightness table.",
+    "sourceDate": "2026-11-04",
+    "sourceNotes": "Known VN-China divergence: Vietnamese Tết Canh Tuất is 02/02/2030 (Chinese lunar new year is 03/02/2030). Engine uses UTC+7 Vietnamese calendar.",
+    "expectedDiff": true,
+    "expectedDiffReason": "Sources using Chinese calendar (UTC+8) may report the next day. Vietnamese sources should agree with this fixture.",
+    "birthInfo": {
+      "gender": "nam",
+      "calendarType": "solar",
+      "year": 2030,
+      "month": 2,
+      "day": 2,
+      "hour": 9,
+      "minute": 0,
+      "location": {
+        "region": "south",
+        "longitude": 108.2208,
+        "provinceId": "DN",
+        "provinceName": "Đà Nẵng"
+      }
+    },
+    "expected": {
+      "lunarDate": {
+        "year": 2030,
+        "month": 1,
+        "day": 1,
+        "isLeapMonth": false
+      },
+      "fourPillars": {
+        "year": "CanhTuất",
+        "month": "MậuDần",
+        "day": "MậuThìn",
+        "hour": "ĐinhTỵ"
+      },
+      "soulPalaceBranch": "dau",
+      "bodyPalaceBranch": "mui",
+      "fiveElementsClass": {
+        "name": "Thủy Nhị Cục",
+        "element": "thuy",
+        "number": 2
+      },
+      "soulLord": "Văn Khúc",
+      "bodyLord": "Văn Xương",
+      "majorStarsByPalace": {
+        "dan": [],
+        "mao": ["thienPhu"],
+        "thin": ["thaiAm"],
+        "ti": ["liemTrinh", "thamLang"],
+        "ngo": ["cuMon"],
+        "mui": ["thienTuong"],
+        "than": ["thienDong", "thienLuong"],
+        "dau": ["vuKhuc", "thatSat"],
+        "tuat": ["thaiDuong"],
+        "hoi": [],
+        "ty": ["thienCo"],
+        "suu": ["tuVi", "phaQuan"]
+      },
+      "tuanBranches": ["dan", "mao"],
+      "trietBranches": ["ngo", "mui"],
+      "brightness": {
+        "thienPhu": "binh",
+        "thaiAm": "ham",
+        "liemTrinh": "ham",
+        "thamLang": "ham",
+        "cuMon": "vuong",
+        "thienTuong": "dac",
+        "thienDong": "mieu",
+        "thienLuong": "vuong",
+        "vuKhuc": "dac",
+        "thatSat": "ham",
+        "thaiDuong": "ham",
+        "thienCo": "dac",
+        "tuVi": "dac",
+        "phaQuan": "vuong"
+      }
+    }
+  },
+  {
+    "id": "fixture-tet-004",
+    "description": "Nữ, 18/02/2053, giờ Ngọ, Hà Nội - Tết Quý Dậu",
+    "source": "Cross-reference intended with lasotuvi.ai.vn, lyso.vn, tracuulasotuvi.com; expected values computed by Sao Menh engine using Ho Ngoc Duc lunar algorithm (UTC+7), Nam Phai school, and Tan Bien 1956 brightness table.",
+    "sourceDate": "2026-11-04",
+    "sourceNotes": "Known VN-China divergence: Vietnamese Tết Quý Dậu is 18/02/2053 (Chinese lunar new year is 19/02/2053). Engine uses UTC+7 Vietnamese calendar.",
+    "expectedDiff": true,
+    "expectedDiffReason": "Sources using Chinese calendar (UTC+8) may report the next day. Vietnamese sources should agree with this fixture.",
+    "birthInfo": {
+      "gender": "nu",
+      "calendarType": "solar",
+      "year": 2053,
+      "month": 2,
+      "day": 18,
+      "hour": 11,
+      "minute": 0,
+      "location": {
+        "region": "north",
+        "longitude": 105.8542,
+        "provinceId": "HN",
+        "provinceName": "Hà Nội"
+      }
+    },
+    "expected": {
+      "lunarDate": {
+        "year": 2053,
+        "month": 1,
+        "day": 1,
+        "isLeapMonth": false
+      },
+      "fourPillars": {
+        "year": "QuýDậu",
+        "month": "GiápDần",
+        "day": "ẤtDậu",
+        "hour": "NhâmNgọ"
+      },
+      "soulPalaceBranch": "than",
+      "bodyPalaceBranch": "than",
+      "fiveElementsClass": {
+        "name": "Mộc Tam Cục",
+        "element": "moc",
+        "number": 3
+      },
+      "soulLord": "Liêm Trinh",
+      "bodyLord": "Thiên Đồng",
+      "majorStarsByPalace": {
+        "dan": ["thamLang"],
+        "mao": ["thienCo", "cuMon"],
+        "thin": ["tuVi", "thienTuong"],
+        "ti": ["thienLuong"],
+        "ngo": ["thatSat"],
+        "mui": [],
+        "than": ["liemTrinh"],
+        "dau": [],
+        "tuat": ["phaQuan"],
+        "hoi": ["thienDong"],
+        "ty": ["vuKhuc", "thienPhu"],
+        "suu": ["thaiDuong", "thaiAm"]
+      },
+      "tuanBranches": ["tuat", "hoi"],
+      "trietBranches": ["ty", "suu"],
+      "brightness": {
+        "thamLang": "dac",
+        "thienCo": "mieu",
+        "cuMon": "mieu",
+        "tuVi": "vuong",
+        "thienTuong": "vuong",
+        "thienLuong": "ham",
+        "thatSat": "mieu",
+        "liemTrinh": "vuong",
+        "phaQuan": "dac",
+        "thienDong": "dac",
+        "vuKhuc": "vuong",
+        "thienPhu": "mieu",
+        "thaiDuong": "dac",
+        "thaiAm": "dac"
+      }
+    }
+  },
+  {
+    "id": "fixture-tet-005",
+    "description": "Nam, 25/01/1925, giờ Mão, TP.HCM - Tết Ất Sửu, VN trễ 1 ngày",
+    "source": "Cross-reference intended with lasotuvi.ai.vn, lyso.vn, tracuulasotuvi.com; expected values computed by Sao Menh engine using Ho Ngoc Duc lunar algorithm (UTC+7), Nam Phai school, and Tan Bien 1956 brightness table.",
+    "sourceDate": "2026-11-04",
+    "sourceNotes": "Known VN-China divergence: Vietnamese Tết Ất Sửu is 25/01/1925 (Chinese lunar new year is 24/01/1925). Engine uses UTC+7 Vietnamese calendar.",
+    "expectedDiff": true,
+    "expectedDiffReason": "Sources using Chinese calendar (UTC+8) may report the previous day. Vietnamese sources should agree with this fixture.",
+    "birthInfo": {
+      "gender": "nam",
+      "calendarType": "solar",
+      "year": 1925,
+      "month": 1,
+      "day": 25,
+      "hour": 7,
+      "minute": 0,
+      "location": {
+        "region": "south",
+        "longitude": 106.6602,
+        "provinceId": "HCM",
+        "provinceName": "TP.HCM"
+      }
+    },
+    "expected": {
+      "lunarDate": {
+        "year": 1925,
+        "month": 1,
+        "day": 2,
+        "isLeapMonth": false
+      },
+      "fourPillars": {
+        "year": "ẤtSửu",
+        "month": "MậuDần",
+        "day": "KỷDậu",
+        "hour": "MậuThìn"
+      },
+      "soulPalaceBranch": "tuat",
+      "bodyPalaceBranch": "ngo",
+      "fiveElementsClass": {
+        "name": "Thổ Ngũ Cục",
+        "element": "tho",
+        "number": 5
+      },
+      "soulLord": "Lộc Tồn",
+      "bodyLord": "Thiên Tướng",
+      "majorStarsByPalace": {
+        "dan": [],
+        "mao": ["liemTrinh", "phaQuan"],
+        "thin": [],
+        "ti": ["thienPhu"],
+        "ngo": ["thienDong", "thaiAm"],
+        "mui": ["vuKhuc", "thamLang"],
+        "than": ["thaiDuong", "cuMon"],
+        "dau": ["thienTuong"],
+        "tuat": ["thienCo", "thienLuong"],
+        "hoi": ["tuVi", "thatSat"],
+        "ty": [],
+        "suu": []
+      },
+      "tuanBranches": ["tuat", "hoi"],
+      "trietBranches": ["ngo", "mui"],
+      "brightness": {
+        "liemTrinh": "ham",
+        "phaQuan": "ham",
+        "thienPhu": "dac",
+        "thienDong": "ham",
+        "thaiAm": "ham",
+        "vuKhuc": "mieu",
+        "thamLang": "mieu",
+        "thaiDuong": "ham",
+        "cuMon": "dac",
+        "thienTuong": "ham",
+        "thienCo": "mieu",
+        "thienLuong": "mieu",
+        "tuVi": "binh",
+        "thatSat": "vuong"
+      }
+    }
+  }
+]

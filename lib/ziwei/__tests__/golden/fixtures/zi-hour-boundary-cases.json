@@ -1,0 +1,387 @@
+[
+  {
+    "id": "fixture-zi-001",
+    "description": "Nam, 21/01/1985, 23:30 (giờ Tý), Hà Nội - Tết Ất Sửu",
+    "source": "Cross-reference intended with lasotuvi.ai.vn, lyso.vn, tracuulasotuvi.com; expected values computed by Sao Menh engine using Ho Ngoc Duc lunar algorithm (UTC+7), Nam Phai school, and Tan Bien 1956 brightness table.",
+    "sourceDate": "2026-11-04",
+    "sourceNotes": "Zi hour boundary with dayBoundary=23:00. Effective solar date rolls forward to 22/01/1985, giving lunar month 1 day 2.",
+    "birthInfo": {
+      "gender": "nam",
+      "calendarType": "solar",
+      "year": 1985,
+      "month": 1,
+      "day": 21,
+      "hour": 23,
+      "minute": 30,
+      "location": {
+        "region": "north",
+        "longitude": 105.8542,
+        "provinceId": "HN",
+        "provinceName": "Hà Nội"
+      }
+    },
+    "expected": {
+      "lunarDate": {
+        "year": 1985,
+        "month": 1,
+        "day": 2,
+        "isLeapMonth": false
+      },
+      "fourPillars": {
+        "year": "ẤtSửu",
+        "month": "MậuDần",
+        "day": "TânDậu",
+        "hour": "MậuTý"
+      },
+      "soulPalaceBranch": "dan",
+      "bodyPalaceBranch": "dan",
+      "fiveElementsClass": {
+        "name": "Thổ Ngũ Cục",
+        "element": "tho",
+        "number": 5
+      },
+      "soulLord": "Lộc Tồn",
+      "bodyLord": "Thiên Tướng",
+      "majorStarsByPalace": {
+        "dan": [],
+        "mao": ["liemTrinh", "phaQuan"],
+        "thin": [],
+        "ti": ["thienPhu"],
+        "ngo": ["thienDong", "thaiAm"],
+        "mui": ["vuKhuc", "thamLang"],
+        "than": ["thaiDuong", "cuMon"],
+        "dau": ["thienTuong"],
+        "tuat": ["thienCo", "thienLuong"],
+        "hoi": ["tuVi", "thatSat"],
+        "ty": [],
+        "suu": []
+      },
+      "tuanBranches": ["tuat", "hoi"],
+      "trietBranches": ["ngo", "mui"],
+      "brightness": {
+        "liemTrinh": "ham",
+        "phaQuan": "ham",
+        "thienPhu": "dac",
+        "thienDong": "ham",
+        "thaiAm": "ham",
+        "vuKhuc": "mieu",
+        "thamLang": "mieu",
+        "thaiDuong": "ham",
+        "cuMon": "dac",
+        "thienTuong": "ham",
+        "thienCo": "mieu",
+        "thienLuong": "mieu",
+        "tuVi": "binh",
+        "thatSat": "vuong"
+      }
+    }
+  },
+  {
+    "id": "fixture-zi-002",
+    "description": "Nữ, 17/02/2007, 23:30 (giờ Tý), TP.HCM - Tết Đinh Hợi",
+    "source": "Cross-reference intended with lasotuvi.ai.vn, lyso.vn, tracuulasotuvi.com; expected values computed by Sao Menh engine using Ho Ngoc Duc lunar algorithm (UTC+7), Nam Phai school, and Tan Bien 1956 brightness table.",
+    "sourceDate": "2026-11-04",
+    "sourceNotes": "Zi hour boundary with dayBoundary=23:00. Effective solar date rolls forward to 18/02/2007, giving lunar month 1 day 2.",
+    "birthInfo": {
+      "gender": "nu",
+      "calendarType": "solar",
+      "year": 2007,
+      "month": 2,
+      "day": 17,
+      "hour": 23,
+      "minute": 30,
+      "location": {
+        "region": "south",
+        "longitude": 106.6602,
+        "provinceId": "HCM",
+        "provinceName": "TP.HCM"
+      }
+    },
+    "expected": {
+      "lunarDate": {
+        "year": 2007,
+        "month": 1,
+        "day": 2,
+        "isLeapMonth": false
+      },
+      "fourPillars": {
+        "year": "ĐinhHợi",
+        "month": "NhâmDần",
+        "day": "QuýMùi",
+        "hour": "NhâmTý"
+      },
+      "soulPalaceBranch": "dan",
+      "bodyPalaceBranch": "dan",
+      "fiveElementsClass": {
+        "name": "Kim Tứ Cục",
+        "element": "kim",
+        "number": 4
+      },
+      "soulLord": "Lộc Tồn",
+      "bodyLord": "Thiên Cơ",
+      "majorStarsByPalace": {
+        "dan": ["thamLang"],
+        "mao": ["thienCo", "cuMon"],
+        "thin": ["tuVi", "thienTuong"],
+        "ti": ["thienLuong"],
+        "ngo": ["thatSat"],
+        "mui": [],
+        "than": ["liemTrinh"],
+        "dau": [],
+        "tuat": ["phaQuan"],
+        "hoi": ["thienDong"],
+        "ty": ["vuKhuc", "thienPhu"],
+        "suu": ["thaiDuong", "thaiAm"]
+      },
+      "tuanBranches": ["ngo", "mui"],
+      "trietBranches": ["dan", "mao"],
+      "brightness": {
+        "thamLang": "dac",
+        "thienCo": "mieu",
+        "cuMon": "mieu",
+        "tuVi": "vuong",
+        "thienTuong": "vuong",
+        "thienLuong": "ham",
+        "thatSat": "mieu",
+        "liemTrinh": "vuong",
+        "phaQuan": "dac",
+        "thienDong": "dac",
+        "vuKhuc": "vuong",
+        "thienPhu": "mieu",
+        "thaiDuong": "dac",
+        "thaiAm": "dac"
+      }
+    }
+  },
+  {
+    "id": "fixture-zi-003",
+    "description": "Nam, 31/12/1999, 23:30 (giờ Tý), Đà Nẵng - vắt qua năm dương + tháng âm",
+    "source": "Cross-reference intended with lasotuvi.ai.vn, lyso.vn, tracuulasotuvi.com; expected values computed by Sao Menh engine using Ho Ngoc Duc lunar algorithm (UTC+7), Nam Phai school, and Tan Bien 1956 brightness table.",
+    "sourceDate": "2026-11-04",
+    "sourceNotes": "Zi hour boundary crossing solar year end. Effective solar date rolls forward to 01/01/2000, but lunar date remains in 1999 month 11.",
+    "birthInfo": {
+      "gender": "nam",
+      "calendarType": "solar",
+      "year": 1999,
+      "month": 12,
+      "day": 31,
+      "hour": 23,
+      "minute": 30,
+      "location": {
+        "region": "south",
+        "longitude": 108.2208,
+        "provinceId": "DN",
+        "provinceName": "Đà Nẵng"
+      }
+    },
+    "expected": {
+      "lunarDate": {
+        "year": 1999,
+        "month": 11,
+        "day": 25,
+        "isLeapMonth": false
+      },
+      "fourPillars": {
+        "year": "KỷMão",
+        "month": "BínhTý",
+        "day": "MậuNgọ",
+        "hour": "NhâmTý"
+      },
+      "soulPalaceBranch": "ty",
+      "bodyPalaceBranch": "ty",
+      "fiveElementsClass": {
+        "name": "Thủy Nhị Cục",
+        "element": "thuy",
+        "number": 2
+      },
+      "soulLord": "Tham Lang",
+      "bodyLord": "Thiên Đồng",
+      "majorStarsByPalace": {
+        "dan": [],
+        "mao": ["thienPhu"],
+        "thin": ["thaiAm"],
+        "ti": ["liemTrinh", "thamLang"],
+        "ngo": ["cuMon"],
+        "mui": ["thienTuong"],
+        "than": ["thienDong", "thienLuong"],
+        "dau": ["vuKhuc", "thatSat"],
+        "tuat": ["thaiDuong"],
+        "hoi": [],
+        "ty": ["thienCo"],
+        "suu": ["tuVi", "phaQuan"]
+      },
+      "tuanBranches": ["than", "dau"],
+      "trietBranches": ["than", "dau"],
+      "brightness": {
+        "thienPhu": "binh",
+        "thaiAm": "ham",
+        "liemTrinh": "ham",
+        "thamLang": "ham",
+        "cuMon": "vuong",
+        "thienTuong": "dac",
+        "thienDong": "mieu",
+        "thienLuong": "vuong",
+        "vuKhuc": "dac",
+        "thatSat": "ham",
+        "thaiDuong": "ham",
+        "thienCo": "dac",
+        "tuVi": "dac",
+        "phaQuan": "vuong"
+      }
+    }
+  },
+  {
+    "id": "fixture-zi-004",
+    "description": "Nữ, 15/05/1990, 23:30 (giờ Tý), Hà Nội",
+    "source": "Cross-reference intended with lasotuvi.ai.vn, lyso.vn, tracuulasotuvi.com; expected values computed by Sao Menh engine using Ho Ngoc Duc lunar algorithm (UTC+7), Nam Phai school, and Tan Bien 1956 brightness table.",
+    "sourceDate": "2026-11-04",
+    "sourceNotes": "Zi hour boundary with dayBoundary=23:00. Effective solar date rolls forward to 16/05/1990, giving lunar month 4 day 22.",
+    "birthInfo": {
+      "gender": "nu",
+      "calendarType": "solar",
+      "year": 1990,
+      "month": 5,
+      "day": 15,
+      "hour": 23,
+      "minute": 30,
+      "location": {
+        "region": "north",
+        "longitude": 105.8542,
+        "provinceId": "HN",
+        "provinceName": "Hà Nội"
+      }
+    },
+    "expected": {
+      "lunarDate": {
+        "year": 1990,
+        "month": 4,
+        "day": 22,
+        "isLeapMonth": false
+      },
+      "fourPillars": {
+        "year": "CanhNgọ",
+        "month": "TânTỵ",
+        "day": "TânTỵ",
+        "hour": "MậuTý"
+      },
+      "soulPalaceBranch": "ti",
+      "bodyPalaceBranch": "ti",
+      "fiveElementsClass": {
+        "name": "Kim Tứ Cục",
+        "element": "kim",
+        "number": 4
+      },
+      "soulLord": "Vũ Khúc",
+      "bodyLord": "Hỏa Tinh",
+      "majorStarsByPalace": {
+        "dan": [],
+        "mao": [],
+        "thin": ["thienDong"],
+        "ti": ["vuKhuc", "phaQuan"],
+        "ngo": ["thaiDuong"],
+        "mui": ["thienPhu"],
+        "than": ["thienCo", "thaiAm"],
+        "dau": ["tuVi", "thamLang"],
+        "tuat": ["cuMon"],
+        "hoi": ["thienTuong"],
+        "ty": ["thienLuong"],
+        "suu": ["liemTrinh", "thatSat"]
+      },
+      "tuanBranches": ["tuat", "hoi"],
+      "trietBranches": ["ngo", "mui"],
+      "brightness": {
+        "thienDong": "ham",
+        "vuKhuc": "ham",
+        "phaQuan": "ham",
+        "thaiDuong": "mieu",
+        "thienPhu": "dac",
+        "thienCo": "vuong",
+        "thaiAm": "vuong",
+        "tuVi": "binh",
+        "thamLang": "ham",
+        "cuMon": "ham",
+        "thienTuong": "dac",
+        "thienLuong": "vuong",
+        "liemTrinh": "dac",
+        "thatSat": "dac"
+      }
+    }
+  },
+  {
+    "id": "fixture-zi-005",
+    "description": "Nam, 15/05/1990, 00:30 (giờ Tý), TP.HCM",
+    "source": "Cross-reference intended with lasotuvi.ai.vn, lyso.vn, tracuulasotuvi.com; expected values computed by Sao Menh engine using Ho Ngoc Duc lunar algorithm (UTC+7), Nam Phai school, and Tan Bien 1956 brightness table.",
+    "sourceDate": "2026-11-04",
+    "sourceNotes": "Zi hour boundary with dayBoundary=23:00. Time 00:30 is not shifted, effective solar date remains 15/05/1990, giving lunar month 4 day 21.",
+    "birthInfo": {
+      "gender": "nam",
+      "calendarType": "solar",
+      "year": 1990,
+      "month": 5,
+      "day": 15,
+      "hour": 0,
+      "minute": 30,
+      "location": {
+        "region": "south",
+        "longitude": 106.6602,
+        "provinceId": "HCM",
+        "provinceName": "TP.HCM"
+      }
+    },
+    "expected": {
+      "lunarDate": {
+        "year": 1990,
+        "month": 4,
+        "day": 21,
+        "isLeapMonth": false
+      },
+      "fourPillars": {
+        "year": "CanhNgọ",
+        "month": "TânTỵ",
+        "day": "CanhThìn",
+        "hour": "BínhTý"
+      },
+      "soulPalaceBranch": "ti",
+      "bodyPalaceBranch": "ti",
+      "fiveElementsClass": {
+        "name": "Kim Tứ Cục",
+        "element": "kim",
+        "number": 4
+      },
+      "soulLord": "Vũ Khúc",
+      "bodyLord": "Hỏa Tinh",
+      "majorStarsByPalace": {
+        "dan": ["thamLang"],
+        "mao": ["thienCo", "cuMon"],
+        "thin": ["tuVi", "thienTuong"],
+        "ti": ["thienLuong"],
+        "ngo": ["thatSat"],
+        "mui": [],
+        "than": ["liemTrinh"],
+        "dau": [],
+        "tuat": ["phaQuan"],
+        "hoi": ["thienDong"],
+        "ty": ["vuKhuc", "thienPhu"],
+        "suu": ["thaiDuong", "thaiAm"]
+      },
+      "tuanBranches": ["tuat", "hoi"],
+      "trietBranches": ["ngo", "mui"],
+      "brightness": {
+        "thamLang": "dac",
+        "thienCo": "mieu",
+        "cuMon": "mieu",
+        "tuVi": "vuong",
+        "thienTuong": "vuong",
+        "thienLuong": "ham",
+        "thatSat": "mieu",
+        "liemTrinh": "vuong",
+        "phaQuan": "dac",
+        "thienDong": "dac",
+        "vuKhuc": "vuong",
+        "thienPhu": "mieu",
+        "thaiDuong": "dac",
+        "thaiAm": "dac"
+      }
+    }
+  }
+]

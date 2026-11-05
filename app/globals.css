@@ -1,0 +1,90 @@
+@import 'tailwindcss';
+
+:root,
+[data-theme='dark'] {
+  /* Backgrounds */
+  --bg-primary: #0a0e1a;
+  --bg-surface: #151b2e;
+  --bg-elevated: #1e2640;
+
+  /* Accents */
+  --accent-gold: #d4af37;
+  --accent-gold-bright: #ffd700;
+
+  /* Text */
+  --text-primary: #f5f5f5;
+  --text-muted: #a0a0b0;
+
+  /* Border */
+  --border-subtle: rgba(212, 175, 55, 0.22);
+
+  /* Ngũ hành */
+  --el-kim: #e2e8f0;
+  --el-moc: #4ade80;
+  --el-thuy: #38bdf8;
+  --el-hoa: #f87171;
+  --el-tho: #fbbf24;
+
+  /* Tứ hóa */
+  --mutagen-loc: #22c55e;
+  --mutagen-quyen: #ef4444;
+  --mutagen-khoa: #3b82f6;
+  --mutagen-ky: #94a3b8;
+}
+
+[data-theme='light'] {
+  --bg-primary: #faf8f3;
+  --bg-surface: #f5f1e8;
+  --bg-elevated: #ebe5d8;
+
+  --accent-gold: #b8860b;
+  --accent-gold-bright: #855e00;
+
+  --text-primary: #1a1a1a;
+  --text-muted: #5a5a66;
+
+  --border-subtle: rgba(184, 134, 11, 0.28);
+
+  --el-kim: #475569;
+  --el-moc: #15803d;
+  --el-thuy: #0369a1;
+  --el-hoa: #b91c1c;
+  --el-tho: #b45309;
+
+  --mutagen-loc: #15803d;
+  --mutagen-quyen: #b91c1c;
+  --mutagen-khoa: #1d4ed8;
+  --mutagen-ky: #334155;
+}
+
+@theme inline {
+  --color-background: var(--bg-primary);
+  --color-surface: var(--bg-surface);
+  --color-elevated: var(--bg-elevated);
+  --color-gold: var(--accent-gold);
+  --color-gold-bright: var(--accent-gold-bright);
+  --color-foreground: var(--text-primary);
+  --color-muted: var(--text-muted);
+  --color-border-subtle: var(--border-subtle);
+
+  --color-el-kim: var(--el-kim);
+  --color-el-moc: var(--el-moc);
+  --color-el-thuy: var(--el-thuy);
+  --color-el-hoa: var(--el-hoa);
+  --color-el-tho: var(--el-tho);
+
+  --color-mutagen-loc: var(--mutagen-loc);
+  --color-mutagen-quyen: var(--mutagen-quyen);
+  --color-mutagen-khoa: var(--mutagen-khoa);
+  --color-mutagen-ky: var(--mutagen-ky);
+
+  /* Headings: Cormorant Garamond (cổ kính); body: Noto Serif (hỗ trợ tiếng Việt).
+     font-sans/font-serif trỏ trực tiếp tới biến next/font vì @theme inline không emit biến trung gian. */
+  --font-heading: var(--font-cormorant);
+  --font-body: var(--font-noto-serif);
+  --font-sans: var(--font-noto-serif);
+  --font-serif: var(--font-cormorant);
+  --font-mono: var(--font-fira-code);
+  /* Chữ Hán: font hệ thống có glyph CJK (Cormorant/Noto Serif không có) */
+  --font-han: 'Noto Serif SC', 'Noto Serif CJK SC', 'Songti SC', 'SimSun', 'MS Mincho', serif;
+}

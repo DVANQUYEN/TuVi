@@ -1,0 +1,387 @@
+[
+  {
+    "id": "fixture-leap-001",
+    "description": "Nữ, 25/03/2004, giờ Thìn, Hà Nội - tháng 2 nhuận",
+    "source": "Cross-reference intended with lasotuvi.ai.vn, lyso.vn, tracuulasotuvi.com; expected values computed by Sao Menh engine using Ho Ngoc Duc lunar algorithm (UTC+7), Nam Phai school, and Tan Bien 1956 brightness table.",
+    "sourceDate": "2026-11-04",
+    "sourceNotes": "Solar date 25/03/2004 falls in leap month 2 of Giáp Thân year. With split15 rule, day 5 of leap month 2 is treated as month 2.",
+    "birthInfo": {
+      "gender": "nu",
+      "calendarType": "solar",
+      "year": 2004,
+      "month": 3,
+      "day": 25,
+      "hour": 8,
+      "minute": 0,
+      "location": {
+        "region": "north",
+        "longitude": 105.8542,
+        "provinceId": "HN",
+        "provinceName": "Hà Nội"
+      }
+    },
+    "expected": {
+      "lunarDate": {
+        "year": 2004,
+        "month": 2,
+        "day": 5,
+        "isLeapMonth": true
+      },
+      "fourPillars": {
+        "year": "GiápThân",
+        "month": "ĐinhMão",
+        "day": "QuýMão",
+        "hour": "BínhThìn"
+      },
+      "soulPalaceBranch": "hoi",
+      "bodyPalaceBranch": "mui",
+      "fiveElementsClass": {
+        "name": "Hỏa Lục Cục",
+        "element": "hoa",
+        "number": 6
+      },
+      "soulLord": "Cự Môn",
+      "bodyLord": "Thiên Lương",
+      "majorStarsByPalace": {
+        "dan": [],
+        "mao": ["thienPhu"],
+        "thin": ["thaiAm"],
+        "ti": ["liemTrinh", "thamLang"],
+        "ngo": ["cuMon"],
+        "mui": ["thienTuong"],
+        "than": ["thienDong", "thienLuong"],
+        "dau": ["vuKhuc", "thatSat"],
+        "tuat": ["thaiDuong"],
+        "hoi": [],
+        "ty": ["thienCo"],
+        "suu": ["tuVi", "phaQuan"]
+      },
+      "tuanBranches": ["ngo", "mui"],
+      "trietBranches": ["than", "dau"],
+      "brightness": {
+        "thienPhu": "binh",
+        "thaiAm": "ham",
+        "liemTrinh": "ham",
+        "thamLang": "ham",
+        "cuMon": "vuong",
+        "thienTuong": "dac",
+        "thienDong": "mieu",
+        "thienLuong": "vuong",
+        "vuKhuc": "dac",
+        "thatSat": "ham",
+        "thaiDuong": "ham",
+        "thienCo": "dac",
+        "tuVi": "dac",
+        "phaQuan": "vuong"
+      }
+    }
+  },
+  {
+    "id": "fixture-leap-002",
+    "description": "Nam, 10/04/2004, giờ Tị, TP.HCM - tháng 2 nhuận, ngày ~21",
+    "source": "Cross-reference intended with lasotuvi.ai.vn, lyso.vn, tracuulasotuvi.com; expected values computed by Sao Menh engine using Ho Ngoc Duc lunar algorithm (UTC+7), Nam Phai school, and Tan Bien 1956 brightness table.",
+    "sourceDate": "2026-11-04",
+    "sourceNotes": "Solar date 10/04/2004 falls in leap month 2 of Giáp Thân year. With split15 rule, day 21 of leap month 2 is treated as month 3.",
+    "birthInfo": {
+      "gender": "nam",
+      "calendarType": "solar",
+      "year": 2004,
+      "month": 4,
+      "day": 10,
+      "hour": 10,
+      "minute": 0,
+      "location": {
+        "region": "south",
+        "longitude": 106.6602,
+        "provinceId": "HCM",
+        "provinceName": "TP.HCM"
+      }
+    },
+    "expected": {
+      "lunarDate": {
+        "year": 2004,
+        "month": 3,
+        "day": 21,
+        "isLeapMonth": true
+      },
+      "fourPillars": {
+        "year": "GiápThân",
+        "month": "MậuThìn",
+        "day": "KỷMùi",
+        "hour": "KỷTỵ"
+      },
+      "soulPalaceBranch": "hoi",
+      "bodyPalaceBranch": "dau",
+      "fiveElementsClass": {
+        "name": "Hỏa Lục Cục",
+        "element": "hoa",
+        "number": 6
+      },
+      "soulLord": "Cự Môn",
+      "bodyLord": "Thiên Lương",
+      "majorStarsByPalace": {
+        "dan": ["tuVi", "thienPhu"],
+        "mao": ["thaiAm"],
+        "thin": ["thamLang"],
+        "ti": ["cuMon"],
+        "ngo": ["liemTrinh", "thienTuong"],
+        "mui": ["thienLuong"],
+        "than": ["thatSat"],
+        "dau": ["thienDong"],
+        "tuat": ["vuKhuc"],
+        "hoi": ["thaiDuong"],
+        "ty": ["phaQuan"],
+        "suu": ["thienCo"]
+      },
+      "tuanBranches": ["ngo", "mui"],
+      "trietBranches": ["than", "dau"],
+      "brightness": {
+        "tuVi": "mieu",
+        "thienPhu": "mieu",
+        "thaiAm": "ham",
+        "thamLang": "vuong",
+        "cuMon": "ham",
+        "liemTrinh": "vuong",
+        "thienTuong": "vuong",
+        "thienLuong": "dac",
+        "thatSat": "mieu",
+        "thienDong": "ham",
+        "vuKhuc": "mieu",
+        "thaiDuong": "ham",
+        "phaQuan": "mieu",
+        "thienCo": "dac"
+      }
+    }
+  },
+  {
+    "id": "fixture-leap-003",
+    "description": "Nữ, 21/03/1985, giờ Mùi, Đà Nẵng - tháng 2 nhuận",
+    "source": "Cross-reference intended with lasotuvi.ai.vn, lyso.vn, tracuulasotuvi.com; expected values computed by Sao Menh engine using Ho Ngoc Duc lunar algorithm (UTC+7), Nam Phai school, and Tan Bien 1956 brightness table.",
+    "sourceDate": "2026-11-04",
+    "sourceNotes": "Solar date 21/03/1985 falls in leap month 2 of Ất Sửu year. With split15 rule, day 1 of leap month 2 is treated as month 2.",
+    "birthInfo": {
+      "gender": "nu",
+      "calendarType": "solar",
+      "year": 1985,
+      "month": 3,
+      "day": 21,
+      "hour": 13,
+      "minute": 0,
+      "location": {
+        "region": "south",
+        "longitude": 108.2208,
+        "provinceId": "DN",
+        "provinceName": "Đà Nẵng"
+      }
+    },
+    "expected": {
+      "lunarDate": {
+        "year": 1985,
+        "month": 2,
+        "day": 1,
+        "isLeapMonth": true
+      },
+      "fourPillars": {
+        "year": "ẤtSửu",
+        "month": "KỷMão",
+        "day": "KỷMùi",
+        "hour": "TânMùi"
+      },
+      "soulPalaceBranch": "than",
+      "bodyPalaceBranch": "tuat",
+      "fiveElementsClass": {
+        "name": "Thủy Nhị Cục",
+        "element": "thuy",
+        "number": 2
+      },
+      "soulLord": "Liêm Trinh",
+      "bodyLord": "Thiên Tướng",
+      "majorStarsByPalace": {
+        "dan": [],
+        "mao": ["thienPhu"],
+        "thin": ["thaiAm"],
+        "ti": ["liemTrinh", "thamLang"],
+        "ngo": ["cuMon"],
+        "mui": ["thienTuong"],
+        "than": ["thienDong", "thienLuong"],
+        "dau": ["vuKhuc", "thatSat"],
+        "tuat": ["thaiDuong"],
+        "hoi": [],
+        "ty": ["thienCo"],
+        "suu": ["tuVi", "phaQuan"]
+      },
+      "tuanBranches": ["tuat", "hoi"],
+      "trietBranches": ["ngo", "mui"],
+      "brightness": {
+        "thienPhu": "binh",
+        "thaiAm": "ham",
+        "liemTrinh": "ham",
+        "thamLang": "ham",
+        "cuMon": "vuong",
+        "thienTuong": "dac",
+        "thienDong": "mieu",
+        "thienLuong": "vuong",
+        "vuKhuc": "dac",
+        "thatSat": "ham",
+        "thaiDuong": "ham",
+        "thienCo": "dac",
+        "tuVi": "dac",
+        "phaQuan": "vuong"
+      }
+    }
+  },
+  {
+    "id": "fixture-leap-004",
+    "description": "Nam, 20/08/2025, giờ Thân, Hà Nội - tháng 6 nhuận",
+    "source": "Cross-reference intended with lasotuvi.ai.vn, lyso.vn, tracuulasotuvi.com; expected values computed by Sao Menh engine using Ho Ngoc Duc lunar algorithm (UTC+7), Nam Phai school, and Tan Bien 1956 brightness table.",
+    "sourceDate": "2026-11-04",
+    "sourceNotes": "Solar date 20/08/2025 falls in leap month 6 of Ất Tỵ year. With split15 rule, day 27 of leap month 6 is treated as month 7.",
+    "birthInfo": {
+      "gender": "nam",
+      "calendarType": "solar",
+      "year": 2025,
+      "month": 8,
+      "day": 20,
+      "hour": 16,
+      "minute": 0,
+      "location": {
+        "region": "north",
+        "longitude": 105.8542,
+        "provinceId": "HN",
+        "provinceName": "Hà Nội"
+      }
+    },
+    "expected": {
+      "lunarDate": {
+        "year": 2025,
+        "month": 7,
+        "day": 27,
+        "isLeapMonth": true
+      },
+      "fourPillars": {
+        "year": "ẤtTỵ",
+        "month": "GiápThân",
+        "day": "TânDậu",
+        "hour": "BínhThân"
+      },
+      "soulPalaceBranch": "ty",
+      "bodyPalaceBranch": "thin",
+      "fiveElementsClass": {
+        "name": "Hỏa Lục Cục",
+        "element": "hoa",
+        "number": 6
+      },
+      "soulLord": "Tham Lang",
+      "bodyLord": "Thiên Cơ",
+      "majorStarsByPalace": {
+        "dan": ["thienCo", "thaiAm"],
+        "mao": ["tuVi", "thamLang"],
+        "thin": ["cuMon"],
+        "ti": ["thienTuong"],
+        "ngo": ["thienLuong"],
+        "mui": ["liemTrinh", "thatSat"],
+        "than": [],
+        "dau": [],
+        "tuat": ["thienDong"],
+        "hoi": ["vuKhuc", "phaQuan"],
+        "ty": ["thaiDuong"],
+        "suu": ["thienPhu"]
+      },
+      "tuanBranches": ["dan", "mao"],
+      "trietBranches": ["ngo", "mui"],
+      "brightness": {
+        "thienCo": "ham",
+        "thaiAm": "ham",
+        "tuVi": "binh",
+        "thamLang": "ham",
+        "cuMon": "ham",
+        "thienTuong": "dac",
+        "thienLuong": "mieu",
+        "liemTrinh": "dac",
+        "thatSat": "dac",
+        "thienDong": "ham",
+        "vuKhuc": "ham",
+        "phaQuan": "ham",
+        "thaiDuong": "ham",
+        "thienPhu": "binh"
+      }
+    }
+  },
+  {
+    "id": "fixture-leap-005",
+    "description": "Nữ, 25/08/1987, giờ Tuất, TP.HCM - tháng 7 nhuận",
+    "source": "Cross-reference intended with lasotuvi.ai.vn, lyso.vn, tracuulasotuvi.com; expected values computed by Sao Menh engine using Ho Ngoc Duc lunar algorithm (UTC+7), Nam Phai school, and Tan Bien 1956 brightness table.",
+    "sourceDate": "2026-11-04",
+    "sourceNotes": "Solar date 25/08/1987 falls in leap month 7 of Đinh Mão year. With split15 rule, day 2 of leap month 7 is treated as month 7.",
+    "birthInfo": {
+      "gender": "nu",
+      "calendarType": "solar",
+      "year": 1987,
+      "month": 8,
+      "day": 25,
+      "hour": 20,
+      "minute": 0,
+      "location": {
+        "region": "south",
+        "longitude": 106.6602,
+        "provinceId": "HCM",
+        "provinceName": "TP.HCM"
+      }
+    },
+    "expected": {
+      "lunarDate": {
+        "year": 1987,
+        "month": 7,
+        "day": 2,
+        "isLeapMonth": true
+      },
+      "fourPillars": {
+        "year": "ĐinhMão",
+        "month": "MậuThân",
+        "day": "BínhNgọ",
+        "hour": "MậuTuất"
+      },
+      "soulPalaceBranch": "tuat",
+      "bodyPalaceBranch": "ngo",
+      "fiveElementsClass": {
+        "name": "Kim Tứ Cục",
+        "element": "kim",
+        "number": 4
+      },
+      "soulLord": "Lộc Tồn",
+      "bodyLord": "Thiên Đồng",
+      "majorStarsByPalace": {
+        "dan": ["thamLang"],
+        "mao": ["thienCo", "cuMon"],
+        "thin": ["tuVi", "thienTuong"],
+        "ti": ["thienLuong"],
+        "ngo": ["thatSat"],
+        "mui": [],
+        "than": ["liemTrinh"],
+        "dau": [],
+        "tuat": ["phaQuan"],
+        "hoi": ["thienDong"],
+        "ty": ["vuKhuc", "thienPhu"],
+        "suu": ["thaiDuong", "thaiAm"]
+      },
+      "tuanBranches": ["tuat", "hoi"],
+      "trietBranches": ["dan", "mao"],
+      "brightness": {
+        "thamLang": "dac",
+        "thienCo": "mieu",
+        "cuMon": "mieu",
+        "tuVi": "vuong",
+        "thienTuong": "vuong",
+        "thienLuong": "ham",
+        "thatSat": "mieu",
+        "liemTrinh": "vuong",
+        "phaQuan": "dac",
+        "thienDong": "dac",
+        "vuKhuc": "vuong",
+        "thienPhu": "mieu",
+        "thaiDuong": "dac",
+        "thaiAm": "dac"
+      }
+    }
+  }
+]
