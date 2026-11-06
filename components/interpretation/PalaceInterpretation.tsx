@@ -25,6 +25,12 @@ const BRIGHTNESS_LABELS: Readonly<Record<BrightnessLevel, string>> = {
   ham: 'Hãm',
 };
 
+const IMPACT_LABELS: Readonly<Record<MinorStarImpact, string>> = {
+  tốt: 'Thuận lợi',
+  xấu: 'Biến động',
+  'trung bình': 'Ổn định',
+};
+
 const CONTENT_SECTIONS: ReadonlyArray<{
   key: keyof PalaceContent;
   han: string;
@@ -167,7 +173,7 @@ export function PalaceInterpretationList({
                                 <span
                                   className={`rounded px-2 py-0.5 text-xs ${getImpactClassName(star.impact)}`}
                                 >
-                                  {star.impact}
+                                  {IMPACT_LABELS[star.impact]}
                                 </span>
                               )}
                             </div>
@@ -201,7 +207,7 @@ export function PalaceInterpretationList({
                               <span
                                 className={`rounded px-2 py-0.5 text-xs ${getImpactClassName(group.level)}`}
                               >
-                                {group.level}
+                                {IMPACT_LABELS[group.level]}
                               </span>
                             </div>
                             <p className="text-sm leading-relaxed">{group.meaning}</p>

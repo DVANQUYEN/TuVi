@@ -23,7 +23,7 @@ export function SavedChartFallback({ status }: SavedChartFallbackProps): React.R
         role="alert"
         className="rounded-md border border-red-500/30 bg-red-500/10 p-4 text-center text-sm text-red-400"
       >
-        Không thể tải lá số đã lưu. Vui lòng thử lại sau.
+        Chưa tải được lá số đã lưu. Vui lòng thử lại.
       </div>
     );
   }
@@ -32,7 +32,7 @@ export function SavedChartFallback({ status }: SavedChartFallbackProps): React.R
     <div className="py-12 text-center">
       <p className="text-muted">Chưa có lá số. Vui lòng chọn một hồ sơ đã lưu để xem.</p>
       <Link href="/ho-so" className="mt-4 inline-block text-gold hover:underline">
-        Đến Quẻ đã lưu →
+        Đến lá số đã lưu →
       </Link>
     </div>
   );

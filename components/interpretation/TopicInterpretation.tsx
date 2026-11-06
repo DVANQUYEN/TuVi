@@ -61,6 +61,23 @@ export function TopicInterpretationTabs({ topics }: TopicInterpretationProps): R
         <div className="space-y-6">
           <p className="text-sm leading-relaxed">{currentTopic.overview}</p>
 
+          <div className="mb-2">
+            <p
+              data-testid={`topic-conclusion-${currentTopic.topic}`}
+              className="mx-auto mb-2 max-w-2xl text-balance text-center font-serif text-lg font-semibold italic leading-relaxed text-gold-bright sm:text-xl"
+            >
+              “{currentTopic.conclusion}”
+            </p>
+            {currentTopic.conclusionBasis && (
+              <p className="mx-auto max-w-2xl text-center text-xs text-muted">
+                Cơ sở: {currentTopic.conclusionBasis}
+              </p>
+            )}
+            <p className="mx-auto mt-1 max-w-2xl text-center text-[11px] text-muted/80">
+              Diễn giải từ cung/sao trong lá số
+            </p>
+          </div>
+
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="rounded bg-green-500/10 p-4">
               <h3 className="mb-2 flex items-center gap-2 font-semibold text-green-600">

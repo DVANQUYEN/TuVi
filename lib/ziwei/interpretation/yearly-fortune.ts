@@ -1,6 +1,11 @@
 import type { ZiweiChart, Palace, EarthlyBranch } from '../types';
 import { EARTHLY_BRANCHES } from '../types';
-import type { FortuneLevel } from './decade-fortune';
+import {
+  calculatePalaceComprehensiveScore,
+  fortuneLevelFromScore,
+  getFortuneRating,
+} from './fortune-score';
+import type { FortuneLevel, FortuneRating } from './fortune-score';
 
 /** Vận hạn lưu niên của một năm. */
 export interface YearlyFortune {
@@ -12,10 +17,14 @@ export interface YearlyFortune {
   palaceId: string;
   /** Tên cung lưu niên. */
   palaceName: string;
-  /** Mức độ vận hạn. */
+  /** Mức độ vận hạn 3 cấp. */
   fortune: FortuneLevel;
+  /** Mức độ vận hạn 5 cấp. */
+  rating: FortuneRating;
   /** Điểm tổng quan (1-5). */
   score: number;
+  /** Điểm cung đại hạn đang chi phối năm (1-5), nếu có. */
+  decadeScore?: number;
   /** Tóm tắt vận hạn. */
   summary: string;
   /** Lời khuyên theo từng khía cạnh. */
@@ -60,15 +69,20 @@ const EARTHLY_BRANCH_LABELS = [
 /**
  * Tính vận hạn lưu niên cho một năm.
  *
+ * Tiểu vận chịu ảnh hưởng của đại vận đang chi phối: điểm năm =
+ * 65% điểm cung đại hạn + 35% điểm cung lưu niên. Tỉ trọng này giữ
+ * đại vận làm nền nhưng vẫn để từng năm có dao động riêng, tránh việc
+ * mọi năm trong cùng một đại vận cho ra cùng một nhãn.
+ *
  * @param chart - Lá số Tử Vi.
  * @param year - Năm dương lịch cần xem.
- * @param _birthYear - Năm sinh dương lịch (giữ cho tương thích API).
+ * @param birthYear - Năm sinh dương lịch, dùng để xác định đại vận theo tuổi.
  * @returns Vận hạn lưu niên của năm.
  */
 export function calculateYearlyFortune(
   chart: ZiweiChart,
   year: number,
-  _birthYear: number
+  birthYear: number
 ): YearlyFortune {
   const zodiac = getChineseZodiac(year);
   const yearBranch = getYearBranch(year);
@@ -76,8 +90,17 @@ export function calculateYearlyFortune(
   const palace =
     chart.palaces.find((candidate) => candidate.branch === yearBranch) ?? chart.palaces[0];
 
-  const fortune = calculateFortuneLevel(palace);
-  const score = calculateFortuneScore(palace);
+  const yearPalaceScore = calculatePalaceComprehensiveScore(chart, palace);
+  const decadeScore = findDecadeScore(chart, year - birthYear);
+  const score =
+    decadeScore === undefined
+      ? yearPalaceScore
+      : Math.max(
+          1,
+          Math.min(5, Math.round((0.65 * decadeScore + 0.35 * yearPalaceScore) * 10) / 10)
+        );
+  const rating = getFortuneRating(score);
+  const fortune = fortuneLevelFromScore(score);
 
   return {
     year,
@@ -85,7 +108,9 @@ export function calculateYearlyFortune(
     palaceId: palace.id,
     palaceName: palace.name,
     fortune,
+    rating,
     score,
+    decadeScore,
     summary: generateYearlySummary(palace, year, zodiac, fortune),
     aspects: {
       career: generateAspectAdvice(palace, 'career', fortune),
@@ -95,6 +120,24 @@ export function calculateYearlyFortune(
     },
     advice: generateYearlyAdvice(fortune),
   };
+}
+
+/**
+ * Tìm điểm cung đại hạn đang chi phối độ tuổi cho trước.
+ */
+function findDecadeScore(chart: ZiweiChart, age: number): number | undefined {
+  const period = chart.periods.find(
+    (candidate) =>
+      candidate.type === 'daiHan' &&
+      typeof candidate.startAge === 'number' &&
+      typeof candidate.endAge === 'number' &&
+      age >= candidate.startAge &&
+      age <= candidate.endAge
+  );
+  if (!period) return undefined;
+
+  const palace = chart.palaces.find((candidate) => candidate.branch === period.palaceBranch);
+  return palace ? calculatePalaceComprehensiveScore(chart, palace) : undefined;
 }
 
 /**
@@ -116,62 +159,6 @@ function getYearBranch(year: number): EarthlyBranch {
 }
 
 /**
- * Xác định mức độ vận hạn từ độ sáng các chính tinh trong cung.
- */
-function calculateFortuneLevel(palace: Palace): FortuneLevel {
-  const majorStars = palace.majorStars;
-  if (majorStars.length === 0) return 'ổn định';
-
-  const brightnessScore = majorStars.reduce((score, star) => {
-    switch (star.brightness) {
-      case 'mieu':
-        return score + 3;
-      case 'vuong':
-        return score + 2;
-      case 'dac':
-        return score + 1;
-      case 'binh':
-        return score + 0;
-      case 'ham':
-        return score - 2;
-      default:
-        return score;
-    }
-  }, 0);
-
-  if (brightnessScore >= 4) return 'tốt';
-  if (brightnessScore <= -2) return 'xấu';
-  return 'ổn định';
-}
-
-/**
- * Quy đổi độ sáng chính tinh thành điểm tổng quan (1-5).
- */
-function calculateFortuneScore(palace: Palace): number {
-  const majorStars = palace.majorStars;
-  if (majorStars.length === 0) return 3;
-
-  const score = majorStars.reduce((sum, star) => {
-    switch (star.brightness) {
-      case 'mieu':
-        return sum + 2;
-      case 'vuong':
-        return sum + 1.5;
-      case 'dac':
-        return sum + 1;
-      case 'binh':
-        return sum + 0.5;
-      case 'ham':
-        return sum - 1;
-      default:
-        return sum;
-    }
-  }, 0);
-
-  return Math.max(1, Math.min(5, Math.round(score)));
-}
-
-/**
  * Tạo tóm tắt vận hạn năm.
  */
 function generateYearlySummary(
@@ -185,25 +172,25 @@ function generateYearlySummary(
   if (fortune === 'xấu') {
     return (
       `Năm ${year} (${zodiac}), cung ${palace.name} với chính tinh ${majorStars}. ` +
-      'Đây là năm XẤU, có thể gặp tai nạn, bệnh tật, mất tiền, hoặc cảnh chia ly. ' +
-      'Cần đặc biệt cẩn trọng trong mọi quyết định. ' +
-      'Tránh đầu tư mạo hiểm, tránh đi xa, giữ gìn sức khỏe.'
+      'Đây là năm cần đặc biệt thận trọng: có nguy cơ tai nạn, bệnh tật, mất tiền hoặc chia ly. ' +
+      'Nên giữ tâm bình ổn, tránh đầu tư mạo hiểm và chăm sóc sức khỏe. ' +
+      'Kiên trì và tiết chế sẽ giúp giảm bớt nghịch cảnh.'
     );
   }
 
   if (fortune === 'tốt') {
     return (
       `Năm ${year} (${zodiac}), cung ${palace.name} với chính tinh ${majorStars}. ` +
-      'Đây là năm TỐT, nhiều may mắn, tài lộc dồi dào. ' +
-      'Nên mạnh dạn hành động, nắm bắt cơ hội. ' +
-      'Có thể gặp quý nhân phù trợ, thành công lớn.'
+      'Đây là năm thuận lợi: vận khí hanh thông, tài lộc và sự nghiệp có nhiều thuận lợi. ' +
+      'Nên nắm bắt cơ hội, đồng thời giữ sự cân bằng. ' +
+      'Quý nhân có thể xuất hiện, giúp thành quả thêm vững chắc.'
     );
   }
 
   return (
     `Năm ${year} (${zodiac}), cung ${palace.name} với chính tinh ${majorStars}. ` +
-    'Đây là năm ỔN ĐỊNH, có thăng có trầm. ' +
-    'Cần cân bằng, không nên quá mạo hiểm.'
+    'Đây là năm ổn định, có thăng có trầm. ' +
+    'Nên giữ nhịp độ ổn định, tránh mạo hiểm quá mức.'
   );
 }
 
@@ -223,36 +210,36 @@ function generateAspectAdvice(
         return `Sự nghiệp thăng tiến, có cơ hội mới. ${majorStars.includes('Tử Vi') ? 'Phù hợp với vai trò lãnh đạo.' : ''} Nên nắm bắt.`;
       }
       if (fortune === 'xấu') {
-        return `Sự nghiệp nhiều thách thức, có thể bị sa thải, giáng chức. Nên giữ vững, tránh thay đổi lớn.`;
+        return `Sự nghiệp có thử thách, công việc có thể biến động. Nên giữ vững chuyên môn, tránh thay đổi lớn khi chưa chuẩn bị.`;
       }
-      return `Sự nghiệp ổn định, có thăng có trầm. Nên cân bằng.`;
+      return `Sự nghiệp ổn định, có thăng có trầm. Nên giữ cân bằng.`;
 
     case 'wealth':
       if (fortune === 'tốt') {
-        return `Tài lộc vững, có khoản thu bất ngờ. Có thể đầu tư.`;
+        return `Tài lộc vững, có thể có khoản thu bất ngờ. Có thể cân nhắc đầu tư trong khả năng.`;
       }
       if (fortune === 'xấu') {
-        return `Tài lộc bấp bênh, có thể phá sản, mất tiền lớn. Nên giữ tiền mặt.`;
+        return `Tài lộc cần thận trọng, tránh đầu tư mạo hiểm. Nên giữ tiền mặt và chi tiêu có kế hoạch.`;
       }
-      return `Tài lộc trung bình, thu nhập ổn định.`;
+      return `Tài lộc ổn định, thu nhập ổn định.`;
 
     case 'love':
       if (fortune === 'tốt') {
         return `Tình cảm thuận lợi. ${majorStars.includes('Hồng Loan') ? 'Có hỷ sự.' : ''} Mối quan hệ vững bền.`;
       }
       if (fortune === 'xấu') {
-        return `Tình cảm nhiều trắc trở, dễ gặp cảnh chia ly, cô độc. Cần thấu hiểu nhau.`;
+        return `Tình cảm có thể gặp hiểu lầm, cần lắng nghe và nhường nhịn để giữ hòa khí.`;
       }
       return `Tình cảm ổn định, cần dành thời gian cho nhau.`;
 
     case 'health':
       if (fortune === 'tốt') {
-        return `Sức khỏe tốt, tinh thần minh mẫn. Nên duy trì lối sống lành mạnh.`;
+        return `Sức khỏe ổn định, tinh thần minh mẫn. Nên duy trì lối sống lành mạnh.`;
       }
       if (fortune === 'xấu') {
-        return `Có thể gặp bệnh nặng, cần phòng ngừa. Nên khám sức khỏe định kỳ.`;
+        return `Sức khỏe cần chú ý, nên khám định kỳ và giữ lối sống điều độ.`;
       }
-      return `Sức khỏe trung bình, cần chú ý nghỉ ngơi.`;
+      return `Sức khỏe ổn định, cần chú ý nghỉ ngơi.`;
 
     default:
       return '';
@@ -264,10 +251,10 @@ function generateAspectAdvice(
  */
 function generateYearlyAdvice(fortune: FortuneLevel): string {
   if (fortune === 'tốt') {
-    return 'Tận dụng cơ hội, mạnh dạn hành động. Giữ vững tinh thần lạc quan.';
+    return 'Tận dụng thời cơ, chủ động hành động nhưng vẫn giữ sự cân bằng. Giữ tinh thần lạc quan.';
   }
   if (fortune === 'xấu') {
-    return 'Có thể gặp đại nạn, cần đặc biệt cẩn trọng. Tránh rủi ro, giữ gìn sức khỏe.';
+    return 'Nên thận trọng, tránh rủi ro không cần thiết và giữ gìn sức khỏe. Kiên trì sẽ giúp vượt qua nghịch cảnh.';
   }
-  return 'Cân bằng, không nên quá mạo hiểm. Giữ vững tinh thần.';
+  return 'Giữ nhịp độ ổn định, tránh mạo hiểm quá mức. Giữ tâm bình ổn.';
 }

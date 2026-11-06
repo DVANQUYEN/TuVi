@@ -9,7 +9,6 @@ export function ThemeToggle(): React.ReactElement {
   return (
     <Button
       variant="ghost"
-      size="sm"
       aria-label={theme === 'dark' ? 'Chuyển sang chế độ sáng' : 'Chuyển sang chế độ tối'}
       onClick={toggleTheme}
     >

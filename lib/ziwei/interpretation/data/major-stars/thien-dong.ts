@@ -18,7 +18,7 @@ const archetype: StarArchetype = {
         'Thiên Đồng Miếu địa tạo mẫu người hiền hòa, dễ chịu và có duyên với may mắn. ' +
         'Đương số có tinh thần lạc quan, biết hưởng thụ cuộc sống và thường được quý nhân giúp đỡ. ' +
         'Phù hợp với công việc dịch vụ, du lịch, ẩm thực hoặc chăm sóc sức khỏe. ' +
-        'Cuộc sống nhìn chung an nhàn, ít sóng gió nếu biết giữ thái độ tích cực.',
+        'Cuộc sống nhìn chung an nhàn, ít sóng gió nếu biết giữ thái độ lạc quan.',
       career:
         'Sự nghiệp êm ả, đương số dễ được đồng nghiệp yêu mến và cấp trên hỗ trợ. ' +
         'Phù hợp với ngành dịch vụ, du lịch, nhà hàng hoặc chăm sóc khách hàng. ' +
@@ -28,7 +28,7 @@ const archetype: StarArchetype = {
         'Tuy nhiên đôi khi quá dễ dãi khiến đối phương thiếu cảm giác an toàn. ' +
         'Cần thể hiện sự nghiêm túc và cam kết rõ ràng.',
       health:
-        'Sức khỏe tốt, tinh thần thoải mái. ' +
+        'Sức khỏe ổn định, tinh thần thoải mái. ' +
         'Cần chú ý cân nặng và các bệnh do ăn uống quá độ.',
       advice:
         'Tận hưởng cuộc sống nhưng vẫn cần mục tiêu rõ ràng. ' +
@@ -49,7 +49,7 @@ const archetype: StarArchetype = {
         'Đôi khi sự dễ dãi khiến người khác hiểu lầm. ' +
         'Cần rõ ràng trong các mối quan hệ và tôn trọng cam kết.',
       health:
-        'Thể trạng khá tốt, nhưng cần chú ý tiêu hóa và cân nặng. ' +
+        'Thể trạng ổn định, nhưng cần chú ý tiêu hóa và cân nặng. ' +
         'Nên duy trì chế độ ăn uống hợp lý và vận động thường xuyên.',
       advice:
         'Phát huy sự khéo léo và tinh thần lạc quan. ' +
@@ -78,7 +78,7 @@ const archetype: StarArchetype = {
     },
     binh: {
       meaning:
-        'Thiên Đồng Bình hòa cho thấy đương số có tính cách ôn hòa nhưng dễ thiếu động lực. ' +
+        'Thiên Đồng ổn định cho thấy đương số có tính cách ôn hòa nhưng dễ thiếu động lực. ' +
         'Bản tính thích an nhàn, ngại va chạm và ít mạo hiểm. ' +
         'Có thể thành công trong công việc ổn định nếu biết kiên trì. ' +
         'Cần đặt mục tiêu rõ ràng để tránh sống buông thả.',
@@ -91,7 +91,7 @@ const archetype: StarArchetype = {
         'Đôi khi thiếu chủ động khiến mối quan hệ trở nên nhàm chán. ' +
         'Cần tạo không gian mới và thể hiện cảm xúc nhiều hơn.',
       health:
-        'Sức khỏe trung bình, cần chú ý cân nặng và tiêu hóa. ' +
+        'Sức khỏe ở mức ổn định, cần chú ý cân nặng và tiêu hóa. ' +
         'Nên vận động thường xuyên và hạn chế đồ ăn nhanh.',
       advice:
         'Đặt mục tiêu cụ thể và cam kết thực hiện. ' +

@@ -36,7 +36,7 @@ export function CombinationsList({
       <div className="space-y-6">
         {good.length > 0 && (
           <CombinationGroup
-            title={`Cách cục tốt (${good.length})`}
+            title={`Cách cục thuận lợi (${good.length})`}
             han="福"
             titleClassName="text-el-moc"
             items={good}
@@ -45,7 +45,7 @@ export function CombinationsList({
 
         {bad.length > 0 && (
           <CombinationGroup
-            title={`Cách cục cần lưu ý (${bad.length})`}
+            title={`Cách cục cần lưu tâm (${bad.length})`}
             han="厄"
             titleClassName="text-el-hoa"
             items={bad}
@@ -54,7 +54,7 @@ export function CombinationsList({
 
         {neutral.length > 0 && (
           <CombinationGroup
-            title={`Cách cục trung bình (${neutral.length})`}
+            title={`Cách cục ổn định (${neutral.length})`}
             han="平"
             titleClassName="text-el-tho"
             items={neutral}

@@ -1,162 +1,105 @@
-'use client';
-
-import { useState, type FormEvent } from 'react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
-import { Select } from '@/components/ui/Select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
-import { StarryBackground } from '@/components/animation/StarryBackground';
-import { IntroAnimation } from '@/components/animation/IntroAnimation';
 import { ZodiacWheel } from '@/components/animation/ZodiacWheel';
+import { HomeGalaxyVideo } from '@/components/home/HomeGalaxyVideo';
+
+/** Gold-foil treatment for the hero title. Keeps the copy readable while adding
+ * a metallic sheen and a soft warm halo that works on the dark hero in both themes.
+ * Every stop stays at >= 3:1 on the hero's #171330 backdrop for large text. */
+const HERO_TITLE_FOIL: React.CSSProperties = {
+  backgroundImage:
+    'linear-gradient(104deg, #d8a93a 0%, #e8c25a 16%, #f7e7a2 34%, #fff7d0 48%, #f2d675 62%, #f6dd8a 78%, #d9ad45 100%)',
+  backgroundClip: 'text',
+  WebkitBackgroundClip: 'text',
+  color: 'transparent',
+  WebkitTextFillColor: 'transparent',
+  filter: 'drop-shadow(0 0 16px rgba(212,175,55,0.30)) drop-shadow(0 0 40px rgba(255,183,77,0.18))',
+};
 
 export default function Home(): React.ReactElement {
-  const [birthDate, setBirthDate] = useState('');
-  const [birthHour, setBirthHour] = useState('');
-  const [gender, setGender] = useState('');
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
-    event.preventDefault();
-    // TODO: navigate to chart result page
-  };
-
   return (
-    <>
-      <IntroAnimation />
-      <StarryBackground />
-      <div className="relative z-10 flex min-h-screen flex-col">
-        <Header />
+    <div className="relative z-10 flex min-h-screen flex-col">
+      <Header />
 
-        <main className="flex-1">
-          <section className="relative flex flex-col items-center justify-center gap-8 px-4 py-16 md:flex-row md:py-24 lg:py-32">
-            <div className="max-w-xl text-center md:text-left">
-              <h1 className="font-serif text-4xl font-bold leading-tight text-foreground md:text-5xl lg:text-6xl">
-                Khám phá vận mệnh theo <span className="text-gold">Tử Vi Đẩu Số</span>
+      <main className="flex-1">
+        <section
+          aria-labelledby="home-hero-title"
+          className="relative isolate overflow-hidden px-4 pb-12 pt-10 sm:px-6 md:pt-14 lg:flex lg:min-h-[calc(100svh_-_4rem)] lg:items-center lg:px-8 lg:py-8"
+        >
+          {/* Video thiên hà (desktop) hoặc nền tinh vân tĩnh, kèm lớp phủ tối giữ
+              tương phản cho chữ hero. Chỉ phủ trong phạm vi hero. */}
+          <HomeGalaxyVideo />
+          <div className="relative mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:gap-10">
+            <div className="relative isolate mx-auto w-full max-w-2xl min-w-0 text-center lg:mx-0 lg:text-left">
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -inset-x-8 -top-14 -z-10 h-[145%] blur-3xl"
+                style={{
+                  background:
+                    'radial-gradient(ellipse 72% 56% at 40% 45%, rgba(212,175,55,0.18) 0%, rgba(124,72,160,0.10) 46%, transparent 74%)',
+                }}
+              />
+              <h1
+                id="home-hero-title"
+                className="hero-title-foil text-balance font-serif text-4xl font-bold leading-[1.08] tracking-[0.01em] sm:text-5xl lg:text-5xl xl:text-6xl"
+                style={HERO_TITLE_FOIL}
+              >
+                <span className="block">Khám phá vận mệnh theo</span>{' '}
+                <span className="block">Tử Vi Đẩu Số</span>
               </h1>
-              <p className="mt-4 text-lg text-muted">
+              <span
+                data-testid="hero-divider"
+                aria-hidden="true"
+                className="mx-auto mt-6 block h-px w-24 bg-linear-to-r from-transparent via-[#d4af37] to-transparent lg:mx-0 lg:from-[#d4af37]"
+              />
+              <p
+                className="mt-6 text-base text-[#d8ccae] sm:text-lg"
+                style={{ textShadow: '0 1px 14px rgba(0,0,0,0.55)' }}
+              >
                 Lập lá số chính xác theo trường phái Việt Nam, lịch âm UTC+7.
               </p>
             </div>
-            <ZodiacWheel />
-          </section>
+            <div className="flex min-w-0 justify-center lg:justify-end">
+              <ZodiacWheel sizeClassName="w-[min(18rem,100%)] md:w-[26rem] lg:w-[min(26rem,calc(100svh_-_14rem))]" />
+            </div>
+          </div>
+        </section>
 
-          <section className="mx-auto max-w-3xl px-4 py-12">
-            <Card className="border-gold/20">
+        <section className="mx-auto max-w-7xl px-4 py-12">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <Card>
               <CardHeader>
-                <CardTitle className="text-center">Lập lá số nhanh</CardTitle>
+                <CardTitle>Lá số chi tiết</CardTitle>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-3">
-                  <div>
-                    <label
-                      htmlFor="birthDate"
-                      className="mb-1 block text-sm font-medium text-foreground"
-                    >
-                      Ngày sinh (dương lịch)
-                    </label>
-                    <Input
-                      id="birthDate"
-                      type="date"
-                      value={birthDate}
-                      onChange={(e) => setBirthDate(e.target.value)}
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="birthHour"
-                      className="mb-1 block text-sm font-medium text-foreground"
-                    >
-                      Giờ sinh
-                    </label>
-                    <Select
-                      id="birthHour"
-                      value={birthHour}
-                      onChange={(e) => setBirthHour(e.target.value)}
-                      required
-                    >
-                      <option value="">Chọn giờ</option>
-                      <option value="0">Tý (23:00 - 01:00)</option>
-                      <option value="1">Sửu (01:00 - 03:00)</option>
-                      <option value="2">Dần (03:00 - 05:00)</option>
-                      <option value="3">Mão (05:00 - 07:00)</option>
-                      <option value="4">Thìn (07:00 - 09:00)</option>
-                      <option value="5">Tỵ (09:00 - 11:00)</option>
-                      <option value="6">Ngọ (11:00 - 13:00)</option>
-                      <option value="7">Mùi (13:00 - 15:00)</option>
-                      <option value="8">Thân (15:00 - 17:00)</option>
-                      <option value="9">Dậu (17:00 - 19:00)</option>
-                      <option value="10">Tuất (19:00 - 21:00)</option>
-                      <option value="11">Hợi (21:00 - 23:00)</option>
-                    </Select>
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="gender"
-                      className="mb-1 block text-sm font-medium text-foreground"
-                    >
-                      Giới tính
-                    </label>
-                    <Select
-                      id="gender"
-                      value={gender}
-                      onChange={(e) => setGender(e.target.value)}
-                      required
-                    >
-                      <option value="">Chọn giới tính</option>
-                      <option value="male">Nam</option>
-                      <option value="female">Nữ</option>
-                    </Select>
-                  </div>
-
-                  <div className="sm:col-span-3">
-                    <Button type="submit" className="w-full">
-                      Lập lá số
-                    </Button>
-                  </div>
-                </form>
+                Hiển thị đầy đủ 12 cung, chính tinh, phụ tinh và các yếu tố theo trường phái Nam
+                phái.
               </CardContent>
             </Card>
-          </section>
 
-          <section className="mx-auto max-w-7xl px-4 py-12">
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Lá số chi tiết</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  Hiển thị đầy đủ 12 cung, chính tinh, phụ tinh và các yếu tố theo trường phái Nam
-                  phái.
-                </CardContent>
-              </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Tử vi hàng ngày</CardTitle>
+              </CardHeader>
+              <CardContent>
+                Xem vận hạn, sao hạn và lời khuyên theo từng ngày dựa trên lá số của bạn.
+              </CardContent>
+            </Card>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle>Tử vi hàng ngày</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  Xem vận hạn, sao hạn và lờii khuyên theo từng ngày dựa trên lá số của bạn.
-                </CardContent>
-              </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Hợp tuổi</CardTitle>
+              </CardHeader>
+              <CardContent>
+                So sánh lá số, ngũ hành và độ hợp nhau trong quan hệ đối tác, hôn nhân.
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+      </main>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle>Hợp tuổi</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  So sánh lá số, ngũ hành và độ hợp nhau trong quan hệ đối tác, hôn nhân.
-                </CardContent>
-              </Card>
-            </div>
-          </section>
-        </main>
-
-        <Footer />
-      </div>
-    </>
+      <Footer />
+    </div>
   );
 }

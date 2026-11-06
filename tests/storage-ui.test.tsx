@@ -288,7 +288,7 @@ describe('LapLaSoClient personal summary', () => {
     submitForm();
 
     expect(await screen.findByRole('heading', { name: 'Luận giải' })).toBeInTheDocument();
-    expect(screen.getByText(/Tổng quan lá số của Đương số mẫu/)).toBeInTheDocument();
+    expect(screen.getByText(/Lá số của Đương số mẫu/)).toBeInTheDocument();
     expect(screen.getByText(/Bản Mệnh Nạp Âm/)).toBeInTheDocument();
   });
 });
@@ -325,7 +325,7 @@ describe('LapLaSoClient current chart', () => {
     await waitFor(() => expect(getCurrentChartMock).toHaveBeenCalledWith(user));
     await act(async () => {});
 
-    expect(screen.queryByText(/Tổng quan lá số/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Lá số của/)).not.toBeInTheDocument();
     expect((screen.getByLabelText('Họ tên') as HTMLInputElement).value).toBe('');
     expect((screen.getByLabelText('Ngày') as HTMLInputElement).value).toBe('');
     expect((screen.getByLabelText('Tháng') as HTMLInputElement).value).toBe('');
@@ -349,7 +349,8 @@ describe('LapLaSoClient current chart', () => {
 
     const alert = await screen.findByRole('alert');
     expect(alert).toHaveTextContent(/không thể tải lá số hiện tại từ tài khoản/i);
-    expect(screen.queryByText(/Tổng quan lá số/)).not.toBeInTheDocument();
+    expect(alert).not.toHaveTextContent(/does not exist/i);
+    expect(screen.queryByText(/Lá số của/)).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: '✓ Đã lưu' })).not.toBeInTheDocument();
     expect((screen.getByLabelText('Họ tên') as HTMLInputElement).value).toBe('');
   });
@@ -401,7 +402,7 @@ describe('LapLaSoClient current chart', () => {
     expect(saveCurrentChartMock.mock.calls[1][1]).toMatchObject({
       birthInfo: expect.objectContaining({ name: 'Nguyễn B', day: 20 }),
     });
-    expect(await screen.findByText(/Tổng quan lá số của Nguyễn B/)).toBeInTheDocument();
+    expect(await screen.findByText(/Lá số của Nguyễn B/)).toBeInTheDocument();
     expect((screen.getByLabelText('Họ tên') as HTMLInputElement).value).toBe('Nguyễn B');
   });
 
@@ -415,13 +416,14 @@ describe('LapLaSoClient current chart', () => {
     fillBirthForm();
     submitForm();
 
-    expect(await screen.findByText(/Tổng quan lá số của Đương số mẫu/)).toBeInTheDocument();
+    expect(await screen.findByText(/Lá số của Đương số mẫu/)).toBeInTheDocument();
 
     const alert = await screen.findByRole('alert');
     expect(alert).toHaveTextContent(/không thể lưu lên tài khoản/i);
     expect(alert).toHaveTextContent(/chưa được đồng bộ/i);
     expect(alert).toHaveTextContent(/chỉ khả dụng trong phiên làm việc này/i);
     expect(alert).toHaveTextContent(/đăng xuất hoặc xóa bộ nhớ đệm/i);
+    expect(alert).not.toHaveTextContent(/does not exist/i);
     expect(screen.getByRole('button', { name: 'Lưu hồ sơ' })).toBeEnabled();
     expect(screen.queryByRole('button', { name: '✓ Đã lưu' })).not.toBeInTheDocument();
   });
@@ -437,7 +439,7 @@ describe('LapLaSoClient current chart', () => {
 
     await waitFor(() => expect(getCurrentChartMock).toHaveBeenCalledWith(null));
     expect(
-      await screen.findByText(/Tổng quan lá số của Đương số mẫu/)
+      await screen.findByText(/Lá số của Đương số mẫu/)
     ).toBeInTheDocument();
     await waitFor(() =>
       expect((screen.getByLabelText('Họ tên') as HTMLInputElement).value).toBe(
@@ -457,7 +459,7 @@ describe('LapLaSoClient current chart', () => {
 
     await waitFor(() => expect(getCurrentChartMock).toHaveBeenCalledWith(user));
     expect(
-      await screen.findByText(/Tổng quan lá số của Đương số mẫu/)
+      await screen.findByText(/Lá số của Đương số mẫu/)
     ).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Lưu hồ sơ' })).toBeEnabled();
     expect(getSavedChartsMock).not.toHaveBeenCalled();
@@ -484,9 +486,9 @@ describe('LapLaSoClient current chart', () => {
       resolveCurrent({ birthInfo: sampleBirthInfo });
     });
 
-    expect(screen.getByText(/Tổng quan lá số của Nguyễn Mới/)).toBeInTheDocument();
+    expect(screen.getByText(/Lá số của Nguyễn Mới/)).toBeInTheDocument();
     expect(
-      screen.queryByText(/Tổng quan lá số của Đương số mẫu/)
+      screen.queryByText(/Lá số của Đương số mẫu/)
     ).not.toBeInTheDocument();
     expect((screen.getByLabelText('Họ tên') as HTMLInputElement).value).toBe('Nguyễn Mới');
   });
@@ -497,7 +499,7 @@ describe('LapLaSoClient current chart', () => {
 
     const { rerender } = render(<LapLaSoClient />);
     expect(
-      await screen.findByText(/Tổng quan lá số của Đương số mẫu/)
+      await screen.findByText(/Lá số của Đương số mẫu/)
     ).toBeInTheDocument();
 
     mockAuth(null);
@@ -506,7 +508,7 @@ describe('LapLaSoClient current chart', () => {
 
     await waitFor(() => expect(getCurrentChartMock).toHaveBeenLastCalledWith(null));
     await waitFor(() =>
-      expect(screen.queryByText(/Tổng quan lá số/)).not.toBeInTheDocument()
+      expect(screen.queryByText(/Lá số của/)).not.toBeInTheDocument()
     );
     expect((screen.getByLabelText('Họ tên') as HTMLInputElement).value).toBe('');
   });
@@ -517,7 +519,7 @@ describe('LapLaSoClient current chart', () => {
 
     const { rerender } = render(<LapLaSoClient />);
     expect(
-      await screen.findByText(/Tổng quan lá số của Đương số mẫu/)
+      await screen.findByText(/Lá số của Đương số mẫu/)
     ).toBeInTheDocument();
     await waitFor(() =>
       expect((screen.getByLabelText('Họ tên') as HTMLInputElement).value).toBe(
@@ -554,7 +556,7 @@ describe('LapLaSoClient current chart', () => {
         sampleBirthInfo.name
       )
     );
-    expect(screen.queryByText(/Tổng quan lá số/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Lá số của/)).not.toBeInTheDocument();
     expect((screen.getByLabelText('Năm') as HTMLInputElement).value).toBe('1800');
 
     mockAuth(null);
@@ -611,7 +613,7 @@ describe('LapLaSoClient saved chart loading', () => {
     fillBirthForm();
     submitForm();
 
-    expect(await screen.findByText(/Tổng quan lá số của Đương số mẫu/)).toBeInTheDocument();
+    expect(await screen.findByText(/Lá số của Đương số mẫu/)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Lưu hồ sơ' })).toBeEnabled();
 
     // Yêu cầu tải hồ sơ cũ về muộn không được ghi đè lá số mới.
@@ -619,8 +621,8 @@ describe('LapLaSoClient saved chart loading', () => {
       resolveSaved(savedChart);
     });
 
-    expect(screen.getByText(/Tổng quan lá số của Đương số mẫu/)).toBeInTheDocument();
-    expect(screen.queryByText(/Tổng quan lá số của Nguyễn A/)).not.toBeInTheDocument();
+    expect(screen.getByText(/Lá số của Đương số mẫu/)).toBeInTheDocument();
+    expect(screen.queryByText(/Lá số của Nguyễn A/)).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Lưu hồ sơ' })).toBeEnabled();
     expect(screen.queryByRole('button', { name: '✓ Đã lưu' })).not.toBeInTheDocument();
   });
@@ -631,7 +633,7 @@ describe('LapLaSoClient saved chart loading', () => {
 
     render(<LapLaSoClient savedId="chart-remote" />);
 
-    expect(await screen.findByText(/Tổng quan lá số của Nguyễn A/)).toBeInTheDocument();
+    expect(await screen.findByText(/Lá số của Nguyễn A/)).toBeInTheDocument();
     expect(getSavedChartByIdMock).toHaveBeenCalledWith(user, 'chart-remote');
     expect(await screen.findByRole('button', { name: '✓ Đã lưu' })).toBeDisabled();
   });
@@ -641,7 +643,7 @@ describe('LapLaSoClient saved chart loading', () => {
     getSavedChartByIdMock.mockResolvedValue({ ...savedChart, id: 'chart-remote' });
 
     const { rerender } = render(<LapLaSoClient savedId="chart-remote" />);
-    expect(await screen.findByText(/Tổng quan lá số của Nguyễn A/)).toBeInTheDocument();
+    expect(await screen.findByText(/Lá số của Nguyễn A/)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: '✓ Đã lưu' })).toBeDisabled();
 
     mockAuth(null);
@@ -649,7 +651,7 @@ describe('LapLaSoClient saved chart loading', () => {
 
     await waitFor(() =>
       expect(
-        screen.queryByText(/Tổng quan lá số của Nguyễn A/)
+        screen.queryByText(/Lá số của Nguyễn A/)
       ).not.toBeInTheDocument()
     );
     expect(screen.queryByRole('button', { name: '✓ Đã lưu' })).not.toBeInTheDocument();
@@ -663,7 +665,7 @@ describe('LapLaSoClient saved chart loading', () => {
       .mockResolvedValueOnce(null);
 
     const { rerender } = render(<LapLaSoClient savedId="chart-remote" />);
-    expect(await screen.findByText(/Tổng quan lá số của Nguyễn A/)).toBeInTheDocument();
+    expect(await screen.findByText(/Lá số của Nguyễn A/)).toBeInTheDocument();
 
     mockAuth(otherUser);
     rerender(<LapLaSoClient savedId="chart-remote" />);
@@ -673,7 +675,7 @@ describe('LapLaSoClient saved chart loading', () => {
     );
     await waitFor(() =>
       expect(
-        screen.queryByText(/Tổng quan lá số của Nguyễn A/)
+        screen.queryByText(/Lá số của Nguyễn A/)
       ).not.toBeInTheDocument()
     );
     expect(screen.queryByRole('button', { name: '✓ Đã lưu' })).not.toBeInTheDocument();

@@ -4,7 +4,7 @@ import { VanHanClient } from './VanHanClient';
 
 export const metadata: Metadata = {
   title: 'Vận hạn - Sao Mệnh',
-  description: 'Đại hạn, lưu niên và timeline vận hạn theo lá số Tử Vi',
+  description: 'Đại vận, lưu niên và timeline vận hạn theo lá số Tử Vi',
 };
 
 // Đọc searchParams: cho phép block prerender (cùng quy ước với app/lap-la-so)

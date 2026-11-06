@@ -1,9 +1,14 @@
 import { BRANCH_NAMES } from '@/lib/ziwei/daily';
-import { NAP_AM_60 } from '@/lib/ziwei/data/stems-branches';
+import {
+  EARTHLY_BRANCHES_DATA,
+  HEAVENLY_STEMS_DATA,
+  NAP_AM_60,
+} from '@/lib/ziwei/data/stems-branches';
 import { getDayCanChi } from '@/lib/ziwei/utils/can-chi';
 import { convertSolarToLunarVN, jdFromDate } from '@/lib/ziwei/utils/ho-ngoc-duc-lunar';
 import { EARTHLY_BRANCHES, HEAVENLY_STEMS } from '@/lib/ziwei/types/enums';
-import type { EarthlyBranch } from '@/lib/ziwei/types/enums';
+import type { EarthlyBranch, FiveElement, HeavenlyStem } from '@/lib/ziwei/types/enums';
+import { LUC_HOP_PAIRS } from '@/lib/ziwei/zodiac-compatibility';
 
 /** Chữ Hán của 12 địa chi, dùng làm biểu tượng trang trí (thay emoji). */
 export const ZODIAC_HAN: Readonly<Record<EarthlyBranch, string>> = {
@@ -22,14 +27,34 @@ export const ZODIAC_HAN: Readonly<Record<EarthlyBranch, string>> = {
 };
 
 /** Quan hệ giữa chi của tuổi và chi của ngày (cùng quy tắc với lib/ziwei/daily.ts). */
-export type BranchRelation = 'tamHop' | 'lucXung' | 'tuHinh' | 'binh';
+export type BranchRelation =
+  | 'same'
+  | 'tamHop'
+  | 'lucHop'
+  | 'binh'
+  | 'tuHinh'
+  | 'lucHai'
+  | 'lucXung';
 
 export interface DailyCalendar {
   lunarDay: number;
   lunarMonth: number;
+  lunarYear: number;
   isLeapMonth: boolean;
   /** Can Chi của ngày, ví dụ "Giáp Tý". */
   dayCanChi: string;
+  /** Thiên Can của ngày. */
+  dayStem: HeavenlyStem;
+  /** Ngũ hành của Thiên Can ngày. */
+  dayStemElement: FiveElement;
+  /** Ngũ hành của Địa Chi ngày. */
+  dayBranchElement: FiveElement;
+  /** Tên nạp âm của ngày, ví dụ "Hải Trung Kim". */
+  dayNapAmName: string;
+  /** Ngũ hành của nạp âm ngày. */
+  dayNapAmElement: FiveElement;
+  /** Nhãn ngũ hành nạp âm: Kim/Mộc/Thủy/Hỏa/Thổ. */
+  dayNapAmElementLabel: string;
   /** Ngũ hành nạp âm của ngày, ví dụ "Hải Trung Kim". */
   napAm: string;
   /** Chi của ngày. */
@@ -93,6 +118,42 @@ const STEM_LABELS: Readonly<Record<string, string>> = {
   quy: 'Quý',
 };
 
+const ELEMENT_LABELS: Readonly<Record<FiveElement, string>> = {
+  kim: 'Kim',
+  moc: 'Mộc',
+  thuy: 'Thủy',
+  hoa: 'Hỏa',
+  tho: 'Thổ',
+};
+
+const NAP_AM_ELEMENT_BY_LABEL: Readonly<Record<string, FiveElement>> = {
+  Kim: 'kim',
+  Mộc: 'moc',
+  Thủy: 'thuy',
+  Hỏa: 'hoa',
+  Thổ: 'tho',
+};
+
+/** Cặp lục hại: Tý–Mùi, Sửu–Ngọ, Dần–Tỵ, Mão–Thìn, Thân–Hợi, Dậu–Tuất. */
+const LUC_HAI_PAIRS: ReadonlyArray<readonly [EarthlyBranch, EarthlyBranch]> = [
+  ['ty', 'mui'],
+  ['suu', 'ngo'],
+  ['dan', 'ti'],
+  ['mao', 'thin'],
+  ['than', 'hoi'],
+  ['dau', 'tuat'],
+];
+
+function isBranchPair(
+  pairs: ReadonlyArray<readonly [EarthlyBranch, EarthlyBranch]>,
+  left: EarthlyBranch,
+  right: EarthlyBranch
+): boolean {
+  return pairs.some(
+    ([a, b]) => (a === left && b === right) || (a === right && b === left)
+  );
+}
+
 /**
  * Tính thông tin lịch cho ngày dạng "YYYY-MM-DD" (theo ngày local, khớp với DailyHoroscope.date).
  */
@@ -109,6 +170,11 @@ export function getDailyCalendar(isoDate: string): DailyCalendar {
     (k) => k % 10 === stemIndex && k % 12 === branchIndex
   );
   const napAmEntry = cycleIndex === undefined ? '' : (NAP_AM_60[cycleIndex] ?? '');
+  const dayNapAmName = napAmEntry.split(' - ')[1] ?? '';
+  const dayNapAmElementLabel = dayNapAmName.split(' ').pop() ?? '';
+  const dayNapAmElement = NAP_AM_ELEMENT_BY_LABEL[dayNapAmElementLabel] ?? 'tho';
+  const stemData = HEAVENLY_STEMS_DATA[stemIndex];
+  const branchData = EARTHLY_BRANCHES_DATA[branchIndex];
 
   // Trực: chi tháng âm lịch (tháng 1 = Dần, index 2) có Trực Kiến; đếm thuận theo chi ngày.
   const monthBranchIndex = (lunar.month + 1) % 12;
@@ -123,9 +189,16 @@ export function getDailyCalendar(isoDate: string): DailyCalendar {
   return {
     lunarDay: lunar.day,
     lunarMonth: lunar.month,
+    lunarYear: lunar.year,
     isLeapMonth: lunar.isLeapMonth,
     dayCanChi: `${STEM_LABELS[dayCanChi.stem]} ${BRANCH_NAMES[dayCanChi.branch]}`,
-    napAm: napAmEntry.split(' - ')[1] ?? '',
+    dayStem: dayCanChi.stem,
+    dayStemElement: stemData.element,
+    dayBranchElement: branchData.element,
+    dayNapAmName,
+    dayNapAmElement,
+    dayNapAmElementLabel: ELEMENT_LABELS[dayNapAmElement],
+    napAm: dayNapAmName,
     dayBranch: dayCanChi.branch,
     conflictBranch: EARTHLY_BRANCHES[(branchIndex + 6) % 12],
     truc: { name: trucName, lucky: LUCKY_TRUC.has(trucName) },
@@ -133,11 +206,15 @@ export function getDailyCalendar(isoDate: string): DailyCalendar {
   };
 }
 
-/** Quan hệ chi tuổi với chi ngày. Quy tắc giống calculateRelationship trong lib/ziwei/daily.ts. */
+/** Quan hệ chi tuổi với chi ngày. */
 export function getBranchRelation(branch: EarthlyBranch, dayBranch: EarthlyBranch): BranchRelation {
   const diff = (EARTHLY_BRANCHES.indexOf(dayBranch) - EARTHLY_BRANCHES.indexOf(branch) + 12) % 12;
-  if (diff === 4 || diff === 8) return 'tamHop';
+
+  if (diff === 0) return 'same';
   if (diff === 6) return 'lucXung';
+  if (isBranchPair(LUC_HOP_PAIRS, branch, dayBranch)) return 'lucHop';
+  if (diff === 4 || diff === 8) return 'tamHop';
+  if (isBranchPair(LUC_HAI_PAIRS, branch, dayBranch)) return 'lucHai';
   if (diff === 3 || diff === 9) return 'tuHinh';
   return 'binh';
 }

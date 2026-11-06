@@ -28,7 +28,7 @@ const archetype: StarArchetype = {
         'Tuy nhiên sự nóng nảy có thể gây xung đột. ' +
         'Cần học cách lắng nghe và nhường nhịn để mối quan hệ bền vững.',
       health:
-        'Sức khỏe tốt nhưng cần chú ý tai nạn và các bệnh đột ngột. ' +
+        'Sức khỏe ổn định nhưng cần chú ý tai nạn và các bệnh đột ngột. ' +
         'Nên tránh làm việc quá sức và duy trì lối sống điều độ.',
       advice:
         'Phát huy bản lĩnh và tinh thần tiên phong. ' +
@@ -49,7 +49,7 @@ const archetype: StarArchetype = {
         'Tuy nhiên sự cứng rắn có thể khiến đối phương cảm thấy bị áp đặt. ' +
         'Cần học cách mềm mỏng và tôn trọng cảm xúc của nhau.',
       health:
-        'Thể trạng tốt, nhưng cần chú ý tai nạn và các bệnh liên quan đến huyết áp. ' +
+        'Thể trạng ổn định, nhưng cần chú ý tai nạn và các bệnh liên quan đến huyết áp. ' +
         'Nên duy trì vận động và tránh căng thẳng kéo dài.',
       advice:
         'Dùng nghị lực để theo đuổi mục tiêu dài hạn. ' +
@@ -78,7 +78,7 @@ const archetype: StarArchetype = {
     },
     binh: {
       meaning:
-        'Thất Sát Bình hòa cho thấy đương số có ý chí nhưng đôi khi thiếu quyết tâm theo đuổi đến cùng. ' +
+        'Thất Sát ổn định cho thấy đương số có ý chí nhưng đôi khi thiếu quyết tâm theo đuổi đến cùng. ' +
         'Bản tính khá mạnh mẽ nhưng dễ dao động khi gặp khó khăn. ' +
         'Có thể thành công trong công việc ổn định nếu kiên trì. ' +
         'Cần rèn luyện tính kỷ luật và bản lĩnh.',
@@ -91,7 +91,7 @@ const archetype: StarArchetype = {
         'Đôi khi thiếu chủ động khiến đối phương hiểu lầm. ' +
         'Cần thẳng thắn chia sẻ mong muốn và cảm xúc.',
       health:
-        'Sức khỏe trung bình, cần chú ý tai nạn và huyết áp. ' +
+        'Sức khỏe ở mức ổn định, cần chú ý tai nạn và huyết áp. ' +
         'Nên vận động thường xuyên và tránh căng thẳng kéo dài.',
       advice:
         'Rèn luyện tính kỷ luật và kiên trì. ' +

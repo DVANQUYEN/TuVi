@@ -60,9 +60,9 @@ export interface PalaceTemplate {
 /** Đặc điểm cốt lõi của 14 chính tinh. */
 export const STAR_PALACE_TRAITS: Readonly<Record<MajorStarId, StarPalaceTrait>> = {
   tuVi: {
-    personality: 'Lãnh đạo bẩm sinh, khí chất cao quý, quyết đoán và được mọi người tôn trọng. Nhưng quá tự cao, dễ cô độc.',
+    personality: 'Lãnh đạo bẩm sinh, khí chất cao quý, quyết đoán và được mọi người tôn trọng. Nhưng đôi khi cái tôi lớn, dễ cảm thấy đơn độc.',
     strength: 'Có tầm nhìn xa, biết tổ chức và quy tụ người khác về một mục tiêu chung.',
-    weakness: 'Đôi khi cố chấp, tự cao và khó tiếp nhận ý kiến trái chiều.',
+    weakness: 'Đôi khi cố chấp, cái tôi lớn và khó tiếp nhận ý kiến trái chiều.',
     destiny: 'Số mệnh gắn với vai trò đứng đầu, dễ đạt địa vị cao nếu biết tiết chế cái tôi.',
     career: 'Công việc thăng tiến nhờ uy tín và năng lực quản lý, phù hợp môi trường có vị trí lãnh đạo.',
     profession: 'Quản lý, chính trị, tài chính, bất động sản hoặc điều hành doanh nghiệp.',
@@ -102,7 +102,7 @@ export const STAR_PALACE_TRAITS: Readonly<Record<MajorStarId, StarPalaceTrait>> 
   thaiDuong: {
     personality: 'Rộng lượng, nhiệt tình, hướng ngoại và có tinh thần trách nhiệm với cộng đồng.',
     strength: 'Khả năng lãnh đạo bằng sự bao dung, truyền cảm hứng và được nhiều người yêu quý.',
-    weakness: 'Dễ ôm việc, đôi khi tự cao và kiệt sức vì cố gắng lo cho mọi người.',
+    weakness: 'Dễ ôm việc, đôi khi quá tự tin và kiệt sức vì cố gắng lo cho mọi người.',
     destiny: 'Số mệnh nổi bật, dễ được công nhận và có vai trò trong xã hội.',
     career: 'Sự nghiệp sáng sủa khi làm việc trước công chúng hoặc trong tổ chức lớn.',
     profession: 'Chính trị, giáo dục, y tế, truyền thông, quản lý công hoặc nghề cần uy tín.',
@@ -171,7 +171,7 @@ export const STAR_PALACE_TRAITS: Readonly<Record<MajorStarId, StarPalaceTrait>> 
     travel: 'Di chuyển cần chuẩn bị kỹ, tránh nóng vội để không gặp rắc rối.',
     love: 'Người phối ngẫu cá tính, nguyên tắc và có thể khá nóng tính.',
     family: 'Con cái nghiêm túc, có ý thức kỷ luật nhưng cần được lắng nghe.',
-    health: 'Sức khỏe cần chú ý vì dễ căng thẳng và áp lực tinh thần, cần đề phòng bệnh về máu và gan.',
+    health: 'Sức khỏe cần chú ý vì dễ căng thẳng và áp lực tinh thần, nên đề phòng các vấn đề về máu và gan.',
     social: 'Bạn bè chọn lọc, ít nhưng chân thành và có thể hỗ trợ chuyên môn.',
     property: 'Nhà cửa cần pháp lý rõ ràng, tránh mua bán qua trung gian thiếu minh bạch.',
     fortune: 'Phúc đức có phần thử thách, thành quả đến từ việc giữ đúng đạo lý.',
@@ -191,7 +191,7 @@ export const STAR_PALACE_TRAITS: Readonly<Record<MajorStarId, StarPalaceTrait>> 
     travel: 'Di chuyển an toàn, thích chuyến đi có kế hoạch rõ ràng.',
     love: 'Người phối ngẫu chững chạc, biết vun vén và coi trọng gia đình.',
     family: 'Con cái được chăm sóc chu đáo, có nền tảng tốt để phát triển.',
-    health: 'Sức khỏe tốt, ít bệnh nặng nhưng dễ trì trệ nếu lười vận động, cần chú ý tiêu hóa.',
+    health: 'Sức khỏe nhìn chung ổn định, ít bệnh nặng nhưng dễ trì trệ nếu lười vận động, cần chú ý tiêu hóa.',
     social: 'Bạn bè đáng tin, ít biến động và thường gắn bó lâu dài.',
     property: 'Có duyên tích lũy nhà đất, thích tài sản an toàn và lâu bền.',
     fortune: 'Phúc đức hậu hĩnh, được hưởng thành quả từ sự chăm chỉ và tiết kiệm.',
@@ -220,7 +220,7 @@ export const STAR_PALACE_TRAITS: Readonly<Record<MajorStarId, StarPalaceTrait>> 
     advice: 'Phát huy trực giác và lòng nhân ái nhưng cần cân bằng cảm xúc.',
   },
   thamLang: {
-    personality: 'Sôi nổi, giao tiếp giỏi, nhiều tham vọng và thích trải nghiệm. Nhưng quá đào hoa, dễ vướng vào thị phi tình cảm, có thể gặp cảnh ly tán.',
+    personality: 'Sôi nổi, giao tiếp giỏi, nhiều tham vọng và thích trải nghiệm. Nhưng đôi khi đào hoa, dễ vướng thị phi tình cảm và có thể trải qua những rạn nứt trong quan hệ.',
     strength: 'Có sức hút, khả năng thuyết phục và tinh thần kinh doanh nhạy bén.',
     weakness: 'Dễ ham vui, bốc đồng và khó kiểm soát dục vọng, lời ăn tiếng nói.',
     destiny: 'Số mệnh nhiều biến động, thành công lớn nếu biết kiềm chế và chọn lối sống lành mạnh.',
@@ -240,7 +240,7 @@ export const STAR_PALACE_TRAITS: Readonly<Record<MajorStarId, StarPalaceTrait>> 
     advice: 'Phát huy sự sáng tạo và khả năng giao tiếp nhưng cần kiềm chế ham muốn.',
   },
   cuMon: {
-    personality: 'Thông minh, ăn nói có duyên, thích tranh luận và có tư duy phản biện. Nhưng quá khẩu thiệt, dễ gây thù oán, cuộc đời nhiều thị phi.',
+    personality: 'Thông minh, ăn nói có duyên, thích tranh luận và có tư duy phản biện. Nhưng lời nói đôi khi quá thẳng, dễ gây hiểu lầm và vướng thị phi.',
     strength: 'Khả năng hùng biện, phân tích và thuyết phục người khác.',
     weakness: 'Dễ đa nghi, lời nói sắc bén và hay gây tranh cãi không cần thiết.',
     destiny: 'Số mệnh gắn với tiếng nói và tranh luận, cần học cách giữ hòa khí.',
@@ -291,7 +291,7 @@ export const STAR_PALACE_TRAITS: Readonly<Record<MajorStarId, StarPalaceTrait>> 
     travel: 'Di chuyển thuận lợi, có duyên học hỏi và gặp gỡ người hiền.',
     love: 'Người phối ngẫu chững chạc, có thể lớn tuổi hơn và biết chăm sóc.',
     family: 'Con cái hiếu thảo, biết nghe lời và có nền tảng đạo đức tốt.',
-    health: 'Sức khỏe khá nhưng dễ mắc bệnh mãn tính khi lớn tuổi, cần chú ý tiêu hóa và gan.',
+    health: 'Sức khỏe khá nhưng khi lớn tuổi cần chú ý các bệnh mãn tính, đặc biệt về tiêu hóa và gan.',
     social: 'Bạn bè đáng kính, nhiều người là bậc lớn tuổi hoặc thầy cô.',
     property: 'Có duyên thừa hưởng hoặc tích lũy nhà đất từ gia đình.',
     fortune: 'Phúc đức sâu dày, tổ tiên che chở và bản thân sống có âm đức.',
@@ -300,7 +300,7 @@ export const STAR_PALACE_TRAITS: Readonly<Record<MajorStarId, StarPalaceTrait>> 
     advice: 'Tiếp tục sống thiện lành nhưng cần biết buông bớt lo lắng để an nhàn.',
   },
   thatSat: {
-    personality: 'Dũng cảm, quyết liệt, độc lập và có tinh thần tiên phong. Nhưng quá cứng nhắc, dễ gây thù oán, cuộc đời nhiều tai nạn.',
+    personality: 'Dũng cảm, quyết liệt, độc lập và có tinh thần tiên phong. Nhưng đôi khi cứng nhắc, dễ gây hiểu lầm và cần đề phòng chấn thương bất ngờ.',
     strength: 'Dám nghĩ dám làm, chịu được áp lực và có khả năng xung phong.',
     weakness: 'Dễ nóng nảy, bốc đồng và gây xung đột với người xung quanh.',
     destiny: 'Số mệnh nhiều thử thách, thành công lớn thường đến sau va vấp.',
@@ -311,7 +311,7 @@ export const STAR_PALACE_TRAITS: Readonly<Record<MajorStarId, StarPalaceTrait>> 
     travel: 'Di chuyển nhiều, có thể gặp chuyến đi bất ngờ hoặc vất vả.',
     love: 'Người phối ngẫu cá tính mạnh, nóng tính nhưng chân thành.',
     family: 'Con cái cá tính, tự lập nhưng cần được hướng dẫn kiềm chế.',
-    health: 'Sức khỏe cần chú ý vì dễ gặp chấn thương hoặc phải phẫu thuật, cần đề phòng bệnh về máu và gan.',
+    health: 'Sức khỏe cần chú ý vì có thể gặp chấn thương hoặc cần can thiệp y tế, nên đề phòng các vấn đề về máu và gan.',
     social: 'Bạn bè ít nhưng cá tính, dễ có xung đột nếu không chọn lọc.',
     property: 'Nhà cửa có thể thay đổi vài lần, nên chọn nơi an cư ổn định.',
     fortune: 'Phúc đức có phần gian nan, thành quả đến từ nỗ lực và bản lĩnh cá nhân.',
@@ -320,7 +320,7 @@ export const STAR_PALACE_TRAITS: Readonly<Record<MajorStarId, StarPalaceTrait>> 
     advice: 'Phát huy bản lĩnh nhưng cần kiềm chế nóng giận và hành động có kế hoạch.',
   },
   phaQuan: {
-    personality: 'Phá cách, sáng tạo, thích đổi mới và không ngại thử thách. Nhưng quá bốc đồng, dễ phá hoại cơ nghiệp, cuộc đời bấp bênh.',
+    personality: 'Phá cách, sáng tạo, thích đổi mới và không ngại thử thách. Nhưng đôi khi bốc đồng, dễ làm xáo trộn những gì đã gây dựng và khiến cuộc sống nhiều biến động.',
     strength: 'Có tư duy đột phá, dám thay đổi và khả năng xoay chuyển tình thế.',
     weakness: 'Dễ bốc đồng, phá vỡ kế hoạch và thiếu kiên nhẫn với sự ổn định.',
     destiny: 'Số mệnh nhiều biến động, thành công khi biết đổi mới có kiểm soát.',

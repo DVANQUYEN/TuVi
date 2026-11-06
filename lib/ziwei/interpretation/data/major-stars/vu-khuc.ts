@@ -28,7 +28,7 @@ const archetype: StarArchetype = {
         'Đôi khi sự tập trung vào công việc khiến người bạn đời cảm thấy thiếu lãng mạn. ' +
         'Cần học cách thể hiện cảm xúc và dành thời gian cho gia đình.',
       health:
-        'Sức khỏe khá tốt nhưng cần chú ý hệ hô hấp và da liễu. ' +
+        'Sức khỏe ổn định nhưng cần chú ý hệ hô hấp và da liễu. ' +
         'Nên tránh làm việc quá sức và duy trì chế độ nghỉ ngơi hợp lý.',
       advice:
         'Phát huy khả năng quản lý tài chính và tính quyết đoán. ' +
@@ -49,7 +49,7 @@ const archetype: StarArchetype = {
         'Tuy nhiên sự thực dụng đôi khi khiến đối phương cảm thấy thiếu sự đồng cảm. ' +
         'Cần lắng nghe và chia sẻ cảm xúc nhiều hơn.',
       health:
-        'Thể trạng tốt, nhưng cần chú ý hô hấp và các bệnh do căng thẳng. ' +
+        'Thể trạng ổn định, nhưng cần chú ý hô hấp và các bệnh do căng thẳng. ' +
         'Nên duy trì thói quen vận động và nghỉ ngơi đều đặn.',
       advice:
         'Tận dụng khả năng tài chính để tạo nền tảng vững chắc. ' +
@@ -78,7 +78,7 @@ const archetype: StarArchetype = {
     },
     binh: {
       meaning:
-        'Vũ Khúc Bình hòa cho thấy đương số có ý thức tiết kiệm nhưng chưa thật sự nhạy bén với tài chính. ' +
+        'Vũ Khúc ổn định cho thấy đương số có ý thức tiết kiệm nhưng chưa thật sự nhạy bén với tài chính. ' +
         'Bản tính hiền lành, ít mạo hiểm và thích sự ổn định. ' +
         'Có thể thành công trong công việc chuyên môn nếu kiên trì. ' +
         'Cần nâng cao kiến thức tài chính để cải thiện thu nhập.',
@@ -91,7 +91,7 @@ const archetype: StarArchetype = {
         'Đôi khi thiếu sự lãng mạn khiến mối quan hệ trở nên đơn điệu. ' +
         'Cần chủ động tạo không gian mới và thể hiện cảm xúc nhiều hơn.',
       health:
-        'Sức khỏe trung bình, cần chú ý hô hấp và tiêu hóa. ' +
+        'Sức khỏe ở mức ổn định, cần chú ý hô hấp và tiêu hóa. ' +
         'Nên duy trì chế độ ăn uống cân bằng và vận động nhẹ.',
       advice:
         'Chủ động nâng cao kỹ năng tài chính và nghề nghiệp. ' +

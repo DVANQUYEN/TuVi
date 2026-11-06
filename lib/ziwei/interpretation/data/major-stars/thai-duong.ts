@@ -10,8 +10,8 @@ const archetype: StarArchetype = {
   coreMeaning: 'Thái Dương là sao dương cương, chủ về danh tiếng, quang minh và quyền uy',
   career: 'Sự nghiệp rực rỡ, dễ nổi danh',
   love: 'Tình cảm mãnh liệt, nồng nhiệt',
-  health: 'Sức khỏe tốt, cần tránh nóng giận',
-  advice: 'Nên phát huy năng lượng tích cực, giữ đạo đức',
+  health: 'Sức khỏe ổn định, cần tránh nóng giận',
+  advice: 'Nên phát huy tinh thần lạc quan, giữ đạo đức',
   brightnessMeanings: {
     mieu: {
       meaning:
@@ -28,7 +28,7 @@ const archetype: StarArchetype = {
         'Tuy nhiên đôi khi quá tập trung vào sự nghiệp mà quên chăm sóc gia đình. ' +
         'Cần dành thời gian cho người thân, tránh để công việc chiếm hết quỹ thời gian.',
       health:
-        'Sức khỏe tốt, tinh thần lạc quan và ít bệnh tật. ' +
+        'Sức khỏe ổn định, tinh thần lạc quan và ít bệnh tật. ' +
         'Cần chú ý các bệnh liên quan đến mắt và tim mạch do làm việc quá sức.',
       advice:
         'Phát huy tinh thần lạc quan và nhiệt tình, nhưng cần cân bằng giữa công việc và cuộc sống. ' +
@@ -36,7 +36,7 @@ const archetype: StarArchetype = {
     },
     vuong: {
       meaning:
-        'Thái Dương Vượng địa cho thấy đương số nổi bật, tự tin và có sức lan tỏa tích cực. ' +
+        'Thái Dương Vượng địa cho thấy đương số nổi bật, tự tin và có sức lan tỏa mạnh mẽ. ' +
         'Bản tính hào phóng, thích giúp đỡ người khác và dễ được yêu mến. ' +
         'Phù hợp với công việc đòi hỏi giao tiếp, thuyết trình hoặc dẫn dắt tập thể. ' +
         'Cần tránh tự ái và thói quen áp đặt quan điểm.',
@@ -49,11 +49,11 @@ const archetype: StarArchetype = {
         'Đôi khi cái tôi lớn khiến đối phương khó góp ý. ' +
         'Cần học cách lắng nghe và tôn trọng khác biệt.',
       health:
-        'Sức khỏe khá tốt, nhưng cần chú ý tim mạch và các bệnh do nóng giận. ' +
+        'Sức khỏe khá ổn định, nhưng cần chú ý tim mạch và các bệnh do nóng giận. ' +
         'Nên duy trì nhịp sinh hoạt điều độ và tránh thức khuya.',
       advice:
         'Dùng sự tự tin để truyền cảm hứng cho tập thể. ' +
-        'Kiềm chế cái tôi và học cách tiếp nhận phê bình một cách tích cực.',
+        'Kiềm chế cái tôi và học cách tiếp nhận phê bình với thái độ cầu thị.',
     },
     dac: {
       meaning:
@@ -78,7 +78,7 @@ const archetype: StarArchetype = {
     },
     binh: {
       meaning:
-        'Thái Dương Bình hòa cho thấy đương số có tinh thần tích cực nhưng chưa thật sự nổi bật. ' +
+        'Thái Dương ổn định cho thấy đương số có tinh thần lạc quan nhưng chưa thật sự nổi bật. ' +
         'Bản tính hòa nhã, thích ổn định và ít tranh giành quyền lực. ' +
         'Có thể thành công trong công việc chuyên môn nếu kiên trì. ' +
         'Cần rèn luyện sự tự tin để dám thể hiện bản thân.',
@@ -91,7 +91,7 @@ const archetype: StarArchetype = {
         'Đôi khi thiếu chủ động khiến mối quan hệ thiếu gia vị. ' +
         'Cần dành thời gian chất lượng và thể hiện cảm xúc rõ ràng hơn.',
       health:
-        'Sức khỏe trung bình, cần chú ý tuần hoàn máu và thị lực. ' +
+        'Sức khỏe ở mức ổn định, cần chú ý tuần hoàn máu và thị lực. ' +
         'Nên vận động thường xuyên và tránh ngồi lâu trước màn hình.',
       advice:
         'Chủ động hơn trong công việc và các mối quan hệ. ' +

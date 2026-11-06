@@ -5,8 +5,14 @@ import { CARD_VARIANT_CLASSES, CornerOrnaments } from '@/components/ui/Card';
 import { HanIcon } from '@/components/ui/HanIcon';
 
 interface PersonalSummaryProps {
-  summary: PersonalSummaryType;
+  summary: PersonalSummaryView;
 }
+
+/** Cho phép hiển thị cả summary cũ chưa có khẩu khí kết luận. */
+type PersonalSummaryView = Omit<PersonalSummaryType, 'conclusionQuote' | 'conclusionTone'> & {
+  conclusionQuote?: string;
+  conclusionTone?: PersonalSummaryType['conclusionTone'];
+};
 
 /**
  * Render đoạn văn; các cụm đặt trong `**...**` được nhấn mạnh (thuật ngữ chiêm tinh).
@@ -46,10 +52,20 @@ export function PersonalSummaryCard({ summary }: PersonalSummaryProps): React.Re
         <span>Luận giải</span>
       </h2>
       {summary.ownerName && (
-        <p className="mb-4 text-sm text-muted">Tổng quan lá số của {summary.ownerName}</p>
+        <p className="mb-4 text-sm text-muted">Lá số của {summary.ownerName}</p>
       )}
 
       <div className="mb-4 text-xl font-bold text-gold">{summary.headline}</div>
+
+      {summary.conclusionQuote && (
+        <p
+          data-testid="personal-summary-conclusion"
+          data-tone={summary.conclusionTone}
+          className="mx-auto mb-6 max-w-2xl text-balance text-center font-serif text-lg font-semibold italic leading-relaxed text-gold-bright sm:text-xl"
+        >
+          “{summary.conclusionQuote}”
+        </p>
+      )}
 
       <div className="mb-6 space-y-4 leading-relaxed text-foreground">
         {narrative.length > 0 ? (

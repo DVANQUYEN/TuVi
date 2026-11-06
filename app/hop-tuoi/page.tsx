@@ -1,30 +1,40 @@
+import Link from 'next/link';
+import type { Metadata } from 'next';
 import { CompatibilityForm } from '@/components/horoscope/CompatibilityForm';
-import { ZodiacCompatibilitySection } from '@/components/horoscope/ZodiacCompatibilitySection';
+import { LoveYearLookupSection } from '@/components/horoscope/love/LoveYearLookupSection';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
-import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Tam hợp & Lục hợp - Sao Mệnh',
+  title: 'Tình Duyên Tử Vi - Sao Mệnh',
   description:
-    'Xem tam hợp, lục hợp, tứ hành xung và mức độ hợp nhau giữa hai người theo Tử Vi Đẩu Số',
+    'Đối chiếu hai lá số Tử Vi để xem duyên phận, mức độ hòa hợp và những điều cần lưu ý trên đường đồng hành; kèm phần tra cứu tình duyên theo năm sinh.',
 };
 
 export default function HopTuoiPage(): React.ReactElement {
   return (
-    <div className="relative z-10 flex min-h-screen flex-col bg-background">
+    <div className="relative z-10 flex min-h-screen flex-col bg-background/70">
       <Header />
 
-      <main className="container mx-auto max-w-3xl flex-1 px-4 py-8">
-        <div className="mb-8 text-center">
-          <h1 className="mb-4 text-4xl font-bold">Tam hợp & Lục hợp</h1>
-          <p className="text-lg text-muted">Nhập thông tin của hai người để xem mức độ hợp nhau</p>
-        </div>
+      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
+        <nav aria-label="Breadcrumb" className="mb-6 text-xs text-muted">
+          <ol className="flex items-center gap-2">
+            <li>
+              <Link href="/" className="transition-colors hover:text-gold">
+                Trang chủ
+              </Link>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li aria-current="page" className="text-gold">
+              Tình duyên
+            </li>
+          </ol>
+        </nav>
 
         <CompatibilityForm />
 
-        <div className="mt-12 border-t border-border-subtle pt-12">
-          <ZodiacCompatibilitySection />
+        <div className="mx-auto mt-16 max-w-4xl border-t border-border-subtle pt-10">
+          <LoveYearLookupSection />
         </div>
       </main>
 

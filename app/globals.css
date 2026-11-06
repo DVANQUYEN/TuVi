@@ -88,3 +88,208 @@
   /* Chữ Hán: font hệ thống có glyph CJK (Cormorant/Noto Serif không có) */
   --font-han: 'Noto Serif SC', 'Noto Serif CJK SC', 'Songti SC', 'SimSun', 'MS Mincho', serif;
 }
+
+/* Gold-foil headings normally use background-clip:text with transparent text.
+   That treatment disappears in forced-colors and print, so fall back to a
+   solid readable system color and drop the clip/filter. */
+@media (forced-colors: active) {
+  .hero-title-foil {
+    background: none !important;
+    background-image: none !important;
+    -webkit-background-clip: border-box !important;
+    background-clip: border-box !important;
+    color: CanvasText !important;
+    -webkit-text-fill-color: CanvasText !important;
+    filter: none !important;
+  }
+}
+
+@media print {
+  .hero-title-foil {
+    background: none !important;
+    background-image: none !important;
+    -webkit-background-clip: border-box !important;
+    background-clip: border-box !important;
+    color: CanvasText !important;
+    -webkit-text-fill-color: CanvasText !important;
+    filter: none !important;
+  }
+}
+
+/* Tình Duyên: các chi ngày → tháng → năm lần lượt bật lên sau khi đủ ngày sinh.
+   Đặt trước khối merge để không lẫn vào phạm vi kiểm tra chuyển động gộp.
+   Người bật reduced-motion thấy chi sáng ngay, không có hiệu ứng pop. */
+@keyframes love-emblem-branch-pop {
+  0% {
+    transform: scale(0.6) translateY(4px);
+    opacity: 0;
+  }
+  40% {
+    transform: scale(1.2) translateY(-3px);
+    opacity: 1;
+    filter: drop-shadow(0 0 3px rgba(240, 208, 137, 0.85));
+  }
+  70% {
+    transform: scale(0.98) translateY(0);
+    opacity: 1;
+    filter: drop-shadow(0 0 1px rgba(240, 208, 137, 0.45));
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+    filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .love-emblem-branch-pop {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: love-emblem-branch-pop 650ms ease-out both;
+    animation-delay: var(--love-emblem-branch-delay, 0ms);
+  }
+}
+
+/* Tình Duyên: nhãn sao chính chỉ sáng khi mã sao thực sự xuất hiện tại
+   Mệnh/Thân/Phu Thê của một trong hai lá số. Không có dữ liệu lá số thì mọi
+   nhãn giữ trạng thái mờ. */
+.love-emblem-star-active text {
+  filter: drop-shadow(0 0 2.6px rgba(251, 191, 36, 0.95))
+    drop-shadow(0 0 5px rgba(240, 208, 137, 0.55));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .love-emblem-star-active text {
+    transition:
+      filter 650ms ease,
+      fill-opacity 650ms ease;
+  }
+}
+
+/* Tình Duyên: pop hữu hạn khi một thành phần vừa được thắp sáng. Chỉ áp dụng
+   cho nhãn sao đang hoạt động và nhóm âm dương đang hoạt động; phần tử tĩnh
+   hoặc mờ không nhận hiệu ứng. */
+@keyframes love-emblem-component-pop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.12);
+  }
+  70% {
+    transform: scale(0.99);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .love-emblem-star-pop,
+  .love-emblem-polarity-pop {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: love-emblem-component-pop 560ms ease-out both;
+  }
+}
+
+/* Tình Duyên: chuỗi gộp hai mệnh chủ trên huy hiệu.
+   Chỉ ba lớp quay tại chỗ quanh tâm: vành 12 con giáp (-360°), vòng 14 chính
+   tinh (+360°) và âm dương tâm (+360°). Bát quái và vạch khắc độ đứng yên.
+   Tâm lóe sáng trong khoảng 30% cuối rồi trở về đúng hướng ban đầu, không tịnh
+   tiến. Toàn bộ chuyển động nằm trong no-preference; người bật reduced-motion
+   chỉ thấy trạng thái tĩnh và kết quả được công bố ngay. */
+@keyframes love-emblem-merge-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes love-emblem-merge-stars {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Tâm âm dương: quay nhanh và đều 0→720° trong nửa đầu; nửa sau giữ nguyên
+   vị trí quay và lóe sáng mạnh (scale ~1.08). */
+@keyframes love-emblem-merge-center {
+  0% {
+    transform: rotate(0deg) scale(1);
+    filter: drop-shadow(0 0 1px rgba(240, 208, 137, 0.35));
+    opacity: 0.9;
+  }
+  50% {
+    transform: rotate(720deg) scale(1.02);
+    filter: brightness(1.12) drop-shadow(0 0 5px rgba(251, 191, 36, 0.65));
+    opacity: 1;
+  }
+  75% {
+    transform: rotate(720deg) scale(1.08);
+    filter: brightness(1.5) drop-shadow(0 0 12px rgba(251, 191, 36, 0.95))
+      drop-shadow(0 0 24px rgba(127, 224, 180, 0.6));
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(720deg) scale(1.08);
+    filter: brightness(1.35) drop-shadow(0 0 10px rgba(240, 208, 137, 0.8));
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .love-emblem-live .love-emblem-smooth,
+  .love-emblem-live .love-emblem-smooth * {
+    transition:
+      fill 650ms ease,
+      stroke 650ms ease,
+      stroke-opacity 650ms ease,
+      fill-opacity 650ms ease,
+      opacity 650ms ease,
+      filter 650ms ease;
+  }
+
+  /* Quay quanh tâm viewBox (200,200) chứ không phải hộp bao của từng nhóm. */
+  .love-emblem-merge-ring,
+  .love-emblem-merged-ring,
+  .love-emblem-merge-stars,
+  .love-emblem-merged-stars,
+  .love-emblem-merge-center,
+  .love-emblem-merged-center {
+    transform-box: view-box;
+    transform-origin: 50% 50%;
+  }
+
+  .love-emblem-merge-ring {
+    animation: love-emblem-merge-ring var(--love-emblem-merge-duration, 3000ms) ease-in-out
+      forwards;
+  }
+
+  .love-emblem-merge-stars {
+    animation: love-emblem-merge-stars var(--love-emblem-merge-duration, 3000ms) ease-in-out
+      forwards;
+  }
+
+  .love-emblem-merge-center {
+    animation: love-emblem-merge-center var(--love-emblem-merge-duration, 3000ms) linear
+      forwards;
+  }
+
+  /* Kết quả cuối giữ nguyên hướng: các lớp trở về 0, không tịnh tiến. */
+  .love-emblem-merged-ring,
+  .love-emblem-merged-stars,
+  .love-emblem-merged-center {
+    transform: none;
+  }
+
+  /* Tâm giữ ánh sáng dịu sau khi gộp, không phóng to hay dịch chỗ. */
+  .love-emblem-merged-center {
+    filter: drop-shadow(0 0 6px rgba(240, 208, 137, 0.55));
+  }
+}

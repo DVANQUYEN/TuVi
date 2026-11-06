@@ -28,7 +28,7 @@ const archetype: StarArchetype = {
         'Tuy nhiên sự thay đổi thất thường có thể khiến đối phương thiếu an tâm. ' +
         'Cần học cách cam kết và duy trì sự ổn định.',
       health:
-        'Sức khỏe khá tốt nhưng cần chú ý sức khỏe tinh thần và giấc ngủ. ' +
+        'Sức khỏe ổn định nhưng cần chú ý sức khỏe tinh thần và giấc ngủ. ' +
         'Nên tránh làm việc quá sức và duy trì lối sống điều độ.',
       advice:
         'Phát huy tinh thần đổi mới và sáng tạo. ' +
@@ -36,7 +36,7 @@ const archetype: StarArchetype = {
     },
     vuong: {
       meaning:
-        'Phá Quân Vượng địa cho thấy đương số năng động, sáng tạo và có khả năng tạo ra thay đổi tích cực. ' +
+        'Phá Quân Vượng địa cho thấy đương số năng động, sáng tạo và có khả năng tạo ra thay đổi có ý nghĩa. ' +
         'Bản tính mạnh mẽ, thích tự do và không ngại thử điều mới. ' +
         'Phù hợp với khởi nghiệp, công nghệ, nghệ thuật hoặc các lĩnh vực cần sự đổi mới. ' +
         'Cần tránh bốc đồng và thiếu kiên định.',
@@ -49,7 +49,7 @@ const archetype: StarArchetype = {
         'Tuy nhiên sự thay đổi có thể khiến đối phương thiếu cảm giác an toàn. ' +
         'Cần rõ ràng trong cam kết và tôn trọng cảm xúc của nhau.',
       health:
-        'Thể trạng tốt, nhưng cần chú ý sức khỏe tinh thần và giấc ngủ. ' +
+        'Thể trạng nhìn chung ổn định, nhưng cần chú ý sức khỏe tinh thần và giấc ngủ. ' +
         'Nên duy trì vận động và tránh thức khuya.',
       advice:
         'Tận dụng sự sáng tạo để tạo ra giá trị mới. ' +
@@ -78,7 +78,7 @@ const archetype: StarArchetype = {
     },
     binh: {
       meaning:
-        'Phá Quân Bình hòa cho thấy đương số có ý muốn đổi mới nhưng đôi khi thiếu quyết tâm. ' +
+        'Phá Quân ổn định cho thấy đương số có ý muốn đổi mới nhưng đôi khi thiếu quyết tâm. ' +
         'Bản tính năng động nhưng dễ chán nản khi gặp khó khăn. ' +
         'Có thể thành công trong công việc sáng tạo nếu kiên trì. ' +
         'Cần rèn luyện tính kỷ luật và khả năng tập trung.',
@@ -91,7 +91,7 @@ const archetype: StarArchetype = {
         'Đôi khi thiếu sự ổn định khiến đối phương hiểu lầm. ' +
         'Cần thẳng thắn chia sẻ mong muốn và cảm xúc.',
       health:
-        'Sức khỏe trung bình, cần chú ý sức khỏe tinh thần và giấc ngủ. ' +
+        'Sức khỏe ở mức ổn định, cần chú ý sức khỏe tinh thần và giấc ngủ. ' +
         'Nên vận động thường xuyên và tránh thức khuya.',
       advice:
         'Rèn luyện tính kỷ luật và khả năng tập trung. ' +

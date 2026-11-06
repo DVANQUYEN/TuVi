@@ -83,7 +83,6 @@ export function MobileMenu({ isOpen, onClose, links }: MobileMenuProps): React.R
           <Button
             ref={closeButtonRef}
             variant="ghost"
-            size="sm"
             aria-label="Đóng menu"
             onClick={onClose}
           >

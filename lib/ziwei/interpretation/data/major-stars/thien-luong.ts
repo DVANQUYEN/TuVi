@@ -10,7 +10,7 @@ const archetype: StarArchetype = {
   coreMeaning: 'Thiên Lương là sao phúc thọ, chủ về tuổi thọ, lương thiện và sự che chở',
   career: 'Sự nghiệp êm đềm, được bảo vệ trong khó khăn',
   love: 'Tình cảm ấm áp, có trách nhiệm với gia đình',
-  health: 'Sức khỏe tốt, tuổi thọ cao',
+  health: 'Sức khỏe bền bỉ, tuổi thọ cao',
   advice: 'Nên sống lương thiện, giúp đỡ người khác',
   brightnessMeanings: {
     mieu: {
@@ -28,7 +28,7 @@ const archetype: StarArchetype = {
         'Đôi khi sự nghiêm túc khiến mối quan hệ thiếu sự lãng mạn. ' +
         'Cần học cách tạo không khí vui vẻ và bày tỏ cảm xúc nhiều hơn.',
       health:
-        'Sức khỏe tốt, tuổi thọ cao. ' +
+        'Sức khỏe bền bỉ, tuổi thọ cao. ' +
         'Cần chú ý hệ tiêu hóa và duy trì lối sống lành mạnh.',
       advice:
         'Phát huy lòng nhân ái và tinh thần trách nhiệm. ' +
@@ -49,7 +49,7 @@ const archetype: StarArchetype = {
         'Đôi khi sự nghiêm khắc khiến đối phương cảm thấy bị áp lực. ' +
         'Cần học cách lắng nghe và tôn trọng cảm xúc của nhau.',
       health:
-        'Thể trạng tốt, nhưng cần chú ý tiêu hóa và tinh thần. ' +
+        'Thể trạng ổn định, nhưng cần chú ý tiêu hóa và tinh thần. ' +
         'Nên duy trì vận động và tránh lo lắng quá mức.',
       advice:
         'Phát huy lòng nhân ái và sự chín chắn. ' +
@@ -78,7 +78,7 @@ const archetype: StarArchetype = {
     },
     binh: {
       meaning:
-        'Thiên Lương Bình hòa cho thấy đương số hiền lành nhưng đôi khi thiếu động lực phấn đấu. ' +
+        'Thiên Lương ổn định cho thấy đương số hiền lành nhưng đôi khi thiếu động lực phấn đấu. ' +
         'Bản tính an phận, thích sự yên tĩnh và ít mạo hiểm. ' +
         'Có thể thành công trong công việc ổn định nếu kiên trì. ' +
         'Cần đặt mục tiêu rõ ràng để tránh sống thụ động.',
@@ -91,8 +91,8 @@ const archetype: StarArchetype = {
         'Đôi khi thiếu chủ động khiến đối phương hiểu lầm. ' +
         'Cần thẳng thắn chia sẻ mong muốn và cảm xúc.',
       health:
-        'Sức khỏe trung bình, cần chú ý tiêu hóa và tinh thần. ' +
-        'Nên vận động thường xuyên và giữ tâm trạng tích cực.',
+        'Sức khỏe ở mức ổn định, cần chú ý tiêu hóa và tinh thần. ' +
+        'Nên vận động thường xuyên và giữ tâm trạng lạc quan.',
       advice:
         'Đặt mục tiêu cụ thể và chủ động hành động. ' +
         'Tránh để sự an phận biến thành lối sống thụ động.',

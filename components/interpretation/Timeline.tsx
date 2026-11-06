@@ -1,6 +1,10 @@
 'use client';
 
 import type { FortuneLevel } from '@/lib/ziwei/interpretation/decade-fortune';
+import {
+  FORTUNE_RATING_LABELS,
+  getFortuneRating,
+} from '@/lib/ziwei/interpretation/fortune-score';
 import type { Timeline } from '@/lib/ziwei/interpretation/timeline';
 import { CARD_VARIANT_CLASSES, CornerOrnaments } from '@/components/ui/Card';
 import { HanIcon } from '@/components/ui/HanIcon';
@@ -40,12 +44,12 @@ export function TimelineView({ timeline }: TimelineProps): React.ReactElement {
       >
         <HanIcon han="期" size="lg" />
         <span>
-          Timeline vận hạn {timeline.startYear}-{timeline.endYear}
+          Tiểu vận từ năm {timeline.startYear} đến {timeline.endYear}
         </span>
       </h2>
 
       <div className="mb-6">
-        <h3 className="mb-3 font-semibold">Tổng quan theo thập niên</h3>
+        <h3 className="mb-3 font-semibold">Khái quát theo thập niên</h3>
         <div className="flex flex-col gap-4 sm:flex-row">
           {timeline.decades.map((decade) => (
             <div
@@ -58,7 +62,8 @@ export function TimelineView({ timeline }: TimelineProps): React.ReactElement {
                 <span className="text-sm text-muted">/5</span>
               </div>
               <div className={`text-sm ${FORTUNE_TEXT_CLASS[decade.fortune]}`}>
-                <HanIcon han={FORTUNE_HAN[decade.fortune]} size="sm" /> {decade.fortune}
+                <HanIcon han={FORTUNE_HAN[decade.fortune]} size="sm" />{' '}
+                {FORTUNE_RATING_LABELS[decade.rating ?? getFortuneRating(decade.avgScore)]}
               </div>
             </div>
           ))}
@@ -83,7 +88,7 @@ export function TimelineView({ timeline }: TimelineProps): React.ReactElement {
                 {[1, 2, 3, 4, 5].map((star) => (
                   <span
                     key={star}
-                    className={`text-xs ${star <= year.score ? 'text-gold' : 'text-muted'}`}
+                    className={`text-xs ${star <= Math.round(year.score) ? 'text-gold' : 'text-muted'}`}
                     aria-hidden="true"
                   >
                     ★
@@ -91,7 +96,8 @@ export function TimelineView({ timeline }: TimelineProps): React.ReactElement {
                 ))}
               </div>
               <div className={`text-xs ${FORTUNE_TEXT_CLASS[year.fortune]}`}>
-                <HanIcon han={FORTUNE_HAN[year.fortune]} size="sm" /> {year.fortune}
+                <HanIcon han={FORTUNE_HAN[year.fortune]} size="sm" />{' '}
+                {FORTUNE_RATING_LABELS[year.rating ?? getFortuneRating(year.score)]}
               </div>
             </div>
           ))}

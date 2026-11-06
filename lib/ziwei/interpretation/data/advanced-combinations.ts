@@ -89,11 +89,11 @@ export const ADVANCED_COMBINATIONS: AdvancedCombination[] = [
     level: 'xấu',
     description:
       'Kình Dương, Đà La, Hỏa Tinh và Linh Tinh hội đủ tạo thành bộ Tứ Sát Dương Đà Hỏa Linh. ' +
-      'Đây là bộ sao RẤT XẤU, chủ về tai nạn huyết quang, tranh chấp kiện tụng và thị phi liên miên. ' +
-      'Đương số dễ gặp đại nạn, có thể phải nằm viện, hoặc gặp cảnh máu chảy đầu rơi. ' +
-      'Nếu không cẩn thận, có thể gặp cảnh tù tội, hoặc tai nạn chết người. ' +
-      'Cần đặc biệt cẩn trọng, làm việc thiện để hóa giải bớt hung khí.',
-    conditions: ['Kình Dương, Đà La, Hỏa Tinh, Linh Tinh hội tụ', 'Bộ Tứ Sát chủ về tai họa'],
+      'Đây là bộ sao nặng về hung khí, chủ về tai nạn nghiêm trọng, tranh chấp kiện tụng và thị phi dai dẳng. ' +
+      'Đương số cần đề phòng chấn thương nặng, có thể phải điều trị y tế hoặc đối diện hệ quả pháp lý. ' +
+      'Trong hoàn cảnh bất lợi, nguy cơ tai nạn nghiêm trọng, thậm chí đe dọa tính mạng, là điều cần lưu tâm. ' +
+      'Cần đặc biệt cẩn trọng, giữ thiện ý và tránh hành động nóng vội để giảm bớt hung khí.',
+    conditions: ['Kình Dương, Đà La, Hỏa Tinh, Linh Tinh hội tụ', 'Bộ Tứ Sát chủ về tai nạn và tranh chấp'],
   },
   {
     id: 'khong-kiep-lam-than',
@@ -101,9 +101,9 @@ export const ADVANCED_COMBINATIONS: AdvancedCombination[] = [
     level: 'xấu',
     description:
       'Địa Không và Địa Kiếp cùng chiếu về cung Thân tạo thành cách Không Kiếp lâm thân. ' +
-      'Đây là cách cục báo hiệu những biến động lớn, hao tán tài lộc và tai họa khó lường. ' +
-      'Đương số có thể gặp mất mát về tiền bạc, sự nghiệp hoặc tình cảm vào những giai đoạn vận hạn xấu. ' +
-      'Tuy nhiên, nếu biết sống thiện, làm việc có đạo đức và tránh tham lam thì hung khí sẽ giảm đáng kể. ' +
+      'Đây là cách cục báo hiệu những biến động lớn, dễ hao tán tài lộc và những rủi ro khó lường. ' +
+      'Đương số có thể gặp mất mát về tiền bạc, sự nghiệp hoặc tình cảm vào những giai đoạn vận hạn kém thuận lợi. ' +
+      'Tuy nhiên, nếu biết sống thiện, làm việc có đạo đức và tránh tham lam thì mức độ ảnh hưởng sẽ giảm đáng kể. ' +
       'Cần đặc biệt thận trọng khi ký kết hợp đồng hoặc đầu tư lớn.',
     conditions: ['Địa Không và Địa Kiếp chiếu Thân', 'Thân cung hoặc tam phương của Thân'],
   },
@@ -161,10 +161,10 @@ export const ADVANCED_COMBINATIONS: AdvancedCombination[] = [
     level: 'trung bình',
     description:
       'Tử Vi và Thất Sát đồng cung tạo thành cách Tử Sát đồng cung, sự kết hợp giữa quyền uy và sát khí. ' +
-      'Đương số có tài năng lãnh đạo nhưng cuộc đời nhiều thăng trầm và dễ rơi vào cô độc. ' +
+      'Đương số có tài năng lãnh đạo nhưng cuộc đời nhiều thăng trầm và có lúc cảm thấy đơn độc. ' +
       'Tính cách mạnh mẽ, quyết đoán nhưng đôi khi cứng nhắc, khó gần. ' +
       'Cách này phù hợp với quân sự, chính trị, kinh doanh hoặc công việc đòi hỏi bản lĩnh. ' +
-      'Cần học cách nhường nhịn và xây dựng quan hệ để giảm bớt cô đơn.',
+      'Cần học cách nhường nhịn và xây dựng quan hệ để giữ được sự gắn kết.',
     conditions: ['Tử Vi và Thất Sát đồng cung', 'Thường tại Tỵ hoặc Hợi'],
   },
   {
@@ -234,7 +234,7 @@ export const ADVANCED_COMBINATIONS: AdvancedCombination[] = [
     description:
       'Liêm Trinh và Thất Sát đồng cung tạo thành cách Liêm Trinh Thất Sát, sự kết hợp giữa nguyên tắc và sát khí. ' +
       'Đương số có bản lĩnh mạnh mẽ, quyết đoán và không ngại đối đầu với khó khăn. ' +
-      'Cách cục này chủ về quyền lực nhưng cuộc đời dễ rơi vào cô độc và tranh chấp. ' +
+      'Cách cục này chủ về quyền lực nhưng cuộc đời có thể gặp những giai đoạn đơn độc và tranh chấp. ' +
       'Cần học cách mềm mỏng, tránh cực đoan và biết lắng nghe người khác. ' +
       'Phù hợp với quân sự, luật pháp, kinh doanh hoặc công tác quản lý.',
     conditions: ['Liêm Trinh và Thất Sát đồng cung', 'Thường tại Sửu hoặc Mùi'],

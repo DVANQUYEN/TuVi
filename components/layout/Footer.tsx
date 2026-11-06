@@ -2,6 +2,9 @@
 
 import Link from 'next/link';
 
+const contactLinkClass =
+  'underline decoration-current/30 underline-offset-2 transition-colors hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-surface';
+
 export function Footer(): React.ReactElement {
   const year = 2026;
 
@@ -14,6 +17,34 @@ export function Footer(): React.ReactElement {
               Theo trường phái Nam phái, bảng độ sáng Tân Biên 1956
             </p>
             <p className="text-sm text-muted">Lịch âm theo Hồ Ngọc Đức (UTC+7)</p>
+            <section aria-labelledby="footer-owner-heading" className="mt-4">
+              <h2
+                id="footer-owner-heading"
+                className="text-xs font-semibold uppercase tracking-wide text-gold"
+              >
+                Chủ sở hữu
+              </h2>
+              <ul className="mt-2 flex max-w-full flex-col items-center gap-1 text-sm text-muted md:items-start">
+                <li className="max-w-full">
+                  <a
+                    href="mailto:daovanquyen26@gmail.com"
+                    className={`${contactLinkClass} break-all`}
+                  >
+                    daovanquyen26@gmail.com
+                  </a>
+                </li>
+                <li className="max-w-full">
+                  <a
+                    href="https://www.facebook.com/van.quyen.822065"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`${contactLinkClass} break-words`}
+                  >
+                    Facebook: Văn Quyên
+                  </a>
+                </li>
+              </ul>
+            </section>
           </div>
 
           <nav className="flex flex-wrap items-center justify-center gap-4 text-sm text-muted">

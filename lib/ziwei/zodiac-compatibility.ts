@@ -28,39 +28,91 @@ export const BRANCH_LABELS: Readonly<Record<EarthlyBranch, string>> = {
   hoi: 'Hợi',
 };
 
-// Tam hợp: Thân-Tý-Thìn, Hợi-Mão-Mùi, Dần-Ngọ-Tuất, Tỵ-Dậu-Sửu
-const TAM_HOP_GROUPS: readonly (readonly EarthlyBranch[])[] = [
+export type ZodiacBranchGroup = readonly EarthlyBranch[];
+export type ZodiacBranchPair = readonly [EarthlyBranch, EarthlyBranch];
+
+// Tam hợp: Thân-Tý-Thìn, Dần-Ngọ-Tuất, Hợi-Mão-Mùi, Tỵ-Dậu-Sửu
+export const TAM_HOP_GROUPS: readonly ZodiacBranchGroup[] = [
   ['than', 'ty', 'thin'],
-  ['hoi', 'mao', 'mui'],
   ['dan', 'ngo', 'tuat'],
+  ['hoi', 'mao', 'mui'],
   ['ti', 'dau', 'suu'],
 ];
 
 // Lục hợp: Tý-Sửu, Dần-Hợi, Mão-Tuất, Thìn-Dậu, Tỵ-Thân, Ngọ-Mùi
-const LUC_HOP: Readonly<Record<EarthlyBranch, EarthlyBranch>> = {
-  ty: 'suu',
-  suu: 'ty',
-  dan: 'hoi',
-  hoi: 'dan',
-  mao: 'tuat',
-  tuat: 'mao',
-  thin: 'dau',
-  dau: 'thin',
-  ti: 'than',
-  than: 'ti',
-  ngo: 'mui',
-  mui: 'ngo',
-};
+export const LUC_HOP_PAIRS: readonly ZodiacBranchPair[] = [
+  ['ty', 'suu'],
+  ['dan', 'hoi'],
+  ['mao', 'tuat'],
+  ['thin', 'dau'],
+  ['ti', 'than'],
+  ['ngo', 'mui'],
+];
 
-// Tứ hành xung: Dần-Thân-Tỵ-Hợi, Tý-Ngọ-Mão-Dậu, Thìn-Tuất-Sửu-Mùi
-const TU_HANH_XUNG_GROUPS: readonly (readonly EarthlyBranch[])[] = [
-  ['dan', 'than', 'ti', 'hoi'],
+const LUC_HOP: Readonly<Record<EarthlyBranch, EarthlyBranch>> = Object.fromEntries(
+  LUC_HOP_PAIRS.flatMap(([left, right]) => [
+    [left, right],
+    [right, left],
+  ])
+) as Record<EarthlyBranch, EarthlyBranch>;
+
+// Tứ hành xung: Tý-Ngọ-Mão-Dậu, Dần-Thân-Tỵ-Hợi, Thìn-Tuất-Sửu-Mùi
+export const TU_HANH_XUNG_GROUPS: readonly ZodiacBranchGroup[] = [
   ['ty', 'ngo', 'mao', 'dau'],
+  ['dan', 'than', 'ti', 'hoi'],
   ['thin', 'tuat', 'suu', 'mui'],
 ];
 
 export const MIN_ZODIAC_YEAR = 1900;
 export const MAX_ZODIAC_YEAR = 2099;
+
+const BRANCH_CYCLE_YEARS = 12;
+const DEFAULT_EXAMPLE_START_YEAR = 1984;
+const DEFAULT_EXAMPLE_COUNT = 4;
+
+/**
+ * Trả về các năm sinh ví dụ thuộc một Địa chi, bắt đầu từ mốc 1984 (Tý) và lặp lại mỗi 12 năm.
+ * Năm bắt đầu được kẹp trong [MIN_ZODIAC_YEAR, MAX_ZODIAC_YEAR]; kết quả không vượt quá MAX_ZODIAC_YEAR.
+ * Ném lỗi nếu chi không hợp lệ hoặc tham số không phải số nguyên dương.
+ */
+export function getBranchExampleYears(
+  branch: EarthlyBranch,
+  options: { startYear?: number; count?: number } = {}
+): number[] {
+  if (!(branch in BRANCH_LABELS)) {
+    throw new RangeError(`Địa chi không hợp lệ: ${String(branch)}`);
+  }
+
+  const { startYear = DEFAULT_EXAMPLE_START_YEAR, count = DEFAULT_EXAMPLE_COUNT } = options;
+
+  if (!Number.isInteger(count) || count < 1) {
+    throw new RangeError('Số năm ví dụ phải là số nguyên dương');
+  }
+
+  if (!Number.isInteger(startYear)) {
+    throw new RangeError(
+      `Năm bắt đầu phải là số nguyên từ ${MIN_ZODIAC_YEAR} đến ${MAX_ZODIAC_YEAR}`
+    );
+  }
+
+  const firstYear = Math.min(Math.max(startYear, MIN_ZODIAC_YEAR), MAX_ZODIAC_YEAR);
+  const years: number[] = [];
+
+  for (let year = firstYear; year <= MAX_ZODIAC_YEAR; year += 1) {
+    if (getYearCanChi(year).branch !== branch) continue;
+
+    for (
+      let example = year;
+      example <= MAX_ZODIAC_YEAR && years.length < count;
+      example += BRANCH_CYCLE_YEARS
+    ) {
+      years.push(example);
+    }
+    break;
+  }
+
+  return years;
+}
 
 /**
  * Tra cứu tam hợp, lục hợp và tứ hành xung của một năm sinh.

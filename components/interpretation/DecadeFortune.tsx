@@ -1,6 +1,7 @@
 'use client';
 
 import type { DecadeFortune, FortuneLevel } from '@/lib/ziwei/interpretation/decade-fortune';
+import { FORTUNE_RATING_LABELS } from '@/lib/ziwei/interpretation/fortune-score';
 import { CARD_VARIANT_CLASSES, CornerOrnaments } from '@/components/ui/Card';
 import { HanIcon } from '@/components/ui/HanIcon';
 
@@ -28,21 +29,25 @@ export function DecadeFortuneTimeline({ decades }: DecadeFortuneProps): React.Re
       <CornerOrnaments size="md" />
       <h2 className="mb-4 flex items-center gap-2 font-serif text-xl font-bold md:text-2xl">
         <HanIcon han="期" size="lg" />
-        <span>Đại hạn (10 năm)</span>
+        <span>Đại vận (10 năm)</span>
       </h2>
 
-      <div className="mb-6 flex gap-2 overflow-x-auto pb-2">
+      <p className="mb-1 text-[11px] text-muted sm:hidden" aria-hidden="true">
+        Vuốt ngang để xem thêm →
+      </p>
+      <div className="mb-6 flex snap-x snap-mandatory gap-2 overflow-x-auto overscroll-x-contain pb-2">
         {decades.map((decade) => (
           <div
             key={decade.decade}
-            className={`flex-shrink-0 rounded-lg border-2 px-4 py-2 ${
+            className={`snap-start flex-shrink-0 rounded-lg border-2 px-4 py-2 ${
               decade.isCurrent ? 'border-gold bg-gold/10' : 'border-border-subtle'
             }`}
           >
             <div className="text-xs text-muted">Tuổi</div>
             <div className="font-bold">{decade.decade}</div>
             <div className={`mt-1 text-xs ${FORTUNE_CLASS[decade.fortune]}`}>
-              <HanIcon han={FORTUNE_HAN[decade.fortune]} size="sm" /> {decade.fortune}
+              <HanIcon han={FORTUNE_HAN[decade.fortune]} size="sm" />{' '}
+              {FORTUNE_RATING_LABELS[decade.rating]}
             </div>
           </div>
         ))}
@@ -51,7 +56,7 @@ export function DecadeFortuneTimeline({ decades }: DecadeFortuneProps): React.Re
       {currentDecade && (
         <div className="border-t border-border-subtle pt-4">
           <h3 className="mb-3 text-xl font-bold">
-            Đại hạn hiện tại: {currentDecade.decade} tuổi ({currentDecade.yearRange[0]}-
+            Đại vận hiện tại: {currentDecade.decade} tuổi ({currentDecade.yearRange[0]}-
             {currentDecade.yearRange[1]})
           </h3>
           <p className="mb-4 text-sm leading-relaxed">{currentDecade.summary}</p>

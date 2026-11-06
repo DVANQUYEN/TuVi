@@ -28,3 +28,6 @@ export * from './engine';
 
 // Export interpretation
 export * from './interpretation';
+
+// Export love year lookup
+export * from './love-year-lookup';

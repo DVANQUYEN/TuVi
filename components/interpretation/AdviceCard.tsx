@@ -19,7 +19,7 @@ export function AdviceCard({ advice }: AdviceCardProps): React.ReactElement {
         className="mb-4 flex items-center gap-2 font-serif text-xl font-bold md:text-2xl"
       >
         <HanIcon han="吉" size="lg" />
-        <span>Lời khuyên tổng quan</span>
+        <span>Lời khuyên cho đương số</span>
       </h2>
       <p className="text-base leading-relaxed md:text-lg">{advice}</p>
     </section>

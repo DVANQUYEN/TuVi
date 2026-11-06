@@ -28,8 +28,8 @@ const archetype: StarArchetype = {
         'Đôi khi quá nhạy cảm khiến bản thân dễ tổn thương. ' +
         'Cần học cách bày tỏ cảm xúc và tin tưởng đối phương.',
       health:
-        'Sức khỏe khá tốt nhưng cần chú ý hệ tiêu hóa và thận. ' +
-        'Nên duy trì lối sống điều độ và tránh suy nghĩ tiêu cực.',
+        'Sức khỏe ổn định nhưng cần chú ý hệ tiêu hóa và thận. ' +
+        'Nên duy trì lối sống điều độ và tránh suy nghĩ bi quan.',
       advice:
         'Phát huy trực giác và sự dịu dàng. ' +
         'Học cách cân bằng cảm xúc và chủ động hơn trong công việc.',
@@ -78,7 +78,7 @@ const archetype: StarArchetype = {
     },
     binh: {
       meaning:
-        'Thái Âm Bình hòa cho thấy đương số có đời sống nội tâm phong phú nhưng đôi khi thiếu tự tin. ' +
+        'Thái Âm ổn định cho thấy đương số có đời sống nội tâm phong phú nhưng đôi khi thiếu tự tin. ' +
         'Bản tính hiền lành, ít tranh giành và thích sự yên tĩnh. ' +
         'Có thể thành công trong công việc chuyên môn nếu kiên trì. ' +
         'Cần rèn luyện sự tự tin và kỹ năng giao tiếp.',
@@ -91,8 +91,8 @@ const archetype: StarArchetype = {
         'Đôi khi sự im lặng khiến đối phương hiểu lầm. ' +
         'Cần chủ động chia sẻ cảm xúc và lắng nghe nhiều hơn.',
       health:
-        'Sức khỏe trung bình, cần chú ý tiêu hóa, thận và tinh thần. ' +
-        'Nên vận động thường xuyên và giữ tâm trạng tích cực.',
+        'Sức khỏe ở mức ổn định, cần chú ý tiêu hóa, thận và tinh thần. ' +
+        'Nên vận động thường xuyên và giữ tâm trạng lạc quan.',
       advice:
         'Tăng cường tự tin bằng những mục tiêu nhỏ. ' +
         'Đừng ngại thể hiện bản thân và mở lòng với người khác.',
@@ -113,7 +113,7 @@ const archetype: StarArchetype = {
         'Sự chân thành và kiên nhẫn sẽ giúp hàn gắn.',
       health:
         'Cần chú ý sức khỏe tinh thần, tiêu hóa và thận. ' +
-        'Nên tránh suy nghĩ tiêu cực và duy trì lối sống lành mạnh.',
+        'Nên tránh suy nghĩ bi quan và duy trì lối sống lành mạnh.',
       advice:
         'Học cách cân bằng cảm xúc và xây dựng sự tự tin. ' +
         'Tìm người tin cậy để chia sẻ thay vì giữ mọi thứ trong lòng.',

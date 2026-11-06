@@ -26,6 +26,16 @@ describe('Phase B layout', () => {
     );
     expect(screen.getByRole('link', { name: 'Điều khoản' })).toHaveAttribute('href', '/terms');
     expect(screen.getByRole('link', { name: 'Giới thiệu' })).toHaveAttribute('href', '/about');
+    expect(screen.getByRole('heading', { name: 'Chủ sở hữu' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'daovanquyen26@gmail.com' })
+    ).toHaveAttribute('href', 'mailto:daovanquyen26@gmail.com');
+
+    const facebook = screen.getByRole('link', { name: /Facebook/ });
+    expect(facebook).toHaveAttribute('href', 'https://www.facebook.com/van.quyen.822065');
+    expect(facebook).toHaveAttribute('target', '_blank');
+    expect(facebook).toHaveAttribute('rel', 'noopener noreferrer');
+
     expect(
       screen.getByText(`© ${new Date().getFullYear()} Sao Mệnh. Tất cả quyền được bảo lưu.`)
     ).toBeInTheDocument();
@@ -52,7 +62,11 @@ describe('Phase B animations', () => {
   it('renders the zodiac wheel with its accessible label', (): void => {
     render(<ZodiacWheel />);
 
-    expect(screen.getByRole('img', { name: 'Vòng tròn 12 con giáp' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('img', {
+        name: 'Vòng tròn 12 con giáp: Tý, Sửu, Dần, Mão, Thìn, Tỵ, Ngọ, Mùi, Thân, Dậu, Tuất, Hợi',
+      })
+    ).toBeInTheDocument();
     expect(screen.getByText('Sao Mệnh')).toBeInTheDocument();
   });
 

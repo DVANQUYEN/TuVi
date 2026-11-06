@@ -10,7 +10,7 @@ const archetype: StarArchetype = {
   coreMeaning: 'Tử Vi là đế tinh, chủ về quyền lực, lãnh đạo, quý hiển',
   career: 'Sự nghiệp thăng tiến, có vị trí cao',
   love: 'Tình cảm vững bền, được tôn trọng',
-  health: 'Sức khỏe tốt, tinh thần minh mẫn',
+  health: 'Sức khỏe ổn định, tinh thần minh mẫn',
   advice: 'Nên phát huy khả năng lãnh đạo, giúp đỡ người khác',
   brightnessMeanings: {
     mieu: {
@@ -18,7 +18,7 @@ const archetype: StarArchetype = {
         'Tử Vi tọa Mệnh tạo cách "Quân vương tại vị". ' +
         'Đương số có tố chất lãnh đạo bẩm sinh, được mọi người nể phục và tôn trọng. ' +
         'Thích hợp với vai trò quản lý, chính trị hoặc làm chủ doanh nghiệp. ' +
-        'Nhiều người có cách này trở thành CEO, lãnh đạo tổ chức lớn.',
+        'Nhiều người có cách này trở thành lãnh đạo cấp cao hoặc đứng đầu doanh nghiệp lớn.',
       career:
         'Trong sự nghiệp, người có Tử Vi Miếu địa thường thăng tiến nhanh, được cấp trên tin tưởng và đồng nghiệp nể phục. ' +
         'Phù hợp với ngành quản lý, chính trị, tài chính và bất động sản. ' +
@@ -28,7 +28,7 @@ const archetype: StarArchetype = {
         'Tuy nhiên tính tự cao đôi khi khiến đối phương cảm thấy áp lực. ' +
         'Cần học cách chia sẻ và nhường nhịn trong quan hệ vợ chồng.',
       health:
-        'Sức khỏe tốt, tinh thần minh mẫn và ít bệnh tật. ' +
+        'Sức khỏe ổn định, tinh thần minh mẫn và ít bệnh tật. ' +
         'Cần chú ý stress do áp lực công việc và dành thời gian nghỉ ngơi hợp lý.',
       advice:
         'Phát huy khả năng lãnh đạo nhưng cần học cách lắng nghe và nhường nhịn. ' +
@@ -49,7 +49,7 @@ const archetype: StarArchetype = {
         'Đôi khi công việc khiến đương số ít dành thời gian cho gia đình. ' +
         'Nên chủ động sắp xếp thời gian và bày tỏ sự quan tâm nhiều hơn.',
       health:
-        'Thể trạng khá tốt nhưng dễ mệt mỏi khi làm việc quá độ. ' +
+        'Thể trạng ổn định nhưng dễ mệt mỏi khi làm việc quá độ. ' +
         'Cần chú ý các bệnh liên quan đến tim mạch và huyết áp.',
       advice:
         'Giữ vững bản lĩnh nhưng mềm mỏng trong giao tiếp. ' +
@@ -78,7 +78,7 @@ const archetype: StarArchetype = {
     },
     binh: {
       meaning:
-        'Tử Vi Bình hòa cho thấy khí chất lãnh đạo có phần mờ nhạt, đương số thiên về ổn định hơn là đột phá. ' +
+        'Tử Vi ổn định cho thấy khí chất lãnh đạo có phần mờ nhạt, đương số thiên về ổn định hơn là đột phá. ' +
         'Bản tính điềm đạm, ít tranh giành nhưng đôi khi thiếu quyết đoán. ' +
         'Có thể thành công trong vai trò chuyên môn hoặc hỗ trợ hơn là đứng mũi chịu sào. ' +
         'Cần rèn luyện sự tự tin và kỹ năng ra quyết định.',
@@ -91,7 +91,7 @@ const archetype: StarArchetype = {
         'Đôi khi đương số thiếu chủ động khiến đối phương hiểu lầm. ' +
         'Cần thẳng thắn bày tỏ mong muốn và quan tâm đến cảm xúc của nhau.',
       health:
-        'Sức khỏe trung bình, dễ mệt mỏi khi căng thẳng kéo dài. ' +
+        'Sức khỏe ở mức ổn định, dễ mệt mỏi khi căng thẳng kéo dài. ' +
         'Nên chú ý giấc ngủ và chế độ ăn uống cân bằng.',
       advice:
         'Xác định rõ mục tiêu và rèn luyện tính quyết đoán. ' +

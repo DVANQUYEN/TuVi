@@ -57,7 +57,7 @@ export function UserMenu({ user, onSignOut }: UserMenuProps): React.ReactElement
       <button
         ref={triggerRef}
         type="button"
-        className="flex items-center gap-2 rounded-md px-2 py-1 text-sm text-foreground transition-colors hover:text-gold"
+        className="flex min-h-11 items-center gap-2 rounded-md px-2 py-1 text-sm text-foreground transition-colors hover:text-gold lg:min-h-0"
         aria-haspopup="menu"
         aria-expanded={isOpen}
         aria-controls="user-menu"
@@ -87,7 +87,7 @@ export function UserMenu({ user, onSignOut }: UserMenuProps): React.ReactElement
             className="block px-4 py-2 text-sm text-foreground transition-colors hover:bg-elevated hover:text-gold"
             onClick={() => setIsOpen(false)}
           >
-            Quẻ đã lưu
+            Lá số đã lưu
           </Link>
           <button
             type="button"

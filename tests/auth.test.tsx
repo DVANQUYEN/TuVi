@@ -51,7 +51,7 @@ describe('LoginForm', () => {
     expect(container.querySelector('[role="alert"]')).toBeNull();
   });
 
-  it('shows the Supabase error message when sign in fails', async () => {
+  it('shows a localized sign-in error without leaking technical details', async () => {
     signInMock.mockResolvedValue({ data: {}, error: new Error('Invalid login credentials') });
 
     const { container } = render(<LoginForm />);
@@ -65,7 +65,30 @@ describe('LoginForm', () => {
     fireEvent.click(container.querySelector('button[type="submit"]') as HTMLButtonElement);
 
     const alert = await screen.findByRole('alert');
-    expect(alert).toHaveTextContent('Invalid login credentials');
+    expect(alert).toHaveTextContent('Không thể đăng nhập');
+    expect(alert).not.toHaveTextContent(/invalid login credentials/i);
+    expect(alert).not.toHaveTextContent('email_not_confirmed');
+    expect(pushMock).not.toHaveBeenCalled();
+  });
+
+  it('shows a generic sign-up error that does not reveal account existence', async () => {
+    signUpMock.mockResolvedValue({ data: {}, error: new Error('User already registered') });
+
+    const { container } = render(<LoginForm />);
+
+    fireEvent.click(container.querySelector('button[type="button"]') as HTMLButtonElement);
+    fireEvent.change(container.querySelector('#email') as HTMLInputElement, {
+      target: { value: 'user@example.com' },
+    });
+    fireEvent.change(container.querySelector('#password') as HTMLInputElement, {
+      target: { value: 'secret123' },
+    });
+    fireEvent.click(container.querySelector('button[type="submit"]') as HTMLButtonElement);
+
+    const alert = await screen.findByRole('alert');
+    expect(alert).toHaveTextContent('Không thể đăng ký');
+    expect(alert).not.toHaveTextContent(/already registered/i);
+    expect(alert).not.toHaveTextContent('email_exists');
     expect(pushMock).not.toHaveBeenCalled();
   });
 

@@ -1,0 +1,730 @@
+[
+  {
+    "iso": "2024-01-01",
+    "age": 20,
+    "branch": "Mão",
+    "locTon": "Mệnh",
+    "kinh": "Huynh Đệ",
+    "da": "Phụ Mẫu",
+    "mutagens": [
+      {
+        "type": "Lộc",
+        "star": "Phá Quân",
+        "palace": "Mệnh"
+      },
+      {
+        "type": "Quyền",
+        "star": "Cự Môn",
+        "palace": "Nô Bộc"
+      },
+      {
+        "type": "Khoa",
+        "star": "Thái Âm",
+        "palace": "Điền Trạch"
+      },
+      {
+        "type": "Kỵ",
+        "star": "Tham Lang",
+        "palace": "Quan Lộc"
+      }
+    ],
+    "signals": [
+      "dai-van-thuan:Phụ Mẫu",
+      "tieu-van-bien-dong:Nô Bộc",
+      "luu-loc-ton:Mệnh",
+      "luu-hoa-loc:Mệnh",
+      "luu-hoa-ky:Quan Lộc"
+    ],
+    "truc": {
+      "name": "Kiến",
+      "lucky": true
+    },
+    "activated": [
+      {
+        "name": "Phụ Mẫu",
+        "reasons": [
+          "Đại vận",
+          "Lưu Đà La"
+        ]
+      },
+      {
+        "name": "Nô Bộc",
+        "reasons": [
+          "Tiểu vận",
+          "Lưu Hóa Quyền"
+        ]
+      },
+      {
+        "name": "Điền Trạch",
+        "reasons": [
+          "Lưu niên/Thái Tuế",
+          "Lưu Hóa Khoa"
+        ]
+      },
+      {
+        "name": "Mệnh",
+        "reasons": [
+          "Lưu nguyệt",
+          "Lưu nhật",
+          "Lưu Lộc Tồn",
+          "Lưu Hóa Lộc"
+        ]
+      },
+      {
+        "name": "Huynh Đệ",
+        "reasons": [
+          "Lưu Kình Dương"
+        ]
+      },
+      {
+        "name": "Quan Lộc",
+        "reasons": [
+          "Lưu Hóa Kỵ"
+        ]
+      }
+    ]
+  },
+  {
+    "iso": "2024-01-08",
+    "age": 20,
+    "branch": "Mão",
+    "locTon": "Mệnh",
+    "kinh": "Huynh Đệ",
+    "da": "Phụ Mẫu",
+    "mutagens": [
+      {
+        "type": "Lộc",
+        "star": "Phá Quân",
+        "palace": "Mệnh"
+      },
+      {
+        "type": "Quyền",
+        "star": "Cự Môn",
+        "palace": "Nô Bộc"
+      },
+      {
+        "type": "Khoa",
+        "star": "Thái Âm",
+        "palace": "Điền Trạch"
+      },
+      {
+        "type": "Kỵ",
+        "star": "Tham Lang",
+        "palace": "Quan Lộc"
+      }
+    ],
+    "signals": [
+      "dai-van-thuan:Phụ Mẫu",
+      "tieu-van-bien-dong:Nô Bộc",
+      "luu-loc-ton:Mệnh",
+      "luu-hoa-loc:Mệnh",
+      "luu-hoa-ky:Quan Lộc"
+    ],
+    "truc": {
+      "name": "Nguy",
+      "lucky": false
+    },
+    "activated": [
+      {
+        "name": "Phụ Mẫu",
+        "reasons": [
+          "Đại vận",
+          "Lưu Đà La"
+        ]
+      },
+      {
+        "name": "Nô Bộc",
+        "reasons": [
+          "Tiểu vận",
+          "Lưu Hóa Quyền"
+        ]
+      },
+      {
+        "name": "Điền Trạch",
+        "reasons": [
+          "Lưu niên/Thái Tuế",
+          "Lưu Hóa Khoa"
+        ]
+      },
+      {
+        "name": "Mệnh",
+        "reasons": [
+          "Lưu nguyệt",
+          "Lưu Lộc Tồn",
+          "Lưu Hóa Lộc"
+        ]
+      },
+      {
+        "name": "Tật Ách",
+        "reasons": [
+          "Lưu nhật"
+        ]
+      },
+      {
+        "name": "Huynh Đệ",
+        "reasons": [
+          "Lưu Kình Dương"
+        ]
+      },
+      {
+        "name": "Quan Lộc",
+        "reasons": [
+          "Lưu Hóa Kỵ"
+        ]
+      }
+    ]
+  },
+  {
+    "iso": "2024-01-15",
+    "age": 20,
+    "branch": "Mão",
+    "locTon": "Mệnh",
+    "kinh": "Huynh Đệ",
+    "da": "Phụ Mẫu",
+    "mutagens": [
+      {
+        "type": "Lộc",
+        "star": "Phá Quân",
+        "palace": "Mệnh"
+      },
+      {
+        "type": "Quyền",
+        "star": "Cự Môn",
+        "palace": "Nô Bộc"
+      },
+      {
+        "type": "Khoa",
+        "star": "Thái Âm",
+        "palace": "Điền Trạch"
+      },
+      {
+        "type": "Kỵ",
+        "star": "Tham Lang",
+        "palace": "Quan Lộc"
+      }
+    ],
+    "signals": [
+      "dai-van-thuan:Phụ Mẫu",
+      "tieu-van-bien-dong:Nô Bộc",
+      "luu-loc-ton:Mệnh",
+      "luu-hoa-loc:Mệnh",
+      "luu-hoa-ky:Quan Lộc"
+    ],
+    "truc": {
+      "name": "Trừ",
+      "lucky": false
+    },
+    "activated": [
+      {
+        "name": "Phụ Mẫu",
+        "reasons": [
+          "Đại vận",
+          "Lưu nguyệt",
+          "Lưu Đà La"
+        ]
+      },
+      {
+        "name": "Nô Bộc",
+        "reasons": [
+          "Tiểu vận",
+          "Lưu Hóa Quyền"
+        ]
+      },
+      {
+        "name": "Điền Trạch",
+        "reasons": [
+          "Lưu niên/Thái Tuế",
+          "Lưu Hóa Khoa"
+        ]
+      },
+      {
+        "name": "Phúc Đức",
+        "reasons": [
+          "Lưu nhật"
+        ]
+      },
+      {
+        "name": "Mệnh",
+        "reasons": [
+          "Lưu Lộc Tồn",
+          "Lưu Hóa Lộc"
+        ]
+      },
+      {
+        "name": "Huynh Đệ",
+        "reasons": [
+          "Lưu Kình Dương"
+        ]
+      },
+      {
+        "name": "Quan Lộc",
+        "reasons": [
+          "Lưu Hóa Kỵ"
+        ]
+      }
+    ]
+  },
+  {
+    "iso": "2024-01-22",
+    "age": 20,
+    "branch": "Mão",
+    "locTon": "Mệnh",
+    "kinh": "Huynh Đệ",
+    "da": "Phụ Mẫu",
+    "mutagens": [
+      {
+        "type": "Lộc",
+        "star": "Phá Quân",
+        "palace": "Mệnh"
+      },
+      {
+        "type": "Quyền",
+        "star": "Cự Môn",
+        "palace": "Nô Bộc"
+      },
+      {
+        "type": "Khoa",
+        "star": "Thái Âm",
+        "palace": "Điền Trạch"
+      },
+      {
+        "type": "Kỵ",
+        "star": "Tham Lang",
+        "palace": "Quan Lộc"
+      }
+    ],
+    "signals": [
+      "dai-van-thuan:Phụ Mẫu",
+      "tieu-van-bien-dong:Nô Bộc",
+      "luu-loc-ton:Mệnh",
+      "luu-hoa-loc:Mệnh",
+      "luu-hoa-ky:Quan Lộc"
+    ],
+    "truc": {
+      "name": "Thành",
+      "lucky": true
+    },
+    "activated": [
+      {
+        "name": "Phụ Mẫu",
+        "reasons": [
+          "Đại vận",
+          "Lưu nguyệt",
+          "Lưu Đà La"
+        ]
+      },
+      {
+        "name": "Nô Bộc",
+        "reasons": [
+          "Tiểu vận",
+          "Lưu Hóa Quyền"
+        ]
+      },
+      {
+        "name": "Điền Trạch",
+        "reasons": [
+          "Lưu niên/Thái Tuế",
+          "Lưu Hóa Khoa"
+        ]
+      },
+      {
+        "name": "Tử Tức",
+        "reasons": [
+          "Lưu nhật"
+        ]
+      },
+      {
+        "name": "Mệnh",
+        "reasons": [
+          "Lưu Lộc Tồn",
+          "Lưu Hóa Lộc"
+        ]
+      },
+      {
+        "name": "Huynh Đệ",
+        "reasons": [
+          "Lưu Kình Dương"
+        ]
+      },
+      {
+        "name": "Quan Lộc",
+        "reasons": [
+          "Lưu Hóa Kỵ"
+        ]
+      }
+    ]
+  },
+  {
+    "iso": "2024-02-01",
+    "age": 20,
+    "branch": "Mão",
+    "locTon": "Mệnh",
+    "kinh": "Huynh Đệ",
+    "da": "Phụ Mẫu",
+    "mutagens": [
+      {
+        "type": "Lộc",
+        "star": "Phá Quân",
+        "palace": "Mệnh"
+      },
+      {
+        "type": "Quyền",
+        "star": "Cự Môn",
+        "palace": "Nô Bộc"
+      },
+      {
+        "type": "Khoa",
+        "star": "Thái Âm",
+        "palace": "Điền Trạch"
+      },
+      {
+        "type": "Kỵ",
+        "star": "Tham Lang",
+        "palace": "Quan Lộc"
+      }
+    ],
+    "signals": [
+      "dai-van-thuan:Phụ Mẫu",
+      "tieu-van-bien-dong:Nô Bộc",
+      "luu-loc-ton:Mệnh",
+      "luu-hoa-loc:Mệnh",
+      "luu-hoa-ky:Quan Lộc"
+    ],
+    "truc": {
+      "name": "Phá",
+      "lucky": false
+    },
+    "activated": [
+      {
+        "name": "Phụ Mẫu",
+        "reasons": [
+          "Đại vận",
+          "Lưu nguyệt",
+          "Lưu Đà La"
+        ]
+      },
+      {
+        "name": "Nô Bộc",
+        "reasons": [
+          "Tiểu vận",
+          "Lưu Hóa Quyền"
+        ]
+      },
+      {
+        "name": "Điền Trạch",
+        "reasons": [
+          "Lưu niên/Thái Tuế",
+          "Lưu Hóa Khoa"
+        ]
+      },
+      {
+        "name": "Tật Ách",
+        "reasons": [
+          "Lưu nhật"
+        ]
+      },
+      {
+        "name": "Mệnh",
+        "reasons": [
+          "Lưu Lộc Tồn",
+          "Lưu Hóa Lộc"
+        ]
+      },
+      {
+        "name": "Huynh Đệ",
+        "reasons": [
+          "Lưu Kình Dương"
+        ]
+      },
+      {
+        "name": "Quan Lộc",
+        "reasons": [
+          "Lưu Hóa Kỵ"
+        ]
+      }
+    ]
+  },
+  {
+    "iso": "2024-02-08",
+    "age": 20,
+    "branch": "Mão",
+    "locTon": "Mệnh",
+    "kinh": "Huynh Đệ",
+    "da": "Phụ Mẫu",
+    "mutagens": [
+      {
+        "type": "Lộc",
+        "star": "Phá Quân",
+        "palace": "Mệnh"
+      },
+      {
+        "type": "Quyền",
+        "star": "Cự Môn",
+        "palace": "Nô Bộc"
+      },
+      {
+        "type": "Khoa",
+        "star": "Thái Âm",
+        "palace": "Điền Trạch"
+      },
+      {
+        "type": "Kỵ",
+        "star": "Tham Lang",
+        "palace": "Quan Lộc"
+      }
+    ],
+    "signals": [
+      "dai-van-thuan:Phụ Mẫu",
+      "tieu-van-bien-dong:Nô Bộc",
+      "luu-loc-ton:Mệnh",
+      "luu-hoa-loc:Mệnh",
+      "luu-hoa-ky:Quan Lộc"
+    ],
+    "truc": {
+      "name": "Trừ",
+      "lucky": false
+    },
+    "activated": [
+      {
+        "name": "Phụ Mẫu",
+        "reasons": [
+          "Đại vận",
+          "Lưu nguyệt",
+          "Lưu Đà La"
+        ]
+      },
+      {
+        "name": "Nô Bộc",
+        "reasons": [
+          "Tiểu vận",
+          "Lưu Hóa Quyền"
+        ]
+      },
+      {
+        "name": "Điền Trạch",
+        "reasons": [
+          "Lưu niên/Thái Tuế",
+          "Lưu Hóa Khoa"
+        ]
+      },
+      {
+        "name": "Phúc Đức",
+        "reasons": [
+          "Lưu nhật"
+        ]
+      },
+      {
+        "name": "Mệnh",
+        "reasons": [
+          "Lưu Lộc Tồn",
+          "Lưu Hóa Lộc"
+        ]
+      },
+      {
+        "name": "Huynh Đệ",
+        "reasons": [
+          "Lưu Kình Dương"
+        ]
+      },
+      {
+        "name": "Quan Lộc",
+        "reasons": [
+          "Lưu Hóa Kỵ"
+        ]
+      }
+    ]
+  },
+  {
+    "iso": "2028-02-01",
+    "age": 24,
+    "branch": "Thân",
+    "locTon": "Nô Bộc",
+    "kinh": "Quan Lộc",
+    "da": "Thiên Di",
+    "mutagens": [
+      {
+        "type": "Lộc",
+        "star": "Tham Lang",
+        "palace": "Quan Lộc"
+      },
+      {
+        "type": "Quyền",
+        "star": "Thái Âm",
+        "palace": "Điền Trạch"
+      },
+      {
+        "type": "Khoa",
+        "star": "Hữu Bật",
+        "palace": "Nô Bộc"
+      },
+      {
+        "type": "Kỵ",
+        "star": "Thiên Cơ",
+        "palace": "Phụ Mẫu"
+      }
+    ],
+    "signals": [
+      "dai-van-thuan:Phúc Đức",
+      "tieu-van-bien-dong:Tử Tức",
+      "luu-hoa-loc:Quan Lộc",
+      "luu-kinh-duong:Quan Lộc"
+    ],
+    "truc": {
+      "name": "Mãn",
+      "lucky": true
+    },
+    "activated": [
+      {
+        "name": "Phúc Đức",
+        "reasons": [
+          "Đại vận",
+          "Lưu nguyệt"
+        ]
+      },
+      {
+        "name": "Tử Tức",
+        "reasons": [
+          "Tiểu vận"
+        ]
+      },
+      {
+        "name": "Tài Bạch",
+        "reasons": [
+          "Lưu niên/Thái Tuế"
+        ]
+      },
+      {
+        "name": "Quan Lộc",
+        "reasons": [
+          "Lưu nhật",
+          "Lưu Kình Dương",
+          "Lưu Hóa Lộc"
+        ]
+      },
+      {
+        "name": "Nô Bộc",
+        "reasons": [
+          "Lưu Lộc Tồn",
+          "Lưu Hóa Khoa"
+        ]
+      },
+      {
+        "name": "Thiên Di",
+        "reasons": [
+          "Lưu Đà La"
+        ]
+      },
+      {
+        "name": "Điền Trạch",
+        "reasons": [
+          "Lưu Hóa Quyền"
+        ]
+      },
+      {
+        "name": "Phụ Mẫu",
+        "reasons": [
+          "Lưu Hóa Kỵ"
+        ]
+      }
+    ]
+  },
+  {
+    "iso": "2028-02-08",
+    "age": 24,
+    "branch": "Thân",
+    "locTon": "Nô Bộc",
+    "kinh": "Quan Lộc",
+    "da": "Thiên Di",
+    "mutagens": [
+      {
+        "type": "Lộc",
+        "star": "Tham Lang",
+        "palace": "Quan Lộc"
+      },
+      {
+        "type": "Quyền",
+        "star": "Thái Âm",
+        "palace": "Điền Trạch"
+      },
+      {
+        "type": "Khoa",
+        "star": "Hữu Bật",
+        "palace": "Nô Bộc"
+      },
+      {
+        "type": "Kỵ",
+        "star": "Thiên Cơ",
+        "palace": "Phụ Mẫu"
+      }
+    ],
+    "signals": [
+      "dai-van-thuan:Phúc Đức",
+      "tieu-van-bien-dong:Tử Tức",
+      "luu-hoa-loc:Quan Lộc",
+      "luu-kinh-duong:Quan Lộc"
+    ],
+    "truc": {
+      "name": "Thu",
+      "lucky": false
+    },
+    "activated": [
+      {
+        "name": "Phúc Đức",
+        "reasons": [
+          "Đại vận",
+          "Lưu nguyệt"
+        ]
+      },
+      {
+        "name": "Tử Tức",
+        "reasons": [
+          "Tiểu vận"
+        ]
+      },
+      {
+        "name": "Tài Bạch",
+        "reasons": [
+          "Lưu niên/Thái Tuế"
+        ]
+      },
+      {
+        "name": "Huynh Đệ",
+        "reasons": [
+          "Lưu nhật"
+        ]
+      },
+      {
+        "name": "Nô Bộc",
+        "reasons": [
+          "Lưu Lộc Tồn",
+          "Lưu Hóa Khoa"
+        ]
+      },
+      {
+        "name": "Quan Lộc",
+        "reasons": [
+          "Lưu Kình Dương",
+          "Lưu Hóa Lộc"
+        ]
+      },
+      {
+        "name": "Thiên Di",
+        "reasons": [
+          "Lưu Đà La"
+        ]
+      },
+      {
+        "name": "Điền Trạch",
+        "reasons": [
+          "Lưu Hóa Quyền"
+        ]
+      },
+      {
+        "name": "Phụ Mẫu",
+        "reasons": [
+          "Lưu Hóa Kỵ"
+        ]
+      }
+    ]
+  }
+]

@@ -18,7 +18,7 @@ export const COMBINATIONS: CombinationInterpretation[] = [
       'Tử Vi tọa Mệnh tạo cách "Quân vương tại vị". ' +
       'Đương số có tố chất lãnh đạo bẩm sinh, được mọi người nể phục và tôn trọng. ' +
       'Thích hợp với vai trò quản lý, chính trị hoặc làm chủ doanh nghiệp. ' +
-      'Nhiều người có cách này trở thành CEO, lãnh đạo tổ chức lớn.',
+      'Nhiều người có cách này trở thành lãnh đạo cấp cao hoặc đứng đầu doanh nghiệp lớn.',
     level: 'tốt',
   },
   {
@@ -146,9 +146,9 @@ export const COMBINATIONS: CombinationInterpretation[] = [
       brightness: ['ham'],
     },
     meaning:
-      'Tử Vi rơi vào hãm địa khiến khí chất lãnh đạo bị giảm sút, dễ cảm thấy cô lập. ' +
+      'Tử Vi rơi vào hãm địa khiến khí chất lãnh đạo bị giảm sút, có lúc cảm thấy đơn độc. ' +
       'Đương số có hoài bão lớn nhưng đôi khi thiếu người đồng hành hoặc bị hiểu lầm. ' +
-      'Công việc dễ gặp trở ngại vì tâm lý tự cao hoặc không chịu lắng nghe. ' +
+      'Công việc có thể gặp trở ngại khi cái tôi quá lớn hoặc chưa chịu lắng nghe. ' +
       'Cần học cách khiêm tốn, xây dựng quan hệ chân thành để dần lấy lại vị thế.',
     level: 'xấu',
   },
@@ -159,7 +159,7 @@ export const COMBINATIONS: CombinationInterpretation[] = [
       stars: ['hoaTinh', 'linhTinh'],
     },
     meaning:
-      'Hỏa Tinh và Linh Tinh gặp Hóa Kỵ tạo thế dễ gặp tai nạn, thị phi và căng thẳng. ' +
+      'Hỏa Tinh và Linh Tinh gặp Hóa Kỵ tạo thế dễ phát sinh sự cố bất ngờ, thị phi và căng thẳng. ' +
       'Đương số có phản ứng nhanh nhưng dễ bốc đồng, quyết định thiếu suy xét. ' +
       'Cần thận trọng khi tham gia giao thông, ký kết hợp đồng và xử lý mâu thuẫn. ' +
       'Giữ tinh thần bình tĩnh, tránh tranh cãi vô ích sẽ giúp giảm bớt phần lớn rủi ro.',

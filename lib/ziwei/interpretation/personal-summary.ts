@@ -22,13 +22,19 @@ export interface PersonalSummary {
   tamHopAndThanParagraph?: string;
   /** Đoạn kết tổng hợp, kèm nội dung `description`. */
   conclusionParagraph?: string;
+  /** Khẩu khí một dòng, hiển thị đầu phần Luận giải. */
+  conclusionQuote: string;
+  /** Sắc thái tổng quan của lá số, dùng cho khẩu khí. */
+  conclusionTone: 'high' | 'balanced' | 'challenging';
 }
+
+type ConclusionTone = PersonalSummary['conclusionTone'];
 
 const BRIGHTNESS_LABELS_VI: Readonly<Record<BrightnessLevel, string>> = {
   mieu: 'Miếu địa',
   vuong: 'Vượng địa',
   dac: 'Đắc địa',
-  binh: 'Bình hòa',
+  binh: 'Ổn định',
   ham: 'Hãm địa',
 };
 
@@ -225,11 +231,11 @@ function buildMenhParagraph(chart: ZiweiChart): string {
       );
     } else if (best === 'binh') {
       parts.push(
-        'Chính tinh ở thế **Bình hòa** nên năng lượng cốt lõi trung bình, thành công phụ thuộc nhiều vào nỗ lực và môi trường.'
+        'Chính tinh ở thế **Ổn định** nên năng lượng cốt lõi ở mức ổn định, thành công phụ thuộc nhiều vào nỗ lực và môi trường.'
       );
     } else if (best === 'ham') {
       parts.push(
-        'Chính tinh ở thế **Hãm địa** nên năng lượng cốt lõi bị hạn chế, dễ thiếu tự tin hoặc vất vả hơn người khác; cần tích lũy kinh nghiệm để bù đắp.'
+        'Chính tinh ở thế **Hãm địa** nên năng lượng cốt lõi bị hạn chế, dễ thiếu tự tin hoặc vất vả hơn người khác; cần nhiều nỗ lực để bù đắp, và kiên trì tích lũy kinh nghiệm sẽ giúp chuyển hóa nghịch cảnh.'
       );
     }
 
@@ -328,6 +334,121 @@ function buildTamHopAndThanParagraph(chart: ZiweiChart): string {
   return parts.join(' ');
 }
 
+const SAT_PHA_THAM_STARS: readonly string[] = ['Thất Sát', 'Phá Quân', 'Tham Lang'];
+
+type ConclusionQuoteCategory = ConclusionTone | 'voChinhDieu' | 'thanCuThienDi' | 'satPhaTham';
+
+const CONCLUSION_QUOTES: Readonly<Record<ConclusionQuoteCategory, readonly string[]>> = {
+  high: [
+    'Phú quý tại thiên, sinh phùng thời vận, cả đời an khang thịnh vượng.',
+    'Phúc trạch sâu dày, quý nhân phù trợ, gặp hung hóa cát.',
+    'Mệnh đắc chính tinh, vận trình hanh thông, hậu vận an khang.',
+    'Khí chất đường hoàng, tài lộc hanh thông, gia đạo vững bền.',
+    'Căn cơ vững chắc, gặp thời thì phát, giữ đức thì bền lâu.',
+    'Sao sáng chiếu mệnh, đường đời rộng mở, càng về sau càng hanh thông.',
+  ],
+  balanced: [
+    'Cục diện trung hòa, có thăng có trầm, cốt ở chữ nhẫn mà vững bước.',
+    'Không quá hiển đạt nhưng ổn định, biết tùy thời thì an khang.',
+    'Tiền vận có chút chông gai, hậu vận dần yên ổn nếu biết giữ mình.',
+    'Âm dương hòa hợp, được mất đan xen, giữ tâm bình thì đường dài an ổn.',
+    'Vận trình không dồn dập, cốt ở sự bền bỉ và biết lượng sức mà tiến.',
+    'Có lúc thuận có lúc nghịch, biết tiến thoái đúng lúc thì sự nghiệp hanh thông.',
+  ],
+  challenging: [
+    'Cung Mệnh có nhiều sao cản trở, cuộc đời lắm đoạn thăng trầm, cần lấy nhẫn nại làm gốc.',
+    'Tiền vận lắm nỗi gian nan, hậu vận mới dần yên ổn nếu biết tu tâm.',
+    'Duyên khởi có phần trắc trở, cần lấy đức thắng số, lấy tĩnh chế động.',
+    'Sóng gió là thử thách để tôi luyện; giữ tâm vững thì hậu vận an khang.',
+    'Đường đời nhiều chông gai, càng giữ chí bền thì càng dễ chuyển hung thành cát.',
+    'Vận có lúc ngặt nghèo, cốt lấy thiện tâm và nghị lực mà vượt qua.',
+  ],
+  voChinhDieu: [
+    'Mệnh vô chính diệu, nên ly hương lập nghiệp, mượn thế tam phương mà dựng cơ đồ.',
+    'Mệnh vô chính diệu, tiền vận nhiều phen thử sức, hậu vận vững vàng nếu biết bền chí.',
+    'Mệnh vô chính diệu, linh hoạt ứng biến, càng đi xa càng gặp quý nhân nâng đỡ.',
+    'Mệnh vô chính diệu, chẳng nên thủ cựu, biết tùy duyên mà lập nghiệp thì về sau yên ổn.',
+    'Mệnh vô chính diệu, lấy tam phương chiếu về làm chỗ dựa, bền chí ắt có ngày nên.',
+  ],
+  thanCuThienDi: [
+    'Thân cư Thiên Di, bôn ba bốn bể nhưng hậu vận viên mãn.',
+    'Thân cư Thiên Di, càng đi xa càng mở rộng cơ duyên.',
+    'Thân cư Thiên Di, nửa đời lưu động, đổi thay là lẽ thường nhưng càng về sau càng vững.',
+    'Thân cư Thiên Di, lấy phương xa làm đất dụng võ, giữ tâm vững thì đường dài hanh thông.',
+    'Thân cư Thiên Di, ra ngoài lập nghiệp dễ gặp quý nhân, nhưng cần giữ gốc gia đạo.',
+  ],
+  satPhaTham: [
+    'Sát Phá Tham hội hợp, anh hùng tạo thời thế, thăng trầm bất định nhưng lập nên cơ đồ.',
+    'Sát Phá Tham hội hợp, càng trải sóng gió càng mở rộng cơ nghiệp.',
+    'Sát Phá Tham hội hợp, dám phá cũ lập mới, biết tiết chế thì thăng trầm hóa thành bản lĩnh.',
+    'Sát Phá Tham hội hợp, tiền vận nhiều phen đổi dời, hậu vận vững vàng nếu biết tích lũy.',
+    'Sát Phá Tham hội hợp, khí phách hơn người, cốt lấy nhẫn nại và chừng mực mà giữ thành quả.',
+  ],
+};
+
+function findBodyPalace(chart: ZiweiChart): Palace | undefined {
+  const palaces = chart.palaces ?? [];
+  const flagged = palaces.find((palace) => palace.isBodyPalace);
+  if (flagged) return flagged;
+  const bodyBranch = chart.heavenPlate?.bodyPalaceBranch;
+  if (!bodyBranch) return undefined;
+  return palaces.find((palace) => palace.branch === bodyBranch);
+}
+
+function deriveConclusionTone(menh: Palace | undefined): ConclusionTone {
+  const maleficCount = menh?.maleficStars?.length ?? 0;
+  const auspiciousCount = menh?.auspiciousStars?.length ?? 0;
+  const best = bestBrightness(menh?.majorStars ?? []);
+  const hasTuanTriet = Boolean(menh?.hasTuan || menh?.hasTriet);
+
+  if (
+    best &&
+    BRIGHTNESS_RANK[best] >= BRIGHTNESS_RANK.dac &&
+    maleficCount <= 1 &&
+    !hasTuanTriet &&
+    auspiciousCount > 0
+  ) {
+    return 'high';
+  }
+
+  if (maleficCount >= 3 || best === 'ham' || (hasTuanTriet && maleficCount >= 1)) {
+    return 'challenging';
+  }
+
+  return 'balanced';
+}
+
+/** Chọn câu cố định theo cung, số sao và độ sáng để cùng một lá số luôn ra cùng khẩu khí. */
+function pickConclusionQuote(category: ConclusionQuoteCategory, menh: Palace | undefined): string {
+  const quotes = CONCLUSION_QUOTES[category];
+  const branchIndex = menh?.index ?? 0;
+  const starCount = (menh?.majorStars?.length ?? 0) + (menh?.maleficStars?.length ?? 0);
+  const best = bestBrightness(menh?.majorStars ?? []);
+  const brightnessRank = best ? BRIGHTNESS_RANK[best] : 0;
+  return quotes[(branchIndex + starCount + brightnessRank) % quotes.length];
+}
+
+function buildConclusionQuote(chart: ZiweiChart): { quote: string; tone: ConclusionTone } {
+  const palaces = chart.palaces ?? [];
+  const menh = palaces.find((palace) => palace.id === 'menh');
+  const majorStarNames = (menh?.majorStars ?? []).map((star) => star.name);
+  const bodyPalace = findBodyPalace(chart);
+  const tone = deriveConclusionTone(menh);
+
+  let category: ConclusionQuoteCategory;
+  if (menh && majorStarNames.length === 0) {
+    category = 'voChinhDieu';
+  } else if (majorStarNames.some((name) => SAT_PHA_THAM_STARS.includes(name))) {
+    category = 'satPhaTham';
+  } else if (bodyPalace?.id === 'thienDi') {
+    category = 'thanCuThienDi';
+  } else {
+    category = tone;
+  }
+
+  return { quote: pickConclusionQuote(category, menh), tone };
+}
+
 function buildConclusionParagraph(chart: ZiweiChart, description: string): string {
   const menh = findPalace(chart, 'menh');
   const stars = menh?.majorStars ?? [];
@@ -345,7 +466,7 @@ function buildConclusionParagraph(chart: ZiweiChart, description: string): strin
       'số mệnh thăng trầm xen kẽ, giai đoạn đầu thường phải nỗ lực nhiều, thành quả đến từ sự bền bỉ và tích lũy kinh nghiệm.';
   } else if (best === 'ham') {
     trajectory =
-      'số mệnh nhiều biến động, đương số dễ gặp thử thách lớn hơn người khác, nhưng nếu vượt qua được thì bài học rút ra rất sâu sắc.';
+      'số mệnh nhiều biến động, đương số dễ gặp thử thách lớn hơn người khác, nhưng nếu kiên trì vượt qua được thì bài học rút ra rất sâu sắc.';
   } else {
     trajectory =
       'số mệnh mang tính trung tính, thành công phụ thuộc vào sự cân bằng giữa nỗ lực bản thân và hoàn cảnh, càng về sau càng rõ nét khi biết phát huy thế mạnh.';
@@ -380,14 +501,14 @@ export function generatePersonalSummary(chart: ZiweiChart): PersonalSummary {
     description =
       'Với khí chất cao quý và tố chất lãnh đạo, bạn được mọi người tôn trọng và nể phục. ' +
       'Bạn có khả năng quyết đoán, tầm nhìn xa, và thích hợp với vai trò quản lý. ' +
-      'Tuy nhiên, quá tự cao và cố chấp, dễ gây mất lòng người khác. ' +
-      'Nếu không biết kiềm chế, dễ gặp cảnh cô độc, không người thân cận. ' +
-      'Con đường thành công của bạn là trở thành lãnh đạo, quản lý, hoặc entrepreneur.';
+      'Tuy nhiên, đôi khi quá tự cao và cố chấp có thể khiến người khác e dè. ' +
+      'Nếu biết tiết chế, bạn sẽ giữ được những người đồng hành bền lâu. ' +
+      'Con đường thành công của bạn là lãnh đạo, quản lý hoặc chủ doanh nghiệp.';
     keyTraits = [
       'Khí chất cao quý, được tôn trọng',
       'Khả năng lãnh đạo, quyết đoán',
       'Tầm nhìn xa, chiến lược',
-      'Quá tự cao, dễ cô độc',
+      'Cần tiết chế cái tôi',
     ];
     lifePath = 'Lãnh đạo, quản lý, chính trị, kinh doanh';
   } else if (starNames.includes('Thiên Phủ')) {
@@ -465,13 +586,13 @@ export function generatePersonalSummary(chart: ZiweiChart): PersonalSummary {
     description =
       'Với tính cách tài năng và có sức hút, bạn dễ dàng thu hút người khác và có nhiều cơ hội trong cuộc sống. ' +
       'Bạn có khả năng giao tiếp tốt, thích hợp với vai trò ngoại giao, kinh doanh. ' +
-      'Tuy nhiên, quá đào hoa, dễ vướng vào thị phi tình cảm, có thể gặp cảnh ly tán. ' +
+      'Tuy nhiên, sự đào hoa có thể khiến bạn vướng vào thị phi tình cảm; cần giữ chừng mực để tránh rạn nứt. ' +
       'Con đường thành công của bạn là trong lĩnh vực kinh doanh, ngoại giao, hoặc nghệ thuật.';
     keyTraits = [
       'Tài năng, có sức hút',
       'Khả năng giao tiếp tốt',
       'Nhiều cơ hội trong cuộc sống',
-      'Quá đào hoa, dễ vướng thị phi',
+      'Cần giữ chừng mực trong tình cảm',
     ];
     lifePath = 'Kinh doanh, ngoại giao, nghệ thuật';
   } else if (starNames.includes('Cự Môn')) {
@@ -479,13 +600,13 @@ export function generatePersonalSummary(chart: ZiweiChart): PersonalSummary {
     description =
       'Với tính cách thẳng thắn và có tài phân tích, bạn có khả năng nhìn nhận vấn đề một cách sắc bén. ' +
       'Bạn thích tranh luận, nghiên cứu, và không sợ đối mặt với sự thật. ' +
-      'Tuy nhiên, quá khẩu thiệt, dễ gây thù oán, cuộc đời nhiều thị phi. ' +
+      'Tuy nhiên, lời nói đôi khi sắc bén dễ sinh hiểu lầm; cần giữ hòa khí trong giao tiếp. ' +
       'Con đường thành công của bạn là trong lĩnh vực luật, tư vấn, hoặc nghiên cứu.';
     keyTraits = [
       'Thẳng thắn, có tài phân tích',
       'Nhìn nhận vấn đề sắc bén',
       'Thích tranh luận, nghiên cứu',
-      'Quá khẩu thiệt, dễ gây thù oán',
+      'Cần giữ hòa khí trong lời nói',
     ];
     lifePath = 'Luật, tư vấn, nghiên cứu';
   } else if (starNames.includes('Thiên Cơ')) {
@@ -548,14 +669,15 @@ export function generatePersonalSummary(chart: ZiweiChart): PersonalSummary {
     headline = 'Bạn là người mạnh mẽ, quyết đoán';
     description =
       'Với tính cách mạnh mẽ và quyết đoán, bạn không sợ khó khăn và luôn tiến về phía trước. ' +
-      'Bạn có khả năng lãnh đạo, nhưng quá cứng nhắc và độc đoán, dễ gây mất lòng người khác. ' +
-      'Cuộc đời nhiều thăng trầm, có thể gặp nhiều tai nạn, thị phi. ' +
-      'Nếu không biết kiềm chế, dễ gặp cảnh cô độc, không người thân cận.';
+      'Bạn có khả năng lãnh đạo, nhưng đôi khi quá cứng nhắc và độc đoán có thể khiến người khác e dè. ' +
+      'Cuộc đời nhiều thăng trầm, có thể gặp tai nạn hoặc thị phi; nếu thiếu kiềm chế, dễ rơi vào cảnh cô độc, ít người thân cận. ' +
+      'Biết lắng nghe và tiết chế sẽ giúp biến thử thách thành bản lĩnh. ' +
+      'Con đường phù hợp là những lĩnh vực cần sự quyết liệt và tinh thần tiên phong.';
     keyTraits = [
       'Mạnh mẽ, quyết đoán',
       'Không sợ khó khăn',
       'Thích sự thách thức',
-      'Quá cứng nhắc, dễ gây thù oán',
+      'Cần mềm mỏng hơn trong giao tiếp',
     ];
     lifePath = 'Quân đội, cảnh sát, kinh doanh mạo hiểm';
   } else if (starNames.includes('Phá Quân')) {
@@ -563,13 +685,13 @@ export function generatePersonalSummary(chart: ZiweiChart): PersonalSummary {
     description =
       'Với tính cách sáng tạo và không ngại thay đổi, bạn luôn tìm kiếm những điều mới mẻ. ' +
       'Bạn có khả năng đột phá, không thích sự gò bó, và luôn muốn thay đổi thế giới. ' +
-      'Tuy nhiên, quá bốc đồng, dễ phá hoại cơ nghiệp, cuộc đời bấp bênh. ' +
+      'Tuy nhiên, sự bốc đồng có thể khiến bạn đưa ra quyết định vội vàng; cần cân nhắc hậu quả trước khi hành động. ' +
       'Con đường thành công của bạn là trong lĩnh vực khởi nghiệp, sáng tạo, hoặc nghiên cứu.';
     keyTraits = [
       'Sáng tạo, không ngại thay đổi',
       'Khả năng đột phá',
       'Không thích sự gò bó',
-      'Quá bốc đồng, dễ phá hoại cơ nghiệp',
+      'Cần tiết chế bốc đồng',
     ];
     lifePath = 'Khởi nghiệp, sáng tạo, nghiên cứu';
   } else {
@@ -588,6 +710,8 @@ export function generatePersonalSummary(chart: ZiweiChart): PersonalSummary {
     lifePath = 'Đa dạng, phụ thuộc vào nỗ lực bản thân';
   }
 
+  const conclusion = buildConclusionQuote(chart);
+
   return {
     ownerName: chart.heavenPlate?.name || 'Đương số',
     headline,
@@ -598,5 +722,7 @@ export function generatePersonalSummary(chart: ZiweiChart): PersonalSummary {
     menhStarParagraph: buildMenhParagraph(chart),
     tamHopAndThanParagraph: buildTamHopAndThanParagraph(chart),
     conclusionParagraph: buildConclusionParagraph(chart, description),
+    conclusionQuote: conclusion.quote,
+    conclusionTone: conclusion.tone,
   };
 }

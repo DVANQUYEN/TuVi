@@ -26,7 +26,7 @@ export function LuanChuDeClient({ savedId }: LuanChuDeClientProps): React.ReactE
   }, [chart]);
 
   return (
-    <div className="relative z-10 flex min-h-screen flex-col bg-background">
+    <div className="relative z-10 flex min-h-screen flex-col bg-background/70">
       <Header />
 
       <main className="flex-1 px-4 py-6 md:py-8 lg:py-10">

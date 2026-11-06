@@ -60,7 +60,7 @@ export function DailyInfo({ date }: DailyInfoProps): React.ReactElement {
           >
             {calendar.truc.name}
             <span className="ml-2 text-sm font-normal">
-              {calendar.truc.lucky ? '(ngày tốt)' : '(ngày xấu)'}
+              {calendar.truc.lucky ? '(thuận lợi)' : '(biến động)'}
             </span>
           </dd>
         </div>

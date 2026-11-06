@@ -205,7 +205,7 @@ function describePalace(palace: Palace): string {
       : tone >= 1
         ? 'khá thuận lợi'
         : tone === 0
-          ? 'bình hòa'
+          ? 'ổn định'
           : tone >= -2
             ? 'có thử thách'
             : 'nhiều trở ngại';
@@ -235,7 +235,7 @@ function generateTamPhuongSummary(center: Palace, related: Palace[]): string {
       : totalTone > 0
         ? 'khá cân bằng, có cả thuận lợi lẫn thử thách'
         : totalTone === 0
-          ? 'bình hòa, cần phát huy phụ tinh cát để tăng trợ lực'
+          ? 'ổn định, cần phát huy phụ tinh cát để tăng trợ lực'
           : 'có nhiều thử thách, cần chủ động hóa giải';
 
   const starNote =
@@ -246,7 +246,7 @@ function generateTamPhuongSummary(center: Palace, related: Palace[]): string {
   const advice =
     totalTone > 0
       ? `Nên phát huy thế mạnh từ ${relatedNames} để hỗ trợ cho cung ${center.name}.`
-      : `Cần thận trọng trước các yếu tố bất lợi từ ${relatedNames} và tăng cường phụ tinh cát để hóa giải.`;
+      : `Cần thận trọng trước các yếu tố bất lợi từ ${relatedNames} và tăng cường phụ tinh cát để hóa giải nghịch cảnh.`;
 
   return `Cung ${center.name} hội tụ tam phương tứ chính với ${relatedNames}. Chính tinh tại ${center.name} là ${centerStars}; toàn bộ tam phương có ${catStars.length} sao cát và ${hungStars.length} sao hung. Tổng thể tương quan ${verdict}. ${starNote} ${advice}`;
 }
@@ -323,11 +323,11 @@ function brightnessVerdict(brightness: BrightnessLevel): string {
     case 'mieu':
       return 'Cách cục rất thuận lợi, phát huy tối đa ý nghĩa tốt đẹp của cung.';
     case 'vuong':
-      return 'Cách cục thuận lợi, có nhiều yếu tố hỗ trợ tích cực.';
+      return 'Cách cục ở thế Vượng có nhiều yếu tố hỗ trợ mạnh mẽ và đà tiến triển thuận lợi.';
     case 'dac':
-      return 'Cách cục khá tốt, cần phát huy thế mạnh và giữ sự cân bằng.';
+      return 'Cách cục ở thế Đắc có nền tảng ổn định, cần phát huy thế mạnh và giữ sự cân bằng.';
     case 'binh':
-      return 'Cách cục bình hòa, cần chủ động nỗ lực để đạt kết quả mong muốn.';
+      return 'Cách cục ổn định, cần chủ động nỗ lực để đạt kết quả mong muốn.';
     case 'ham':
       return 'Cách cục có nhiều thử thách, cần thận trọng và chủ động hóa giải.';
   }

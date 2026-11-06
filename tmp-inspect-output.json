@@ -1,0 +1,1291 @@
+{
+  "palaces": [
+    {
+      "id": "phucDuc",
+      "name": "Phúc Đức",
+      "branch": "dan",
+      "stars": [
+        "Tử Vi(mieu)",
+        "Thiên Phủ(mieu)"
+      ],
+      "minorAges": [
+        5,
+        17,
+        29,
+        41,
+        53,
+        65,
+        77,
+        89,
+        101,
+        113
+      ]
+    },
+    {
+      "id": "dienTrach",
+      "name": "Điền Trạch",
+      "branch": "mao",
+      "stars": [
+        "Thái Âm(ham)"
+      ],
+      "minorAges": [
+        6,
+        18,
+        30,
+        42,
+        54,
+        66,
+        78,
+        90,
+        102,
+        114
+      ]
+    },
+    {
+      "id": "quanLoc",
+      "name": "Quan Lộc",
+      "branch": "thin",
+      "stars": [
+        "Tham Lang(vuong)"
+      ],
+      "minorAges": [
+        7,
+        19,
+        31,
+        43,
+        55,
+        67,
+        79,
+        91,
+        103,
+        115
+      ]
+    },
+    {
+      "id": "noBoc",
+      "name": "Nô Bộc",
+      "branch": "ti",
+      "stars": [
+        "Cự Môn(ham)"
+      ],
+      "minorAges": [
+        8,
+        20,
+        32,
+        44,
+        56,
+        68,
+        80,
+        92,
+        104,
+        116
+      ]
+    },
+    {
+      "id": "thienDi",
+      "name": "Thiên Di",
+      "branch": "ngo",
+      "stars": [
+        "Liêm Trinh(vuong)",
+        "Thiên Tướng(vuong)"
+      ],
+      "minorAges": [
+        9,
+        21,
+        33,
+        45,
+        57,
+        69,
+        81,
+        93,
+        105,
+        117
+      ]
+    },
+    {
+      "id": "tatAch",
+      "name": "Tật Ách",
+      "branch": "mui",
+      "stars": [
+        "Thiên Lương(dac)"
+      ],
+      "minorAges": [
+        10,
+        22,
+        34,
+        46,
+        58,
+        70,
+        82,
+        94,
+        106,
+        118
+      ]
+    },
+    {
+      "id": "taiBach",
+      "name": "Tài Bạch",
+      "branch": "than",
+      "stars": [
+        "Thất Sát(mieu)"
+      ],
+      "minorAges": [
+        11,
+        23,
+        35,
+        47,
+        59,
+        71,
+        83,
+        95,
+        107,
+        119
+      ]
+    },
+    {
+      "id": "tuTuc",
+      "name": "Tử Tức",
+      "branch": "dau",
+      "stars": [
+        "Thiên Đồng(ham)"
+      ],
+      "minorAges": [
+        12,
+        24,
+        36,
+        48,
+        60,
+        72,
+        84,
+        96,
+        108,
+        120
+      ]
+    },
+    {
+      "id": "phuThe",
+      "name": "Phu Thê",
+      "branch": "tuat",
+      "stars": [
+        "Vũ Khúc(mieu)"
+      ],
+      "minorAges": [
+        1,
+        13,
+        25,
+        37,
+        49,
+        61,
+        73,
+        85,
+        97,
+        109
+      ]
+    },
+    {
+      "id": "huynhDe",
+      "name": "Huynh Đệ",
+      "branch": "hoi",
+      "stars": [
+        "Thái Dương(ham)"
+      ],
+      "minorAges": [
+        2,
+        14,
+        26,
+        38,
+        50,
+        62,
+        74,
+        86,
+        98,
+        110
+      ]
+    },
+    {
+      "id": "menh",
+      "name": "Mệnh",
+      "branch": "ty",
+      "stars": [
+        "Phá Quân(mieu)"
+      ],
+      "minorAges": [
+        3,
+        15,
+        27,
+        39,
+        51,
+        63,
+        75,
+        87,
+        99,
+        111
+      ]
+    },
+    {
+      "id": "phuMau",
+      "name": "Phụ Mẫu",
+      "branch": "suu",
+      "stars": [
+        "Thiên Cơ(dac)"
+      ],
+      "minorAges": [
+        4,
+        16,
+        28,
+        40,
+        52,
+        64,
+        76,
+        88,
+        100,
+        112
+      ]
+    }
+  ],
+  "periods": [
+    {
+      "type": "daiHan",
+      "palaceBranch": "dan",
+      "startAge": 22,
+      "endAge": 31,
+      "stem": "binh",
+      "branch": "dan"
+    },
+    {
+      "type": "tieuHan",
+      "palaceBranch": "dan",
+      "nominalAges": [
+        5,
+        17,
+        29,
+        41,
+        53,
+        65,
+        77,
+        89,
+        101,
+        113
+      ],
+      "stem": "binh",
+      "branch": "dan"
+    },
+    {
+      "type": "daiHan",
+      "palaceBranch": "mao",
+      "startAge": 32,
+      "endAge": 41,
+      "stem": "dinh",
+      "branch": "mao"
+    },
+    {
+      "type": "tieuHan",
+      "palaceBranch": "mao",
+      "nominalAges": [
+        6,
+        18,
+        30,
+        42,
+        54,
+        66,
+        78,
+        90,
+        102,
+        114
+      ],
+      "stem": "dinh",
+      "branch": "mao"
+    },
+    {
+      "type": "daiHan",
+      "palaceBranch": "thin",
+      "startAge": 42,
+      "endAge": 51,
+      "stem": "mau",
+      "branch": "thin"
+    },
+    {
+      "type": "tieuHan",
+      "palaceBranch": "thin",
+      "nominalAges": [
+        7,
+        19,
+        31,
+        43,
+        55,
+        67,
+        79,
+        91,
+        103,
+        115
+      ],
+      "stem": "mau",
+      "branch": "thin"
+    },
+    {
+      "type": "daiHan",
+      "palaceBranch": "ti",
+      "startAge": 52,
+      "endAge": 61,
+      "stem": "ky",
+      "branch": "ti"
+    },
+    {
+      "type": "tieuHan",
+      "palaceBranch": "ti",
+      "nominalAges": [
+        8,
+        20,
+        32,
+        44,
+        56,
+        68,
+        80,
+        92,
+        104,
+        116
+      ],
+      "stem": "ky",
+      "branch": "ti"
+    },
+    {
+      "type": "daiHan",
+      "palaceBranch": "ngo",
+      "startAge": 62,
+      "endAge": 71,
+      "stem": "canh",
+      "branch": "ngo"
+    },
+    {
+      "type": "tieuHan",
+      "palaceBranch": "ngo",
+      "nominalAges": [
+        9,
+        21,
+        33,
+        45,
+        57,
+        69,
+        81,
+        93,
+        105,
+        117
+      ],
+      "stem": "canh",
+      "branch": "ngo"
+    },
+    {
+      "type": "daiHan",
+      "palaceBranch": "mui",
+      "startAge": 72,
+      "endAge": 81,
+      "stem": "tan",
+      "branch": "mui"
+    },
+    {
+      "type": "tieuHan",
+      "palaceBranch": "mui",
+      "nominalAges": [
+        10,
+        22,
+        34,
+        46,
+        58,
+        70,
+        82,
+        94,
+        106,
+        118
+      ],
+      "stem": "tan",
+      "branch": "mui"
+    },
+    {
+      "type": "daiHan",
+      "palaceBranch": "than",
+      "startAge": 82,
+      "endAge": 91,
+      "stem": "nham",
+      "branch": "than"
+    },
+    {
+      "type": "tieuHan",
+      "palaceBranch": "than",
+      "nominalAges": [
+        11,
+        23,
+        35,
+        47,
+        59,
+        71,
+        83,
+        95,
+        107,
+        119
+      ],
+      "stem": "nham",
+      "branch": "than"
+    },
+    {
+      "type": "daiHan",
+      "palaceBranch": "dau",
+      "startAge": 92,
+      "endAge": 101,
+      "stem": "quy",
+      "branch": "dau"
+    },
+    {
+      "type": "tieuHan",
+      "palaceBranch": "dau",
+      "nominalAges": [
+        12,
+        24,
+        36,
+        48,
+        60,
+        72,
+        84,
+        96,
+        108,
+        120
+      ],
+      "stem": "quy",
+      "branch": "dau"
+    },
+    {
+      "type": "daiHan",
+      "palaceBranch": "tuat",
+      "startAge": 102,
+      "endAge": 111,
+      "stem": "giap",
+      "branch": "tuat"
+    },
+    {
+      "type": "tieuHan",
+      "palaceBranch": "tuat",
+      "nominalAges": [
+        1,
+        13,
+        25,
+        37,
+        49,
+        61,
+        73,
+        85,
+        97,
+        109
+      ],
+      "stem": "giap",
+      "branch": "tuat"
+    },
+    {
+      "type": "daiHan",
+      "palaceBranch": "hoi",
+      "startAge": 112,
+      "endAge": 121,
+      "stem": "at",
+      "branch": "hoi"
+    },
+    {
+      "type": "tieuHan",
+      "palaceBranch": "hoi",
+      "nominalAges": [
+        2,
+        14,
+        26,
+        38,
+        50,
+        62,
+        74,
+        86,
+        98,
+        110
+      ],
+      "stem": "at",
+      "branch": "hoi"
+    },
+    {
+      "type": "daiHan",
+      "palaceBranch": "ty",
+      "startAge": 2,
+      "endAge": 11,
+      "stem": "binh",
+      "branch": "ty"
+    },
+    {
+      "type": "tieuHan",
+      "palaceBranch": "ty",
+      "nominalAges": [
+        3,
+        15,
+        27,
+        39,
+        51,
+        63,
+        75,
+        87,
+        99,
+        111
+      ],
+      "stem": "binh",
+      "branch": "ty"
+    },
+    {
+      "type": "daiHan",
+      "palaceBranch": "suu",
+      "startAge": 12,
+      "endAge": 21,
+      "stem": "dinh",
+      "branch": "suu"
+    },
+    {
+      "type": "tieuHan",
+      "palaceBranch": "suu",
+      "nominalAges": [
+        4,
+        16,
+        28,
+        40,
+        52,
+        64,
+        76,
+        88,
+        100,
+        112
+      ],
+      "stem": "dinh",
+      "branch": "suu"
+    }
+  ],
+  "heaven": {
+    "stem": "giap",
+    "branch": "than",
+    "label": "GiápThân"
+  },
+  "dates": {
+    "2026-01-15": {
+      "calendar": {
+        "lunarDay": 27,
+        "lunarMonth": 11,
+        "lunarYear": 2025,
+        "isLeapMonth": false,
+        "dayCanChi": "Kỷ Sửu",
+        "dayStem": "ky",
+        "dayStemElement": "tho",
+        "dayBranchElement": "tho",
+        "dayNapAmName": "Tích Lịch Hỏa",
+        "dayNapAmElement": "hoa",
+        "dayNapAmElementLabel": "Hỏa",
+        "napAm": "Tích Lịch Hỏa",
+        "dayBranch": "suu",
+        "conflictBranch": "mui",
+        "truc": {
+          "name": "Trừ",
+          "lucky": false
+        },
+        "luckyHours": [
+          "dan",
+          "mao",
+          "ti",
+          "than",
+          "tuat",
+          "hoi"
+        ]
+      },
+      "result": {
+        "chartName": "A",
+        "age": 22,
+        "decade": {
+          "ageRange": "22-31",
+          "palaceName": "Phúc Đức",
+          "majorStars": [
+            "Tử Vi",
+            "Thiên Phủ"
+          ],
+          "score": 5,
+          "level": "tốt"
+        },
+        "minor": {
+          "palaceName": "Tật Ách",
+          "majorStars": [
+            "Thiên Lương"
+          ],
+          "score": 4,
+          "level": "tốt"
+        },
+        "annual": {
+          "branchLabel": "Tỵ",
+          "palaceName": "Nô Bộc",
+          "taiSuiPalace": "Nô Bộc",
+          "locTonPalace": "Điền Trạch",
+          "kinhDuongPalace": "Phúc Đức",
+          "daLaPalace": "Quan Lộc",
+          "mutagens": [
+            {
+              "type": "Lộc",
+              "star": "Thiên Cơ",
+              "palace": "Phụ Mẫu"
+            },
+            {
+              "type": "Quyền",
+              "star": "Thiên Lương",
+              "palace": "Tật Ách"
+            },
+            {
+              "type": "Khoa",
+              "star": "Tử Vi",
+              "palace": "Phúc Đức"
+            },
+            {
+              "type": "Kỵ",
+              "star": "Thái Âm",
+              "palace": "Điền Trạch"
+            }
+          ]
+        },
+        "activatedPalaces": [
+          {
+            "name": "Phúc Đức",
+            "reasons": [
+              "Đại vận",
+              "Lưu Kình Dương",
+              "Lưu Hóa Khoa"
+            ]
+          },
+          {
+            "name": "Tật Ách",
+            "reasons": [
+              "Tiểu vận",
+              "Lưu Hóa Quyền"
+            ]
+          },
+          {
+            "name": "Nô Bộc",
+            "reasons": [
+              "Lưu niên/Thái Tuế"
+            ]
+          },
+          {
+            "name": "Mệnh",
+            "reasons": [
+              "Lưu nguyệt"
+            ]
+          },
+          {
+            "name": "Phụ Mẫu",
+            "reasons": [
+              "Lưu nhật",
+              "Lưu Hóa Lộc"
+            ]
+          },
+          {
+            "name": "Điền Trạch",
+            "reasons": [
+              "Lưu Lộc Tồn",
+              "Lưu Hóa Kỵ"
+            ]
+          },
+          {
+            "name": "Quan Lộc",
+            "reasons": [
+              "Lưu Đà La"
+            ]
+          }
+        ],
+        "signals": [
+          {
+            "type": "dai-van-thuan",
+            "palace": "Phúc Đức",
+            "note": "Đại vận 22-31 tại cung Phúc Đức có Tử Vi, Thiên Phủ làm nền tảng thuận nhịp cho phúc đức, tinh thần."
+          },
+          {
+            "type": "tieu-van-thuan",
+            "palace": "Tật Ách",
+            "note": "Tiểu vận tại cung Tật Ách với Thiên Lương tạo thuận lợi cho sức khỏe."
+          },
+          {
+            "type": "luu-da-la",
+            "star": "Đà La",
+            "palace": "Quan Lộc",
+            "note": "Lưu Đà La nhập cung Quan Lộc: chậm lại ở công việc, sự nghiệp, kiểm tra giấy tờ trước khi gửi."
+          }
+        ],
+        "shouldDo": [
+          "Đặt mục tiêu dài hơi cho phúc đức, tinh thần theo cung Phúc Đức (Tử Vi, Thiên Phủ).",
+          "Xử lý việc sức khỏe trong ngày tại cung Tật Ách (Thiên Lương).",
+          "Đặt việc cần tập trung vào giờ Dần, Mão, Tỵ, Thân, Tuất, Hợi để trao đổi sức khỏe."
+        ],
+        "shouldAvoid": [
+          "Chậm lại ở công việc, sự nghiệp tại cung Quan Lộc (Lưu Đà La); kiểm tra giấy tờ trước khi gửi.",
+          "Không khởi việc mới trong trực Trừ; xử lý việc đã có kế hoạch.",
+          "Tránh tranh luận với người tuổi Mùi khi cảm xúc đang căng."
+        ],
+        "advice": "Bối cảnh đại vận 22-31 tại cung Phúc Đức (Tử Vi, Thiên Phủ) tạo đà thuận nhịp, đóng góp khoảng 70% nền tảng. Tiểu vận tại cung Tật Ách (Thiên Lương) tạo đà thuận nhịp và là lớp điều chỉnh trong ngày. Ưu tiên phúc đức, tinh thần ở mức vừa phải, xử lý sức khỏe theo nhịp đã định và dùng giờ Dần, Mão, Tỵ, Thân, Tuất, Hợi cho việc cần sự rõ ràng. Đây là lớp tham khảo từ lá số đã lưu, không phải kết luận cố định.",
+        "basis": [
+          "Đại vận 22-31 tuổi – cung Phúc Đức (Tử Vi, Thiên Phủ), điểm 5/5",
+          "Tiểu vận – cung Tật Ách (Thiên Lương), điểm 4/5",
+          "Lưu niên Ất Tỵ – cung Nô Bộc",
+          "Lưu nguyệt Tý – cung Mệnh",
+          "Lưu nhật Sửu – cung Phụ Mẫu",
+          "Lưu Lộc Tồn tại chi Mão – cung Điền Trạch",
+          "Lưu Kình Dương – cung Phúc Đức",
+          "Lưu Đà La – cung Quan Lộc",
+          "Lưu Hóa Lộc – Thiên Cơ tại cung Phụ Mẫu",
+          "Lưu Hóa Quyền – Thiên Lương tại cung Tật Ách",
+          "Lưu Hóa Khoa – Tử Vi tại cung Phúc Đức",
+          "Lưu Hóa Kỵ – Thái Âm tại cung Điền Trạch",
+          "Ngày Kỷ Sửu, trực Trừ, giờ hoàng đạo Dần, Mão, Tỵ, Thân, Tuất, Hợi"
+        ]
+      }
+    },
+    "2026-06-15": {
+      "calendar": {
+        "lunarDay": 1,
+        "lunarMonth": 5,
+        "lunarYear": 2026,
+        "isLeapMonth": false,
+        "dayCanChi": "Canh Thân",
+        "dayStem": "canh",
+        "dayStemElement": "kim",
+        "dayBranchElement": "kim",
+        "dayNapAmName": "Thạch Lựu Mộc",
+        "dayNapAmElement": "moc",
+        "dayNapAmElementLabel": "Mộc",
+        "napAm": "Thạch Lựu Mộc",
+        "dayBranch": "than",
+        "conflictBranch": "dan",
+        "truc": {
+          "name": "Mãn",
+          "lucky": true
+        },
+        "luckyHours": [
+          "ty",
+          "suu",
+          "thin",
+          "ti",
+          "mui",
+          "tuat"
+        ]
+      },
+      "result": {
+        "chartName": "A",
+        "age": 22,
+        "decade": {
+          "ageRange": "22-31",
+          "palaceName": "Phúc Đức",
+          "majorStars": [
+            "Tử Vi",
+            "Thiên Phủ"
+          ],
+          "score": 5,
+          "level": "tốt"
+        },
+        "minor": {
+          "palaceName": "Tật Ách",
+          "majorStars": [
+            "Thiên Lương"
+          ],
+          "score": 4,
+          "level": "tốt"
+        },
+        "annual": {
+          "branchLabel": "Ngọ",
+          "palaceName": "Thiên Di",
+          "taiSuiPalace": "Thiên Di",
+          "locTonPalace": "Nô Bộc",
+          "kinhDuongPalace": "Quan Lộc",
+          "daLaPalace": "Thiên Di",
+          "mutagens": [
+            {
+              "type": "Lộc",
+              "star": "Thiên Đồng",
+              "palace": "Tử Tức"
+            },
+            {
+              "type": "Quyền",
+              "star": "Thiên Cơ",
+              "palace": "Phụ Mẫu"
+            },
+            {
+              "type": "Khoa",
+              "star": "Văn Xương",
+              "palace": "Điền Trạch"
+            },
+            {
+              "type": "Kỵ",
+              "star": "Liêm Trinh",
+              "palace": "Thiên Di"
+            }
+          ]
+        },
+        "activatedPalaces": [
+          {
+            "name": "Phúc Đức",
+            "reasons": [
+              "Đại vận"
+            ]
+          },
+          {
+            "name": "Tật Ách",
+            "reasons": [
+              "Tiểu vận"
+            ]
+          },
+          {
+            "name": "Thiên Di",
+            "reasons": [
+              "Lưu niên/Thái Tuế",
+              "Lưu nguyệt",
+              "Lưu Đà La",
+              "Lưu Hóa Kỵ"
+            ]
+          },
+          {
+            "name": "Tài Bạch",
+            "reasons": [
+              "Lưu nhật"
+            ]
+          },
+          {
+            "name": "Nô Bộc",
+            "reasons": [
+              "Lưu Lộc Tồn"
+            ]
+          },
+          {
+            "name": "Quan Lộc",
+            "reasons": [
+              "Lưu Kình Dương"
+            ]
+          },
+          {
+            "name": "Tử Tức",
+            "reasons": [
+              "Lưu Hóa Lộc"
+            ]
+          },
+          {
+            "name": "Phụ Mẫu",
+            "reasons": [
+              "Lưu Hóa Quyền"
+            ]
+          },
+          {
+            "name": "Điền Trạch",
+            "reasons": [
+              "Lưu Hóa Khoa"
+            ]
+          }
+        ],
+        "signals": [
+          {
+            "type": "dai-van-thuan",
+            "palace": "Phúc Đức",
+            "note": "Đại vận 22-31 tại cung Phúc Đức có Tử Vi, Thiên Phủ làm nền tảng thuận nhịp cho phúc đức, tinh thần."
+          },
+          {
+            "type": "tieu-van-thuan",
+            "palace": "Tật Ách",
+            "note": "Tiểu vận tại cung Tật Ách với Thiên Lương tạo thuận lợi cho sức khỏe."
+          },
+          {
+            "type": "luu-kinh-duong",
+            "star": "Kình Dương",
+            "palace": "Quan Lộc",
+            "note": "Lưu Kình Dương nhập cung Quan Lộc: giữ biên bản rõ ràng khi trao đổi công việc, sự nghiệp."
+          }
+        ],
+        "shouldDo": [
+          "Đặt mục tiêu dài hơi cho phúc đức, tinh thần theo cung Phúc Đức (Tử Vi, Thiên Phủ).",
+          "Xử lý việc sức khỏe trong ngày tại cung Tật Ách (Thiên Lương).",
+          "Tận dụng trực Mãn để hoàn tất việc ở cung Tật Ách."
+        ],
+        "shouldAvoid": [
+          "Không tranh luận gay gắt về công việc, sự nghiệp tại cung Quan Lộc (Lưu Kình Dương); ghi lại thỏa thuận.",
+          "Tránh tranh luận với người tuổi Dần khi cảm xúc đang căng.",
+          "Không đổi kế hoạch ở cung Tật Ách nếu chưa có phương án thay thế."
+        ],
+        "advice": "Bối cảnh đại vận 22-31 tại cung Phúc Đức (Tử Vi, Thiên Phủ) tạo đà thuận nhịp, đóng góp khoảng 70% nền tảng. Tiểu vận tại cung Tật Ách (Thiên Lương) tạo đà thuận nhịp và là lớp điều chỉnh trong ngày. Ưu tiên phúc đức, tinh thần ở mức vừa phải, xử lý sức khỏe theo nhịp đã định và dùng giờ Tý, Sửu, Thìn, Tỵ, Mùi, Tuất cho việc cần sự rõ ràng. Đây là lớp tham khảo từ lá số đã lưu, không phải kết luận cố định.",
+        "basis": [
+          "Đại vận 22-31 tuổi – cung Phúc Đức (Tử Vi, Thiên Phủ), điểm 5/5",
+          "Tiểu vận – cung Tật Ách (Thiên Lương), điểm 4/5",
+          "Lưu niên Bính Ngọ – cung Thiên Di",
+          "Lưu nguyệt Ngọ – cung Thiên Di",
+          "Lưu nhật Thân – cung Tài Bạch",
+          "Lưu Lộc Tồn tại chi Tỵ – cung Nô Bộc",
+          "Lưu Kình Dương – cung Quan Lộc",
+          "Lưu Đà La – cung Thiên Di",
+          "Lưu Hóa Lộc – Thiên Đồng tại cung Tử Tức",
+          "Lưu Hóa Quyền – Thiên Cơ tại cung Phụ Mẫu",
+          "Lưu Hóa Khoa – Văn Xương tại cung Điền Trạch",
+          "Lưu Hóa Kỵ – Liêm Trinh tại cung Thiên Di",
+          "Ngày Canh Thân, trực Mãn, giờ hoàng đạo Tý, Sửu, Thìn, Tỵ, Mùi, Tuất"
+        ]
+      }
+    },
+    "2027-03-10": {
+      "calendar": {
+        "lunarDay": 3,
+        "lunarMonth": 2,
+        "lunarYear": 2027,
+        "isLeapMonth": false,
+        "dayCanChi": "Mậu Tý",
+        "dayStem": "mau",
+        "dayStemElement": "tho",
+        "dayBranchElement": "thuy",
+        "dayNapAmName": "Tích Lịch Hỏa",
+        "dayNapAmElement": "hoa",
+        "dayNapAmElementLabel": "Hỏa",
+        "napAm": "Tích Lịch Hỏa",
+        "dayBranch": "ty",
+        "conflictBranch": "ngo",
+        "truc": {
+          "name": "Thu",
+          "lucky": false
+        },
+        "luckyHours": [
+          "ty",
+          "suu",
+          "mao",
+          "ngo",
+          "than",
+          "dau"
+        ]
+      },
+      "result": {
+        "chartName": "A",
+        "age": 23,
+        "decade": {
+          "ageRange": "22-31",
+          "palaceName": "Phúc Đức",
+          "majorStars": [
+            "Tử Vi",
+            "Thiên Phủ"
+          ],
+          "score": 5,
+          "level": "tốt"
+        },
+        "minor": {
+          "palaceName": "Tài Bạch",
+          "majorStars": [
+            "Thất Sát"
+          ],
+          "score": 5,
+          "level": "tốt"
+        },
+        "annual": {
+          "branchLabel": "Mùi",
+          "palaceName": "Tật Ách",
+          "taiSuiPalace": "Tật Ách",
+          "locTonPalace": "Thiên Di",
+          "kinhDuongPalace": "Nô Bộc",
+          "daLaPalace": "Tật Ách",
+          "mutagens": [
+            {
+              "type": "Lộc",
+              "star": "Thái Âm",
+              "palace": "Điền Trạch"
+            },
+            {
+              "type": "Quyền",
+              "star": "Thiên Đồng",
+              "palace": "Tử Tức"
+            },
+            {
+              "type": "Khoa",
+              "star": "Thiên Cơ",
+              "palace": "Phụ Mẫu"
+            },
+            {
+              "type": "Kỵ",
+              "star": "Cự Môn",
+              "palace": "Nô Bộc"
+            }
+          ]
+        },
+        "activatedPalaces": [
+          {
+            "name": "Phúc Đức",
+            "reasons": [
+              "Đại vận"
+            ]
+          },
+          {
+            "name": "Tài Bạch",
+            "reasons": [
+              "Tiểu vận"
+            ]
+          },
+          {
+            "name": "Tật Ách",
+            "reasons": [
+              "Lưu niên/Thái Tuế",
+              "Lưu Đà La"
+            ]
+          },
+          {
+            "name": "Điền Trạch",
+            "reasons": [
+              "Lưu nguyệt",
+              "Lưu Hóa Lộc"
+            ]
+          },
+          {
+            "name": "Mệnh",
+            "reasons": [
+              "Lưu nhật"
+            ]
+          },
+          {
+            "name": "Thiên Di",
+            "reasons": [
+              "Lưu Lộc Tồn"
+            ]
+          },
+          {
+            "name": "Nô Bộc",
+            "reasons": [
+              "Lưu Kình Dương",
+              "Lưu Hóa Kỵ"
+            ]
+          },
+          {
+            "name": "Tử Tức",
+            "reasons": [
+              "Lưu Hóa Quyền"
+            ]
+          },
+          {
+            "name": "Phụ Mẫu",
+            "reasons": [
+              "Lưu Hóa Khoa"
+            ]
+          }
+        ],
+        "signals": [
+          {
+            "type": "dai-van-thuan",
+            "palace": "Phúc Đức",
+            "note": "Đại vận 22-31 tại cung Phúc Đức có Tử Vi, Thiên Phủ làm nền tảng thuận nhịp cho phúc đức, tinh thần."
+          },
+          {
+            "type": "tieu-van-thuan",
+            "palace": "Tài Bạch",
+            "note": "Tiểu vận tại cung Tài Bạch với Thất Sát tạo thuận lợi cho tài chính."
+          }
+        ],
+        "shouldDo": [
+          "Đặt mục tiêu dài hơi cho phúc đức, tinh thần theo cung Phúc Đức (Tử Vi, Thiên Phủ).",
+          "Xử lý việc tài chính trong ngày tại cung Tài Bạch (Thất Sát).",
+          "Đặt việc cần tập trung vào giờ Tý, Sửu, Mão, Ngọ, Thân, Dậu để trao đổi tài chính."
+        ],
+        "shouldAvoid": [
+          "Không khởi việc mới trong trực Thu; xử lý việc đã có kế hoạch.",
+          "Tránh tranh luận với người tuổi Ngọ khi cảm xúc đang căng.",
+          "Không đổi kế hoạch ở cung Tài Bạch nếu chưa có phương án thay thế."
+        ],
+        "advice": "Bối cảnh đại vận 22-31 tại cung Phúc Đức (Tử Vi, Thiên Phủ) tạo đà thuận nhịp, đóng góp khoảng 70% nền tảng. Tiểu vận tại cung Tài Bạch (Thất Sát) tạo đà thuận nhịp và là lớp điều chỉnh trong ngày. Ưu tiên phúc đức, tinh thần ở mức vừa phải, xử lý tài chính theo nhịp đã định và dùng giờ Tý, Sửu, Mão, Ngọ, Thân, Dậu cho việc cần sự rõ ràng. Đây là lớp tham khảo từ lá số đã lưu, không phải kết luận cố định.",
+        "basis": [
+          "Đại vận 22-31 tuổi – cung Phúc Đức (Tử Vi, Thiên Phủ), điểm 5/5",
+          "Tiểu vận – cung Tài Bạch (Thất Sát), điểm 5/5",
+          "Lưu niên Đinh Mùi – cung Tật Ách",
+          "Lưu nguyệt Mão – cung Điền Trạch",
+          "Lưu nhật Tý – cung Mệnh",
+          "Lưu Lộc Tồn tại chi Ngọ – cung Thiên Di",
+          "Lưu Kình Dương – cung Nô Bộc",
+          "Lưu Đà La – cung Tật Ách",
+          "Lưu Hóa Lộc – Thái Âm tại cung Điền Trạch",
+          "Lưu Hóa Quyền – Thiên Đồng tại cung Tử Tức",
+          "Lưu Hóa Khoa – Thiên Cơ tại cung Phụ Mẫu",
+          "Lưu Hóa Kỵ – Cự Môn tại cung Nô Bộc",
+          "Ngày Mậu Tý, trực Thu, giờ hoàng đạo Tý, Sửu, Mão, Ngọ, Thân, Dậu"
+        ]
+      }
+    },
+    "2025-12-31": {
+      "calendar": {
+        "lunarDay": 12,
+        "lunarMonth": 11,
+        "lunarYear": 2025,
+        "isLeapMonth": false,
+        "dayCanChi": "Giáp Tuất",
+        "dayStem": "giap",
+        "dayStemElement": "moc",
+        "dayBranchElement": "tho",
+        "dayNapAmName": "Sơn Đầu Hỏa",
+        "dayNapAmElement": "hoa",
+        "dayNapAmElementLabel": "Hỏa",
+        "napAm": "Sơn Đầu Hỏa",
+        "dayBranch": "tuat",
+        "conflictBranch": "thin",
+        "truc": {
+          "name": "Khai",
+          "lucky": true
+        },
+        "luckyHours": [
+          "dan",
+          "thin",
+          "ti",
+          "than",
+          "dau",
+          "hoi"
+        ]
+      },
+      "result": {
+        "chartName": "A",
+        "age": 21,
+        "decade": {
+          "ageRange": "12-21",
+          "palaceName": "Phụ Mẫu",
+          "majorStars": [
+            "Thiên Cơ"
+          ],
+          "score": 4,
+          "level": "tốt"
+        },
+        "minor": {
+          "palaceName": "Thiên Di",
+          "majorStars": [
+            "Liêm Trinh",
+            "Thiên Tướng"
+          ],
+          "score": 4,
+          "level": "tốt"
+        },
+        "annual": {
+          "branchLabel": "Tỵ",
+          "palaceName": "Nô Bộc",
+          "taiSuiPalace": "Nô Bộc",
+          "locTonPalace": "Điền Trạch",
+          "kinhDuongPalace": "Phúc Đức",
+          "daLaPalace": "Quan Lộc",
+          "mutagens": [
+            {
+              "type": "Lộc",
+              "star": "Thiên Cơ",
+              "palace": "Phụ Mẫu"
+            },
+            {
+              "type": "Quyền",
+              "star": "Thiên Lương",
+              "palace": "Tật Ách"
+            },
+            {
+              "type": "Khoa",
+              "star": "Tử Vi",
+              "palace": "Phúc Đức"
+            },
+            {
+              "type": "Kỵ",
+              "star": "Thái Âm",
+              "palace": "Điền Trạch"
+            }
+          ]
+        },
+        "activatedPalaces": [
+          {
+            "name": "Phụ Mẫu",
+            "reasons": [
+              "Đại vận",
+              "Lưu Hóa Lộc"
+            ]
+          },
+          {
+            "name": "Thiên Di",
+            "reasons": [
+              "Tiểu vận"
+            ]
+          },
+          {
+            "name": "Nô Bộc",
+            "reasons": [
+              "Lưu niên/Thái Tuế"
+            ]
+          },
+          {
+            "name": "Mệnh",
+            "reasons": [
+              "Lưu nguyệt"
+            ]
+          },
+          {
+            "name": "Phu Thê",
+            "reasons": [
+              "Lưu nhật"
+            ]
+          },
+          {
+            "name": "Điền Trạch",
+            "reasons": [
+              "Lưu Lộc Tồn",
+              "Lưu Hóa Kỵ"
+            ]
+          },
+          {
+            "name": "Phúc Đức",
+            "reasons": [
+              "Lưu Kình Dương",
+              "Lưu Hóa Khoa"
+            ]
+          },
+          {
+            "name": "Quan Lộc",
+            "reasons": [
+              "Lưu Đà La"
+            ]
+          },
+          {
+            "name": "Tật Ách",
+            "reasons": [
+              "Lưu Hóa Quyền"
+            ]
+          }
+        ],
+        "signals": [
+          {
+            "type": "dai-van-thuan",
+            "palace": "Phụ Mẫu",
+            "note": "Đại vận 12-21 tại cung Phụ Mẫu có Thiên Cơ làm nền tảng thuận nhịp cho cha mẹ, gia đình nội ngoại."
+          },
+          {
+            "type": "tieu-van-thuan",
+            "palace": "Thiên Di",
+            "note": "Tiểu vận tại cung Thiên Di với Liêm Trinh, Thiên Tướng tạo thuận lợi cho đi lại, quan hệ bên ngoài."
+          },
+          {
+            "type": "luu-da-la",
+            "star": "Đà La",
+            "palace": "Quan Lộc",
+            "note": "Lưu Đà La nhập cung Quan Lộc: chậm lại ở công việc, sự nghiệp, kiểm tra giấy tờ trước khi gửi."
+          }
+        ],
+        "shouldDo": [
+          "Đặt mục tiêu dài hơi cho cha mẹ, gia đình nội ngoại theo cung Phụ Mẫu (Thiên Cơ).",
+          "Xử lý việc đi lại, quan hệ bên ngoài trong ngày tại cung Thiên Di (Liêm Trinh, Thiên Tướng).",
+          "Tận dụng trực Khai để hoàn tất việc ở cung Thiên Di."
+        ],
+        "shouldAvoid": [
+          "Chậm lại ở công việc, sự nghiệp tại cung Quan Lộc (Lưu Đà La); kiểm tra giấy tờ trước khi gửi.",
+          "Tránh tranh luận với người tuổi Thìn khi cảm xúc đang căng.",
+          "Không đổi kế hoạch ở cung Thiên Di nếu chưa có phương án thay thế."
+        ],
+        "advice": "Bối cảnh đại vận 12-21 tại cung Phụ Mẫu (Thiên Cơ) tạo đà thuận nhịp, đóng góp khoảng 70% nền tảng. Tiểu vận tại cung Thiên Di (Liêm Trinh, Thiên Tướng) tạo đà thuận nhịp và là lớp điều chỉnh trong ngày. Ưu tiên cha mẹ, gia đình nội ngoại ở mức vừa phải, xử lý đi lại, quan hệ bên ngoài theo nhịp đã định và dùng giờ Dần, Thìn, Tỵ, Thân, Dậu, Hợi cho việc cần sự rõ ràng. Đây là lớp tham khảo từ lá số đã lưu, không phải kết luận cố định.",
+        "basis": [
+          "Đại vận 12-21 tuổi – cung Phụ Mẫu (Thiên Cơ), điểm 4/5",
+          "Tiểu vận – cung Thiên Di (Liêm Trinh, Thiên Tướng), điểm 4/5",
+          "Lưu niên Ất Tỵ – cung Nô Bộc",
+          "Lưu nguyệt Tý – cung Mệnh",
+          "Lưu nhật Tuất – cung Phu Thê",
+          "Lưu Lộc Tồn tại chi Mão – cung Điền Trạch",
+          "Lưu Kình Dương – cung Phúc Đức",
+          "Lưu Đà La – cung Quan Lộc",
+          "Lưu Hóa Lộc – Thiên Cơ tại cung Phụ Mẫu",
+          "Lưu Hóa Quyền – Thiên Lương tại cung Tật Ách",
+          "Lưu Hóa Khoa – Tử Vi tại cung Phúc Đức",
+          "Lưu Hóa Kỵ – Thái Âm tại cung Điền Trạch",
+          "Ngày Giáp Tuất, trực Khai, giờ hoàng đạo Dần, Thìn, Tỵ, Thân, Dậu, Hợi"
+        ]
+      }
+    }
+  }
+}

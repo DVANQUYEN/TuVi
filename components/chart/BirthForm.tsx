@@ -14,6 +14,7 @@ import type {
 import type { VietnamRegion } from '@/lib/ziwei/types/enums';
 import { UserPreferencesSchema } from '@/lib/ziwei/config/schema';
 import { defaultZiweiConfig } from '@/lib/ziwei/config/default-config';
+import { DEFAULT_LOCATION } from '@/lib/ziwei/data';
 
 export interface BirthFormProps {
   onSubmit: (birthInfo: BirthInfo, preferences?: UserPreferences) => void;
@@ -21,21 +22,6 @@ export interface BirthFormProps {
   defaultPreferences?: UserPreferences;
   submitDisabled?: boolean;
 }
-
-const DEFAULT_LOCATION = {
-  north: {
-    region: 'north' as VietnamRegion,
-    longitude: 105.8542,
-    provinceId: 'HN',
-    provinceName: 'Hà Nội',
-  },
-  south: {
-    region: 'south' as VietnamRegion,
-    longitude: 106.6602,
-    provinceId: 'HCM',
-    provinceName: 'TP.HCM',
-  },
-};
 
 export function BirthForm({
   onSubmit,
@@ -144,7 +130,7 @@ export function BirthForm({
   const isTyHour = hour !== '' && (hourNum === 23 || hourNum === 0);
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
       <div>
         <label htmlFor="chart-name" className="mb-1 block text-sm font-medium text-foreground">
           Họ tên
@@ -198,7 +184,7 @@ export function BirthForm({
           Ngày sinh ({calendarType === 'solar' ? 'dương lịch' : 'âm lịch'}){' '}
           <span className="text-gold">*</span>
         </span>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3">
           <div>
             <label htmlFor="chart-day" className="sr-only">
               Ngày
@@ -229,7 +215,7 @@ export function BirthForm({
               required
             />
           </div>
-          <div>
+          <div className="col-span-2 sm:col-span-1">
             <label htmlFor="chart-year" className="sr-only">
               Năm
             </label>
@@ -438,10 +424,10 @@ export function BirthForm({
                   onChange={(e) => updatePreference('useTrueSolarTime', e.target.checked)}
                   className="h-4 w-4 accent-gold"
                 />
-                <span className="ml-2">Hiệu chỉnh giờ mặt trờ thật</span>
+                <span className="ml-2">Hiệu chỉnh giờ mặt trời thật</span>
               </label>
               <p className="mt-1 text-xs text-muted">
-                Áp dụng hiệu chỉnh theo kinh độ nơi sinh và phương trình thờ gian
+                Áp dụng hiệu chỉnh theo kinh độ nơi sinh và phương trình thời gian
               </p>
             </div>
 

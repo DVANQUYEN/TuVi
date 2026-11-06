@@ -6,6 +6,7 @@ export * from './yearly-fortune';
 export * from './topic-interpretation';
 export * from './timeline';
 export * from './personal-summary';
+export * from './daily-personal';
 export * from './star-groups';
 export { ADVANCED_COMBINATIONS, detectAdvancedCombinations } from './data/advanced-combinations';
 export { MAJOR_STAR_MEANINGS } from './data/major-stars';

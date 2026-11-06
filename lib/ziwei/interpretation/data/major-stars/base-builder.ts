@@ -95,10 +95,10 @@ function combineMeaning(
     };
   }
 
-  const tendency = brightness.modifier > 0 ? 'tích cực' : 'tiêu cực';
-  const careerTone = brightness.modifier > 0 ? 'thuận lợi' : 'thách thức';
-  const loveTone = brightness.modifier > 0 ? 'tốt đẹp' : 'cần lưu ý';
-  const healthTone = brightness.modifier > 0 ? 'tốt' : 'cần chú ý';
+  const tendency = brightness.modifier > 0 ? 'thuận lợi' : 'cần thận trọng';
+  const careerTone = brightness.modifier > 0 ? 'thuận lợi' : 'nhiều thử thách';
+  const loveTone = brightness.modifier > 0 ? 'hanh thông' : 'cần thận trọng';
+  const healthTone = brightness.modifier > 0 ? 'ổn định' : 'cần chú ý';
   const adviceTone = brightness.modifier > 0 ? 'phát huy' : 'hóa giải';
 
   return {
@@ -115,9 +115,9 @@ function combineMeaning(
  */
 export const DEFAULT_BRIGHTNESS_MODIFIERS: BrightnessModifier[] = [
   { level: 'mieu', modifier: 0.5, description: 'Miếu địa, phát huy tối đa' },
-  { level: 'vuong', modifier: 0.3, description: 'Vượng địa, rất tốt' },
-  { level: 'dac', modifier: 0.1, description: 'Đắc địa, tốt' },
-  { level: 'binh', modifier: 0, description: 'Bình hòa, trung bình' },
+  { level: 'vuong', modifier: 0.3, description: 'Vượng địa, vượng phát' },
+  { level: 'dac', modifier: 0.1, description: 'Đắc địa, thuận lợi' },
+  { level: 'binh', modifier: 0, description: 'Ổn định' },
   { level: 'ham', modifier: -0.3, description: 'Hãm địa, giảm sút' },
 ];
 

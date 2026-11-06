@@ -45,27 +45,66 @@ const subscribeNoop = (): (() => void) => () => {};
 
 const FORM_COLLAPSED_KEY = 'lapLaSo.formCollapsed';
 const FORM_COLLAPSED_EVENT = 'lapLaSo:formCollapsedChange';
+const DESKTOP_MEDIA_QUERY = '(min-width: 1024px)';
 
 const CURRENT_CHART_LOAD_ERROR =
   'Không thể tải lá số hiện tại từ tài khoản. Vui lòng kiểm tra kết nối mạng và cấu hình Supabase rồi thử lại.';
 const CURRENT_CHART_SAVE_ERROR =
   'Lá số đã được tạo nhưng không thể lưu lên tài khoản và chưa được đồng bộ lên đám mây. Lá số chỉ khả dụng trong phiên làm việc này và có thể bị mất khi đăng xuất hoặc xóa bộ nhớ đệm. Vui lòng kiểm tra kết nối mạng và cấu hình Supabase rồi thử lại.';
+const CURRENT_CHART_RENDER_ERROR =
+  'Không thể dựng lá số hiện tại. Vui lòng kiểm tra lại thông tin sinh và thử lại.';
+const SAVED_CHART_RENDER_ERROR =
+  'Không thể dựng hồ sơ đã lưu. Vui lòng thử mở lại hoặc lập lá số mới.';
+const SAVED_CHART_LOAD_ERROR =
+  'Không thể tải hồ sơ đã lưu. Vui lòng kiểm tra kết nối mạng và thử lại.';
+const CHART_GENERATE_ERROR =
+  'Không thể lập lá số. Vui lòng kiểm tra lại thông tin sinh và thử lại.';
+
+function getDesktopMediaQuery(): MediaQueryList | null {
+  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return null;
+  return window.matchMedia(DESKTOP_MEDIA_QUERY);
+}
+
+/** Mobile (<lg) mặc định thu gọn; desktop mặc định mở. */
+function isMobileViewport(): boolean {
+  const mediaQuery = getDesktopMediaQuery();
+  return mediaQuery ? !mediaQuery.matches : false;
+}
 
 function subscribeFormCollapsed(onChange: () => void): () => void {
   window.addEventListener('storage', onChange);
   window.addEventListener(FORM_COLLAPSED_EVENT, onChange);
+
+  const mediaQuery = getDesktopMediaQuery();
+  if (mediaQuery) {
+    if (typeof mediaQuery.addEventListener === 'function') {
+      mediaQuery.addEventListener('change', onChange);
+    } else {
+      mediaQuery.addListener(onChange);
+    }
+  }
+
   return (): void => {
     window.removeEventListener('storage', onChange);
     window.removeEventListener(FORM_COLLAPSED_EVENT, onChange);
+    if (mediaQuery) {
+      if (typeof mediaQuery.removeEventListener === 'function') {
+        mediaQuery.removeEventListener('change', onChange);
+      } else {
+        mediaQuery.removeListener(onChange);
+      }
+    }
   };
 }
 
 function getFormCollapsed(): boolean {
   try {
-    return localStorage.getItem(FORM_COLLAPSED_KEY) === '1';
+    const stored = localStorage.getItem(FORM_COLLAPSED_KEY);
+    if (stored !== null) return stored === '1';
   } catch {
-    return false;
+    // localStorage không khả dụng: dùng mặc định theo breakpoint.
   }
+  return isMobileViewport();
 }
 
 function setFormCollapsed(collapsed: boolean): void {
@@ -112,6 +151,20 @@ export function LapLaSoClient({ savedId }: LapLaSoClientProps): React.ReactEleme
     getFormCollapsed,
     () => false
   );
+
+  // Trên mobile, phím Esc đóng form đang mở; desktop không đổi hành vi.
+  useEffect(() => {
+    if (isFormCollapsed) return undefined;
+
+    const handleKeyDown = (event: KeyboardEvent): void => {
+      if (event.key === 'Escape' && isMobileViewport()) {
+        setFormCollapsed(true);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return (): void => window.removeEventListener('keydown', handleKeyDown);
+  }, [isFormCollapsed]);
   const [chart, setChart] = useState<ZiweiChart | null>(() => loadChartFromStorage(savedId));
   const [formValues, setFormValues] = useState<CurrentChart | null>(() => {
     if (!savedId) return null;
@@ -119,9 +172,7 @@ export function LapLaSoClient({ savedId }: LapLaSoClientProps): React.ReactEleme
     return saved ? { birthInfo: saved.birthInfo, preferences: saved.preferences } : null;
   });
   // Chủ sở hữu của form/lá số đang hiển thị (id tài khoản, null cho khách, undefined khi trống).
-  const loadedChartOwnerIdRef = useRef<string | null | undefined>(
-    formValues ? null : undefined
-  );
+  const loadedChartOwnerIdRef = useRef<string | null | undefined>(formValues ? null : undefined);
   const [formVersion, setFormVersion] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -248,9 +299,9 @@ export function LapLaSoClient({ savedId }: LapLaSoClientProps): React.ReactEleme
 
       try {
         setChart(engine.generateChart(current.birthInfo, current.preferences));
-      } catch (err) {
+      } catch {
         setChart(null);
-        setError(err instanceof Error ? err.message : 'Không thể tải lá số hiện tại.');
+        setError(CURRENT_CHART_RENDER_ERROR);
       }
     };
 
@@ -289,8 +340,8 @@ export function LapLaSoClient({ savedId }: LapLaSoClientProps): React.ReactEleme
       try {
         setChart(engine.generateChart(saved.birthInfo, saved.preferences));
         setCurrentSavedId(saved.remoteId ?? saved.id);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Không thể tải hồ sơ đã lưu.');
+      } catch {
+        setError(SAVED_CHART_RENDER_ERROR);
       } finally {
         setIsLoadingSavedChart(false);
       }
@@ -323,9 +374,9 @@ export function LapLaSoClient({ savedId }: LapLaSoClientProps): React.ReactEleme
           setIsLoadingSavedChart(false);
         }
       })
-      .catch((err) => {
+      .catch(() => {
         if (isStale()) return;
-        setError(err instanceof Error ? err.message : 'Không thể tải hồ sơ đã lưu.');
+        setError(SAVED_CHART_LOAD_ERROR);
         setIsLoadingSavedChart(false);
       });
 
@@ -351,6 +402,8 @@ export function LapLaSoClient({ savedId }: LapLaSoClientProps): React.ReactEleme
         hasManualChartRef.current = true;
         loadedChartOwnerIdRef.current = userId;
         setChart(result);
+        // Mobile: thu gọn form để lộ lá số vừa lập; desktop giữ form mở.
+        if (isMobileViewport()) setFormCollapsed(true);
         // Lá số mới chưa được lưu vào Quẻ đã lưu: chỉ "Lưu hồ sơ" mới ghi vào danh sách.
         setCurrentSavedId(undefined);
 
@@ -365,12 +418,8 @@ export function LapLaSoClient({ savedId }: LapLaSoClientProps): React.ReactEleme
             setError(CURRENT_CHART_SAVE_ERROR);
           }
         });
-      } catch (err) {
-        const message =
-          err instanceof Error
-            ? err.message
-            : 'Không thể lập lá số. Vui lòng kiểm tra lại thông tin.';
-        setError(message);
+      } catch {
+        setError(CHART_GENERATE_ERROR);
       } finally {
         setIsLoading(false);
       }
@@ -379,7 +428,7 @@ export function LapLaSoClient({ savedId }: LapLaSoClientProps): React.ReactEleme
   );
 
   return (
-    <div className="relative z-10 flex min-h-screen flex-col bg-background">
+    <div className="relative z-10 flex min-h-screen flex-col bg-background/70">
       <Header />
 
       <main className="flex-1 px-4 py-6 md:py-8 lg:py-10">
@@ -414,13 +463,13 @@ export function LapLaSoClient({ savedId }: LapLaSoClientProps): React.ReactEleme
                 <PdfButton chart={chart} />
               </div>
               {personalSummary && <PersonalSummaryCard summary={personalSummary} />}
+              <ChartSummary chart={chart} />
               {decadeFortune.length > 0 && <DecadeFortuneTimeline decades={decadeFortune} />}
               {yearlyFortune && <YearlyFortuneCard fortune={yearlyFortune} />}
               {timeline && <TimelineView timeline={timeline} />}
               <TopicInterpretationTabs topics={topics} />
               {interpretation && (
                 <div className="mt-8">
-                  <ChartSummary chart={chart} />
                   <CombinationsList combinations={interpretation.combinations} />
                   <PalaceInterpretationList
                     chart={chart}
@@ -434,7 +483,16 @@ export function LapLaSoClient({ savedId }: LapLaSoClientProps): React.ReactEleme
         </div>
       </main>
 
-      {/* Form thông tin sinh - floating overlay, nằm ngoài luồng layout nên không đẩy lá số */}
+      {/* Form thông tin sinh - floating overlay, nằm ngoài luồng layout nên không đẩy lá số.
+          Trên mobile, form mặc định thu gọn; khi mở sẽ có lớp nền mờ phía sau. */}
+      {!isFormCollapsed && (
+        <div
+          aria-hidden="true"
+          onClick={(): void => setFormCollapsed(true)}
+          className="fixed inset-0 z-30 bg-black/50 backdrop-blur-[2px] lg:hidden"
+        />
+      )}
+
       <aside
         aria-label="Thông tin sinh"
         className="fixed bottom-4 left-0 z-40 flex items-start lg:bottom-auto lg:top-20"
@@ -442,7 +500,7 @@ export function LapLaSoClient({ savedId }: LapLaSoClientProps): React.ReactEleme
         <div
           id="birth-form-panel"
           hidden={isFormCollapsed}
-          className="w-[calc(100vw-2.5rem)] max-h-[60vh] overflow-y-auto rounded-md shadow-xl sm:w-80 lg:max-h-[calc(100vh-7rem)]"
+          className="w-[calc(100vw-3rem)] max-h-[60vh] overflow-y-auto overscroll-contain rounded-md shadow-xl sm:w-80 lg:max-h-[calc(100vh-7rem)]"
         >
           <Card>
             <CardHeader>
@@ -482,7 +540,7 @@ export function LapLaSoClient({ savedId }: LapLaSoClientProps): React.ReactEleme
           aria-controls="birth-form-panel"
           aria-label={isFormCollapsed ? 'Mở form thông tin sinh' : 'Thu gọn form thông tin sinh'}
           className={[
-            'mt-4 flex h-10 w-8 shrink-0 items-center justify-center border border-border-subtle bg-surface text-lg leading-none text-gold shadow-xl transition-colors',
+            'mt-4 flex h-11 w-11 shrink-0 touch-manipulation items-center justify-center border border-border-subtle bg-surface text-lg leading-none text-gold shadow-xl transition-colors lg:h-10 lg:w-8',
             'hover:text-gold-bright focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold',
             isFormCollapsed ? 'rounded-r-md' : 'rounded-l-md',
           ].join(' ')}

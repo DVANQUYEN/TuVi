@@ -1,6 +1,7 @@
-import type { Palace, PalaceId, ZiweiChart } from '../types';
-import { palaceHasStar } from './star-utils';
+import type { BrightnessLevel, MutagenType, Palace, PalaceId, Star, ZiweiChart } from '../types';
+import { collectPalaceStars, palaceHasStar } from './star-utils';
 import { calculateYearlyFortune } from './yearly-fortune';
+import { TOPIC_CONCLUSIONS } from './data/topic-conclusions';
 
 /** Bốn chủ đề luận giải chuyên sâu. */
 export type Topic = 'career' | 'love' | 'wealth' | 'health';
@@ -11,6 +12,10 @@ export interface TopicInterpretation {
   title: string;
   /** Tổng quan 3-4 câu. */
   overview: string;
+  /** Câu châm ngôn kết luận ngắn, diễn giải từ cung/sao. */
+  conclusion: string;
+  /** Cơ sở Tử Vi hình thành nên câu kết luận. */
+  conclusionBasis: string;
   /** 3-5 điểm mạnh. */
   strengths: string[];
   /** 3-5 thách thức. */
@@ -39,7 +44,7 @@ const TOPIC_PALACE: Readonly<Record<Topic, PalaceId>> = {
 };
 
 const CAREER_STRENGTH_DEFAULTS = [
-  'Thăng tiến tốt khi kiên trì theo đuổi mục tiêu',
+  'Có nhiều cơ hội thăng tiến khi kiên trì theo đuổi mục tiêu',
   'Có khả năng thích nghi với môi trường mới',
   'Được đồng nghiệp quý mến khi chủ động hợp tác',
 ] as const;
@@ -47,7 +52,7 @@ const CAREER_STRENGTH_DEFAULTS = [
 const CAREER_CHALLENGE_DEFAULTS = [
   'Cần học cách lắng nghe người khác, tránh độc đoán',
   'Dễ bị cuốn vào công việc, thiếu cân bằng cuộc sống',
-  'Cần chủ động trau dồi kỹ năng mới, nếu không dễ bị đào thải',
+  'Cần chủ động trau dồi kỹ năng mới để giữ lợi thế cạnh tranh',
 ] as const;
 
 const CAREER_RECOMMENDATIONS = [
@@ -64,9 +69,9 @@ const LOVE_STRENGTH_DEFAULTS = [
 ] as const;
 
 const LOVE_CHALLENGE_DEFAULTS = [
-  'Cần học cách thấu hiểu, nhường nhịn đối phương, nếu không dễ chia ly',
-  'Dễ kỳ vọng quá cao vào đối phương, dẫn đến thất vọng và chia tay',
-  'Cần cân bằng giữa công việc và tình cảm, tránh cảnh cô độc',
+  'Cần học cách thấu hiểu, nhường nhịn đối phương để tránh những rạn nứt không đáng có',
+  'Dễ kỳ vọng quá cao vào đối phương, dẫn đến thất vọng và khoảng cách',
+  'Cần cân bằng giữa công việc và tình cảm, tránh cảm giác đơn độc',
 ] as const;
 
 const LOVE_RECOMMENDATIONS = [
@@ -83,9 +88,9 @@ const WEALTH_STRENGTH_DEFAULTS = [
 ] as const;
 
 const WEALTH_CHALLENGE_DEFAULTS = [
-  'Cần học cách quản lý tài chính, nếu không dễ phá sản',
-  'Tránh chi tiêu cảm tính, dễ mất tiền lớn',
-  'Cần dự phòng cho biến cố bất ngờ, tránh cảnh trắng tay',
+  'Cần học cách quản lý tài chính để tránh thất thoát lớn',
+  'Tránh chi tiêu cảm tính, dễ phát sinh khoản chi lớn ngoài dự kiến',
+  'Cần dự phòng cho biến cố bất ngờ để tránh rơi vào thế bị động về tiền bạc',
 ] as const;
 
 const WEALTH_RECOMMENDATIONS = [
@@ -102,9 +107,9 @@ const HEALTH_STRENGTH_DEFAULTS = [
 ] as const;
 
 const HEALTH_CHALLENGE_DEFAULTS = [
-  'Cần duy trì lối sống lành mạnh, tránh bệnh nặng',
-  'Cần chú ý nghỉ ngơi, tránh thức khuya, dễ suy nhược',
-  'Nên khám sức khỏe định kỳ, phòng bệnh nặng',
+  'Cần duy trì lối sống lành mạnh để giảm nguy cơ bệnh nặng',
+  'Cần chú ý nghỉ ngơi, tránh thức khuya, dễ suy giảm sức lực',
+  'Nên khám sức khỏe định kỳ để phòng ngừa sớm các vấn đề sức khỏe',
 ] as const;
 
 const HEALTH_RECOMMENDATIONS = [
@@ -136,6 +141,101 @@ export function interpretByTopic(chart: ZiweiChart, topic: Topic): TopicInterpre
   }
 }
 
+const BRIGHTNESS_LABELS_VI: Readonly<Record<BrightnessLevel, string>> = {
+  mieu: 'Miếu',
+  vuong: 'Vượng',
+  dac: 'Đắc',
+  binh: 'Bình',
+  ham: 'Hãm',
+};
+
+const MUTAGEN_LABELS_VI: Readonly<Record<MutagenType, string>> = {
+  hoaLoc: 'Hóa Lộc',
+  hoaQuyen: 'Hóa Quyền',
+  hoaKhoa: 'Hóa Khoa',
+  hoaKy: 'Hóa Kỵ',
+};
+
+const MUTAGEN_IDS: readonly MutagenType[] = ['hoaLoc', 'hoaQuyen', 'hoaKhoa', 'hoaKy'];
+
+function palaceHasSignal(palace: Palace, signal: string): boolean {
+  if (palaceHasStar(palace, signal)) return true;
+  return MUTAGEN_IDS.includes(signal as MutagenType)
+    ? collectPalaceStars(palace).some((star) => star.mutagen === signal)
+    : false;
+}
+
+function describeMajorStar(star: Star): string {
+  return star.brightness
+    ? `${star.name} (${BRIGHTNESS_LABELS_VI[star.brightness]})`
+    : star.name;
+}
+
+function buildConclusionBasis(palace: Palace): string {
+  const majorPart =
+    palace.majorStars.length > 0
+      ? palace.majorStars.map(describeMajorStar).join(', ')
+      : 'Vô Chính Diệu';
+
+  const minorNames = [
+    ...new Set(
+      collectPalaceStars(palace)
+        .filter((star) => star.category !== 'major')
+        .map((star) => star.name)
+    ),
+  ].slice(0, 3);
+
+  const mutagenNames = [
+    ...new Set(
+      collectPalaceStars(palace)
+        .filter((star): star is Star & { mutagen: MutagenType } => Boolean(star.mutagen))
+        .map((star) => `${MUTAGEN_LABELS_VI[star.mutagen]} (${star.name})`)
+    ),
+  ];
+
+  const detailPart = [...minorNames, ...mutagenNames].join(', ');
+
+  return detailPart
+    ? `Cung ${palace.name}: ${majorPart} · ${detailPart}`
+    : `Cung ${palace.name}: ${majorPart}`;
+}
+
+/**
+ * Chọn câu kết luận và cơ sở Tử Vi cho một chủ đề.
+ *
+ * @param topic - Chủ đề cần luận giải.
+ * @param topicPalace - Cung chính của chủ đề.
+ * @returns Câu kết luận và chuỗi cơ sở (cung, chính tinh, phụ tinh/Tứ Hóa).
+ */
+export function buildTopicConclusion(
+  topic: Topic,
+  topicPalace: Palace | undefined
+): { quote: string; basis: string } {
+  const config = TOPIC_CONCLUSIONS[topic];
+
+  if (!topicPalace) {
+    return { quote: config.fallback, basis: '' };
+  }
+
+  const majorStars = topicPalace.majorStars ?? [];
+  const special = config.special.find((entry) =>
+    entry.stars.some((star) => palaceHasSignal(topicPalace, star))
+  );
+
+  let quote: string;
+  if (majorStars.length === 0) {
+    quote = config.noMajor;
+  } else if (special) {
+    quote = special.quote;
+  } else if (majorStars.some((star) => star.brightness === 'ham')) {
+    quote = config.ham;
+  } else {
+    quote = config.byStar[majorStars[0].id] ?? config.fallback;
+  }
+
+  return { quote, basis: buildConclusionBasis(topicPalace) };
+}
+
 function interpretCareer(chart: ZiweiChart): TopicInterpretation {
   const menhPalace = findPalace(chart, 'menh');
   const quanLocPalace = findPalace(chart, 'quanLoc');
@@ -163,6 +263,7 @@ function interpretCareer(chart: ZiweiChart): TopicInterpretation {
   const challenges = buildCareerChallenges(quanLocPalace, menhPalace);
   const luckyYears = calculateLuckyYears(chart, 'career');
   const challengingYears = calculateChallengingYears(chart, 'career');
+  const conclusion = buildTopicConclusion('career', quanLocPalace);
 
   const hasLeadership = hasStarIn([menhPalace], 'Tử Vi');
   const palacePhrase = quanLocPalace?.majorStars.length
@@ -175,6 +276,8 @@ function interpretCareer(chart: ZiweiChart): TopicInterpretation {
     overview:
       `Sự nghiệp của bạn ${hasLeadership ? 'có tố chất lãnh đạo từ khi sinh ra' : 'phụ thuộc nhiều vào nỗ lực bản thân'}. ` +
       `${palacePhrase} ${lowerFirst(strengths[0])}.`,
+    conclusion: conclusion.quote,
+    conclusionBasis: conclusion.basis,
     strengths,
     challenges,
     recommendations: [...CAREER_RECOMMENDATIONS],
@@ -199,7 +302,7 @@ function interpretLove(chart: ZiweiChart): TopicInterpretation {
       {
         condition:
           hasStarIn([phuThePalace], 'Hồng Loan') || hasStarIn([phuThePalace], 'Đào Hoa'),
-        text: 'Có sức hút, dễ gặp được người tốt',
+        text: 'Có sức hút, dễ gặp được người phù hợp',
       },
       {
         condition: hasStarIn([menhPalace], 'Thiên Đồng'),
@@ -211,6 +314,7 @@ function interpretLove(chart: ZiweiChart): TopicInterpretation {
   const challenges = buildLoveChallenges(phuThePalace, menhPalace);
   const luckyYears = calculateLuckyYears(chart, 'love');
   const challengingYears = calculateChallengingYears(chart, 'love');
+  const conclusion = buildTopicConclusion('love', phuThePalace);
 
   const palacePhrase = phuThePalace?.majorStars.length
     ? `Cung Phu Thê có ${phuThePalace.majorStars.map((star) => star.name).join(', ')} cho thấy`
@@ -223,6 +327,8 @@ function interpretLove(chart: ZiweiChart): TopicInterpretation {
     overview:
       `Tình duyên của bạn: ${palacePhrase} ${lowerFirst(strengths[0])}. ` +
       (hasDifficulty ? 'Tuy nhiên, cần chú ý đến những thách thức trong quan hệ.' : ''),
+    conclusion: conclusion.quote,
+    conclusionBasis: conclusion.basis,
     strengths,
     challenges,
     recommendations: [...LOVE_RECOMMENDATIONS],
@@ -258,6 +364,7 @@ function interpretWealth(chart: ZiweiChart): TopicInterpretation {
   const challenges = buildWealthChallenges(taiBachPalace, menhPalace);
   const luckyYears = calculateLuckyYears(chart, 'wealth');
   const challengingYears = calculateChallengingYears(chart, 'wealth');
+  const conclusion = buildTopicConclusion('wealth', taiBachPalace);
 
   const palacePhrase = taiBachPalace?.majorStars.length
     ? `Cung Tài Bạch có ${taiBachPalace.majorStars.map((star) => star.name).join(', ')} cho thấy`
@@ -270,6 +377,8 @@ function interpretWealth(chart: ZiweiChart): TopicInterpretation {
     overview:
       `Tài lộc của bạn: ${palacePhrase} ${lowerFirst(strengths[0])}. ` +
       (hasDifficulty ? 'Tuy nhiên, cần chú ý đến những thách thức về tài chính.' : ''),
+    conclusion: conclusion.quote,
+    conclusionBasis: conclusion.basis,
     strengths,
     challenges,
     recommendations: [...WEALTH_RECOMMENDATIONS],
@@ -288,7 +397,7 @@ function interpretHealth(chart: ZiweiChart): TopicInterpretation {
     [
       {
         condition: hasBrightness(tatAchPalace, ['mieu', 'vuong']),
-        text: 'Sức khỏe tốt, tinh thần minh mẫn',
+        text: 'Sức khỏe ổn định, tinh thần minh mẫn',
       },
       {
         condition: hasStarIn([menhPalace], 'Thiên Lương'),
@@ -304,6 +413,7 @@ function interpretHealth(chart: ZiweiChart): TopicInterpretation {
   const challenges = buildHealthChallenges(tatAchPalace, menhPalace);
   const luckyYears = calculateLuckyYears(chart, 'health');
   const challengingYears = calculateChallengingYears(chart, 'health');
+  const conclusion = buildTopicConclusion('health', tatAchPalace);
 
   const palacePhrase = tatAchPalace?.majorStars.length
     ? `Cung Tật Ách có ${tatAchPalace.majorStars.map((star) => star.name).join(', ')} cho thấy`
@@ -315,6 +425,8 @@ function interpretHealth(chart: ZiweiChart): TopicInterpretation {
     overview:
       `Sức khỏe của bạn: ${palacePhrase} ${lowerFirst(strengths[0])}. ` +
       `Cần chú ý đến ${healthConcerns.slice(0, 2).join(', ').toLowerCase()}.`,
+    conclusion: conclusion.quote,
+    conclusionBasis: conclusion.basis,
     strengths,
     challenges,
     recommendations: [...HEALTH_RECOMMENDATIONS],
@@ -368,7 +480,7 @@ function buildSuitablePartner(palaces: ReadonlyArray<Palace | undefined>): strin
   add(hasStarIn(palaces, 'Thiên Phủ'), 'Người ổn định, đáng tin cậy');
   add(
     hasStarIn(palaces, 'Hồng Loan') || hasStarIn(palaces, 'Đào Hoa'),
-    'Người mang lại duyên phận tốt'
+    'Người mang lại duyên phận thuận hòa'
   );
 
   partners.push('Người biết nhường nhịn, thấu hiểu');
@@ -407,7 +519,7 @@ function buildHealthConcerns(
   add(hasStarIn(palaces, 'Cự Môn'), 'Bệnh về họng, phổi');
   add(
     hasStarIn(palaces, 'Kình Dương') || hasStarIn(palaces, 'Đà La'),
-    'Tai nạn, chấn thương'
+    'Rủi ro chấn thương'
   );
   add(true, 'Stress do áp lực công việc');
 
@@ -434,18 +546,18 @@ function buildCareerChallenges(
     if (condition && !challenges.includes(challenge)) challenges.push(challenge);
   };
 
-  add(hasBrightness(quanLocPalace, ['ham']), 'Sự nghiệp nhiều thăng trầm, có thể bị sa thải, giáng chức');
+  add(hasBrightness(quanLocPalace, ['ham']), 'Sự nghiệp có thể trải qua giai đoạn thăng trầm, có nguy cơ bị sa thải hoặc giáng chức nếu không chủ động thích ứng');
   add(
     hasStarIn([menhPalace], 'Kình Dương') || hasStarIn([menhPalace], 'Đà La'),
-    'Dễ có tranh chấp kiện tụng với đồng nghiệp, có thể bị tiểu nhân hãm hại'
+    'Dễ phát sinh tranh chấp với đồng nghiệp, cần đề phòng những bất lợi từ môi trường xung quanh'
   );
   add(
     hasStarIn([menhPalace], 'Hỏa Tinh') || hasStarIn([menhPalace], 'Linh Tinh'),
-    'Có thể gặp tai nạn bất ngờ, cần cẩn trọng'
+    'Cần đề phòng sự cố bất ngờ, nhất là khi đi lại hoặc làm việc trong môi trường có rủi ro'
   );
   add(
     hasBrightness(menhPalace, ['ham']),
-    'Số mệnh nghèo hèn, cuộc đời nhiều khổ nạn'
+    'Có thể trải qua giai đoạn khó khăn về vật chất, cần xây dựng nền tảng từng bước'
   );
 
   return finalizeItems(challenges, CAREER_CHALLENGE_DEFAULTS);
@@ -460,11 +572,11 @@ function buildLoveChallenges(
     if (condition && !challenges.includes(challenge)) challenges.push(challenge);
   };
 
-  add(hasBrightness(phuThePalace, ['ham']), 'Dễ gặp cảnh chia ly, cô độc');
+  add(hasBrightness(phuThePalace, ['ham']), 'Dễ nảy sinh khoảng cách hoặc cảm giác đơn độc nếu thiếu chia sẻ');
   add(
     hasStarIn([phuThePalace, menhPalace], 'Kình Dương') ||
       hasStarIn([phuThePalace, menhPalace], 'Đà La'),
-    'Dễ có tranh cãi, hiểu lầm, có thể dẫn đến ly hôn'
+    'Dễ có tranh cãi, hiểu lầm; nếu thiếu thấu hiểu, có nguy cơ chia ly hoặc ly hôn'
   );
 
   return finalizeItems(challenges, LOVE_CHALLENGE_DEFAULTS);
@@ -479,11 +591,11 @@ function buildWealthChallenges(
     if (condition && !challenges.includes(challenge)) challenges.push(challenge);
   };
 
-  add(hasBrightness(taiBachPalace, ['ham']), 'Có thể phá sản, mất tiền lớn');
+  add(hasBrightness(taiBachPalace, ['ham']), 'Có nguy cơ thất thoát tài chính lớn, thậm chí phá sản nếu thiếu cẩn trọng');
   add(
     hasStarIn([taiBachPalace, menhPalace], 'Địa Không') ||
       hasStarIn([taiBachPalace, menhPalace], 'Địa Kiếp'),
-    'Tránh đầu tư mạo hiểm, dễ mất tiền lớn, có thể phá sản'
+    'Tránh đầu tư mạo hiểm; nếu không thận trọng, có thể mất tiền lớn hoặc phá sản'
   );
 
   return finalizeItems(challenges, WEALTH_CHALLENGE_DEFAULTS);
@@ -498,10 +610,10 @@ function buildHealthChallenges(
     if (condition && !challenges.includes(challenge)) challenges.push(challenge);
   };
 
-  add(hasBrightness(tatAchPalace, ['ham']), 'Có thể gặp bệnh nặng, cần phòng ngừa');
+  add(hasBrightness(tatAchPalace, ['ham']), 'Cần chủ động phòng ngừa, tránh để bệnh tiến triển nặng');
   add(
     hasStarIn([tatAchPalace, menhPalace], 'Hỏa Tinh'),
-    'Có thể gặp tai nạn bất ngờ, nguy hiểm tính mạng'
+    'Cần phòng ngừa tai nạn bất ngờ; trong tình huống xấu, có nguy cơ ảnh hưởng nghiêm trọng đến tính mạng'
   );
 
   return finalizeItems(challenges, HEALTH_CHALLENGE_DEFAULTS);

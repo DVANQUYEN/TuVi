@@ -23,15 +23,15 @@ export default function SignUpPage(): React.ReactElement {
 
       if (signUpError) throw signUpError;
       setSuccess(true);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Có lỗi xảy ra');
+    } catch {
+      setError('Không thể đăng ký. Vui lòng kiểm tra thông tin và kết nối mạng rồi thử lại.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
+    <div className="relative z-10 flex min-h-screen items-center justify-center bg-background/70">
       <div className="w-full max-w-md p-8">
         <h1 className="mb-8 text-center font-heading text-3xl text-gold">Đăng ký tài khoản</h1>
 

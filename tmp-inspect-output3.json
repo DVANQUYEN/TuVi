@@ -1,0 +1,192 @@
+{
+  "partial": {
+    "age": 22,
+    "decade": {
+      "ageRange": "chưa xác định",
+      "palaceName": "Phúc Đức",
+      "majorStars": [
+        "Tử Vi",
+        "Thiên Phủ"
+      ],
+      "score": 5,
+      "level": "tốt"
+    },
+    "minor": null,
+    "annual": {
+      "branchLabel": "Ngọ",
+      "palaceName": "Phúc Đức",
+      "taiSuiPalace": "Phúc Đức",
+      "mutagens": []
+    },
+    "activatedPalaces": [
+      {
+        "name": "Phúc Đức",
+        "reasons": [
+          "Đại vận",
+          "Lưu niên/Thái Tuế"
+        ]
+      }
+    ],
+    "signals": [
+      {
+        "type": "dai-van-thuan",
+        "palace": "Phúc Đức",
+        "note": "Đại vận chưa xác định tại cung Phúc Đức có Tử Vi, Thiên Phủ làm nền tảng thuận nhịp cho phúc đức, tinh thần."
+      }
+    ],
+    "shouldDo": [
+      "Đặt mục tiêu dài hơi cho phúc đức, tinh thần theo cung Phúc Đức (Tử Vi, Thiên Phủ).",
+      "Tận dụng trực Mãn để hoàn tất việc ở cung Phúc Đức.",
+      "Đặt việc cần tập trung vào giờ Tý, Sửu, Thìn, Tỵ, Mùi, Tuất để trao đổi phúc đức, tinh thần."
+    ],
+    "shouldAvoid": [
+      "Tránh tranh luận với người tuổi Dần khi cảm xúc đang căng.",
+      "Không đổi kế hoạch ở cung Phúc Đức nếu chưa có phương án thay thế.",
+      "Kiểm tra lại điều khoản liên quan phúc đức, tinh thần trước khi cam kết."
+    ],
+    "advice": "Bối cảnh đại vận chưa xác định tại cung Phúc Đức (Tử Vi, Thiên Phủ) tạo đà thuận nhịp, đóng góp khoảng 70% nền tảng. Chưa đủ dữ liệu tiểu vận nên chỉ bám theo đại vận và lưu niên. Giữ nhịp phúc đức, tinh thần theo kế hoạch đã định và dùng giờ Tý, Sửu, Thìn, Tỵ, Mùi, Tuất cho việc cần sự rõ ràng. Đây là lớp tham khảo từ lá số đã lưu, không phải kết luận cố định.",
+    "basis": [
+      "Đại vận chưa xác định tuổi – cung Phúc Đức (Tử Vi, Thiên Phủ), điểm 5/5",
+      "Lưu niên Bính Ngọ – cung Phúc Đức",
+      "Ngày Canh Thân, trực Mãn, giờ hoàng đạo Tý, Sửu, Thìn, Tỵ, Mùi, Tuất"
+    ]
+  },
+  "invalidDate": {
+    "chartName": "Mẫu 18/7/2004",
+    "age": 0,
+    "decade": {
+      "ageRange": "2-11",
+      "palaceName": "Mệnh",
+      "majorStars": [
+        "Phá Quân"
+      ],
+      "score": 5,
+      "level": "tốt"
+    },
+    "minor": null,
+    "annual": {
+      "branchLabel": "Ngọ",
+      "palaceName": "Thiên Di",
+      "taiSuiPalace": "Thiên Di",
+      "locTonPalace": "Nô Bộc",
+      "kinhDuongPalace": "Quan Lộc",
+      "daLaPalace": "Thiên Di",
+      "mutagens": [
+        {
+          "type": "Lộc",
+          "star": "Thiên Đồng",
+          "palace": "Tử Tức"
+        },
+        {
+          "type": "Quyền",
+          "star": "Thiên Cơ",
+          "palace": "Phụ Mẫu"
+        },
+        {
+          "type": "Khoa",
+          "star": "Văn Xương",
+          "palace": "Điền Trạch"
+        },
+        {
+          "type": "Kỵ",
+          "star": "Liêm Trinh",
+          "palace": "Thiên Di"
+        }
+      ]
+    },
+    "activatedPalaces": [
+      {
+        "name": "Mệnh",
+        "reasons": [
+          "Đại vận"
+        ]
+      },
+      {
+        "name": "Thiên Di",
+        "reasons": [
+          "Lưu niên/Thái Tuế",
+          "Lưu nguyệt",
+          "Lưu Đà La",
+          "Lưu Hóa Kỵ"
+        ]
+      },
+      {
+        "name": "Tài Bạch",
+        "reasons": [
+          "Lưu nhật"
+        ]
+      },
+      {
+        "name": "Nô Bộc",
+        "reasons": [
+          "Lưu Lộc Tồn"
+        ]
+      },
+      {
+        "name": "Quan Lộc",
+        "reasons": [
+          "Lưu Kình Dương"
+        ]
+      },
+      {
+        "name": "Tử Tức",
+        "reasons": [
+          "Lưu Hóa Lộc"
+        ]
+      },
+      {
+        "name": "Phụ Mẫu",
+        "reasons": [
+          "Lưu Hóa Quyền"
+        ]
+      },
+      {
+        "name": "Điền Trạch",
+        "reasons": [
+          "Lưu Hóa Khoa"
+        ]
+      }
+    ],
+    "signals": [
+      {
+        "type": "dai-van-thuan",
+        "palace": "Mệnh",
+        "note": "Đại vận 2-11 tại cung Mệnh có Phá Quân làm nền tảng thuận nhịp cho bản thân."
+      },
+      {
+        "type": "luu-kinh-duong",
+        "star": "Kình Dương",
+        "palace": "Quan Lộc",
+        "note": "Lưu Kình Dương nhập cung Quan Lộc: giữ biên bản rõ ràng khi trao đổi công việc, sự nghiệp."
+      }
+    ],
+    "shouldDo": [
+      "Đặt mục tiêu dài hơi cho bản thân theo cung Mệnh (Phá Quân).",
+      "Tận dụng trực Mãn để hoàn tất việc ở cung Thiên Di.",
+      "Đặt việc cần tập trung vào giờ Tý, Sửu, Thìn, Tỵ, Mùi, Tuất để trao đổi đi lại, quan hệ bên ngoài."
+    ],
+    "shouldAvoid": [
+      "Không tranh luận gay gắt về công việc, sự nghiệp tại cung Quan Lộc (Lưu Kình Dương); ghi lại thỏa thuận.",
+      "Tránh tranh luận với người tuổi Dần khi cảm xúc đang căng.",
+      "Không đổi kế hoạch ở cung Thiên Di nếu chưa có phương án thay thế."
+    ],
+    "advice": "Bối cảnh đại vận 2-11 tại cung Mệnh (Phá Quân) tạo đà thuận nhịp, đóng góp khoảng 70% nền tảng. Chưa đủ dữ liệu tiểu vận nên chỉ bám theo đại vận và lưu niên. Ưu tiên bản thân ở mức vừa phải, xử lý đi lại, quan hệ bên ngoài theo nhịp đã định và dùng giờ Tý, Sửu, Thìn, Tỵ, Mùi, Tuất cho việc cần sự rõ ràng. Đây là lớp tham khảo từ lá số đã lưu, không phải kết luận cố định.",
+    "basis": [
+      "Đại vận 2-11 tuổi – cung Mệnh (Phá Quân), điểm 5/5",
+      "Lưu niên Bính Ngọ – cung Thiên Di",
+      "Lưu nguyệt Ngọ – cung Thiên Di",
+      "Lưu nhật Thân – cung Tài Bạch",
+      "Lưu Lộc Tồn tại chi Tỵ – cung Nô Bộc",
+      "Lưu Kình Dương – cung Quan Lộc",
+      "Lưu Đà La – cung Thiên Di",
+      "Lưu Hóa Lộc – Thiên Đồng tại cung Tử Tức",
+      "Lưu Hóa Quyền – Thiên Cơ tại cung Phụ Mẫu",
+      "Lưu Hóa Khoa – Văn Xương tại cung Điền Trạch",
+      "Lưu Hóa Kỵ – Liêm Trinh tại cung Thiên Di",
+      "Ngày Canh Thân, trực Mãn, giờ hoàng đạo Tý, Sửu, Thìn, Tỵ, Mùi, Tuất"
+    ]
+  },
+  "empty": {
+    "error": "TypeError: Cannot read properties of undefined (reading 'name')"
+  }
+}

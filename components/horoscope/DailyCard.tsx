@@ -1,97 +1,16 @@
 import type { DailyHoroscope } from '@/lib/ziwei/daily';
 import { BRANCH_NAMES } from '@/lib/ziwei/daily';
 import { HanIcon } from '@/components/ui/HanIcon';
-import {
-  ZODIAC_HAN,
-  HOUR_SLOTS,
-  getBranchRelation,
-  getDailyCalendar,
-  type BranchRelation,
-  type DailyCalendar,
-} from './daily-calendar';
+import { ZODIAC_HAN, getDailyCalendar } from './daily-calendar';
+import { generateDailyContent } from './daily-content';
+import { PersonalizedDailySection } from './PersonalizedDailySection';
 
 const RING_CIRCUMFERENCE = 2 * Math.PI * 45;
-
-/** Giải thích quan hệ địa chi giữa tuổi và ngày (tam hợp, lục xung, tứ hình). */
-function explainRelation(relation: BranchRelation, name: string, dayName: string): string {
-  switch (relation) {
-    case 'tamHop':
-      return `Ngày ${dayName} tam hợp với tuổi ${name}: các khí trong ngày hỗ trợ tuổi này, nên điểm tổng quan ở mức cao.`;
-    case 'lucXung':
-      return `Ngày ${dayName} lục xung với tuổi ${name}: hai khí đối nghịch dễ gây va chạm, nên điểm tổng quan thấp hơn bình thường.`;
-    case 'tuHinh':
-      return `Ngày ${dayName} tứ hình với tuổi ${name}: dễ phát sinh bất đồng nhỏ, cần giữ bình tĩnh trong giao tiếp.`;
-    case 'binh':
-      return `Ngày ${dayName} không có quan hệ tam hợp, lục xung hay tứ hình với tuổi ${name}; điểm số phụ thuộc vào biến động trong ngày.`;
-  }
-}
-
-/** Giải thích ngày: quan hệ địa chi, nạp âm và trực của ngày. */
-function getDailyExplanation(
-  name: string,
-  relation: BranchRelation,
-  calendar: DailyCalendar
-): string {
-  const dayName = BRANCH_NAMES[calendar.dayBranch];
-  const parts = [explainRelation(relation, name, dayName)];
-
-  if (calendar.napAm) {
-    parts.push(`Ngày ${calendar.dayCanChi} thuộc mệnh ${calendar.napAm}.`);
-  }
-
-  parts.push(
-    `Trực ${calendar.truc.name} là ngày ${
-      calendar.truc.lucky ? 'hoàng đạo, thuận cho việc lớn' : 'hắc đạo, nên hạn chế việc lớn'
-    }.`
-  );
-
-  return parts.join(' ');
-}
-
-/** Gợi ý làm được, theo quan hệ địa chi (nội dung tĩnh, cần chuyên gia nội dung rà soát). */
-const GOOD_BY_RELATION: Record<BranchRelation, string[]> = {
-  tamHop: ['Khởi động dự án mới', 'Gặp gỡ đối tác, đề xuất ý tưởng'],
-  lucXung: ['Rà soát lại kế hoạch đang có', 'Nghỉ ngơi, giữ gìn sức khỏe'],
-  tuHinh: ['Làm việc theo quy trình, kiểm tra kỹ', 'Lắng nghe trước khi phản hồi'],
-  binh: ['Duy trì nhịp làm việc đều đặn'],
-};
-
-/** Việc nên tránh theo quan hệ địa chi. */
-const AVOID_BY_RELATION: Record<BranchRelation, string[]> = {
-  tamHop: [],
-  lucXung: ['Ký kết hợp đồng quan trọng', 'Tranh cãi hoặc nóng vội trong giao tiếp'],
-  tuHinh: ['Tranh luận với người thân, đồng nghiệp', 'Mạo hiểm tài chính'],
-  binh: [],
-};
-
-/** Việc nên tránh theo tên trực (chỉ các trực hắc đạo). */
-const AVOID_BY_TRUC: Partial<Record<string, string>> = {
-  Trừ: 'Cưới hỏi, khởi công xây dựng',
-  Chấp: 'Vay mượn tiền hoặc bảo lãnh người khác',
-  Phá: 'Khởi công, động thổ, xây dựng',
-  Nguy: 'Leo trèo, làm việc trên cao',
-  Thu: 'Đầu tư mạo hiểm hoặc cho vay',
-  Bế: 'Khai trương, nhập học, xuất hành xa',
-};
-
-/** Tối đa 3 việc cụ thể nên tránh trong ngày, suy ra từ địa chi và trực. */
-function getShouldAvoid(relation: BranchRelation, calendar: DailyCalendar): string[] {
-  const items = [...AVOID_BY_RELATION[relation]];
-  const trucAvoid = AVOID_BY_TRUC[calendar.truc.name];
-  if (trucAvoid) items.push(trucAvoid);
-
-  const unique = [...new Set(items)].slice(0, 3);
-  return unique.length > 0 ? unique : ['Quyết định vội vàng khi chưa đủ thông tin'];
-}
 
 export function DailyCard({ horoscope }: { horoscope: DailyHoroscope }): React.ReactElement {
   const name = BRANCH_NAMES[horoscope.branch];
   const calendar = getDailyCalendar(horoscope.date);
-  const relation = getBranchRelation(horoscope.branch, calendar.dayBranch);
-  const advice = {
-    good: GOOD_BY_RELATION[relation],
-    avoid: getShouldAvoid(relation, calendar),
-  };
+  const content = generateDailyContent(horoscope.branch, calendar);
 
   const stats = [
     { label: 'Sự nghiệp', han: '業', value: horoscope.career },
@@ -115,10 +34,10 @@ export function DailyCard({ horoscope }: { horoscope: DailyHoroscope }): React.R
         </p>
       </header>
 
-      {/* Điểm tổng quan */}
+      {/* Vận khí trong ngày */}
       <section className="mb-8 flex flex-col items-center" aria-labelledby="overall-heading">
         <h2 id="overall-heading" className="sr-only">
-          Điểm tổng quan
+          Vận khí trong ngày
         </h2>
         <div className="relative h-36 w-36">
           <svg viewBox="0 0 100 100" className="h-full w-full -rotate-90" aria-hidden="true">
@@ -139,7 +58,7 @@ export function DailyCard({ horoscope }: { horoscope: DailyHoroscope }): React.R
             <span className="text-sm text-muted">trên 10</span>
           </div>
         </div>
-        <p className="mt-2 text-lg text-muted">Điểm tổng quan</p>
+        <p className="mt-2 text-lg text-muted">Vận khí trong ngày</p>
       </section>
 
       {/* Chỉ số */}
@@ -175,9 +94,9 @@ export function DailyCard({ horoscope }: { horoscope: DailyHoroscope }): React.R
         <h2 id="daily-explain-heading" className="mb-2 text-lg font-semibold text-gold">
           Ngày hôm nay
         </h2>
-        <p className="leading-relaxed text-foreground">
-          {getDailyExplanation(name, relation, calendar)}
-        </p>
+        <p className="font-medium leading-relaxed text-foreground">{content.headline}</p>
+        <p className="mt-2 leading-relaxed text-muted">{content.relationNote}</p>
+        <p className="mt-2 leading-relaxed text-muted">{content.elementNote}</p>
       </section>
 
       {/* Nên làm / Nên tránh */}
@@ -189,8 +108,11 @@ export function DailyCard({ horoscope }: { horoscope: DailyHoroscope }): React.R
           <h2 id="good-heading" className="mb-2 text-lg font-semibold text-el-moc">
             Nên làm
           </h2>
-          <ul className="list-inside list-disc space-y-1 text-foreground">
-            {advice.good.map((item) => (
+          <ul
+            data-testid="daily-should-do"
+            className="list-inside list-disc space-y-1 text-foreground"
+          >
+            {content.shouldDo.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
@@ -202,8 +124,11 @@ export function DailyCard({ horoscope }: { horoscope: DailyHoroscope }): React.R
           <h2 id="avoid-heading" className="mb-2 text-lg font-semibold text-el-hoa">
             Nên tránh
           </h2>
-          <ul className="list-inside list-disc space-y-1 text-foreground">
-            {advice.avoid.map((item) => (
+          <ul
+            data-testid="daily-should-avoid"
+            className="list-inside list-disc space-y-1 text-foreground"
+          >
+            {content.shouldAvoid.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
@@ -216,12 +141,12 @@ export function DailyCard({ horoscope }: { horoscope: DailyHoroscope }): React.R
           Giờ hoàng đạo hôm nay
         </h2>
         <ul className="flex flex-wrap gap-3">
-          {calendar.luckyHours.map((hour) => (
+          {content.luckyHours.map((hour) => (
             <li
-              key={hour}
+              key={hour.branch}
               className="rounded-full border border-border-subtle bg-elevated px-4 py-2 font-medium"
             >
-              {BRANCH_NAMES[hour]} <span className="text-sm text-muted">({HOUR_SLOTS[hour]})</span>
+              {hour.label} <span className="text-sm text-muted">({hour.time})</span>
             </li>
           ))}
         </ul>
@@ -265,8 +190,13 @@ export function DailyCard({ horoscope }: { horoscope: DailyHoroscope }): React.R
         <h2 id="advice-heading" className="mb-2 text-lg font-semibold">
           Lời khuyên
         </h2>
-        <p className="leading-relaxed text-foreground">{horoscope.advice}</p>
+        <p data-testid="daily-advice" className="leading-relaxed text-foreground">
+          {content.advice}
+        </p>
       </section>
+
+      {/* Tử Vi cá nhân theo lá số đã lưu */}
+      <PersonalizedDailySection branch={horoscope.branch} />
     </article>
   );
 }

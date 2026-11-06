@@ -28,7 +28,7 @@ const archetype: StarArchetype = {
         'Tuy nhiên sự đa tình có thể khiến đối phương thiếu an tâm. ' +
         'Cần học cách cam kết và tôn trọng ranh giới trong các mối quan hệ.',
       health:
-        'Sức khỏe khá tốt nhưng cần chú ý thận, gan và đường tiêu hóa. ' +
+        'Sức khỏe ổn định nhưng cần chú ý thận, gan và đường tiêu hóa. ' +
         'Nên hạn chế rượu bia và duy trì lối sống lành mạnh.',
       advice:
         'Phát huy sự sáng tạo và khả năng giao tiếp. ' +
@@ -49,7 +49,7 @@ const archetype: StarArchetype = {
         'Tuy nhiên sự ham vui có thể khiến người khác hiểu lầm. ' +
         'Cần rõ ràng trong cam kết và tôn trọng cảm xúc của nhau.',
       health:
-        'Thể trạng tốt, nhưng cần chú ý gan, thận và tiêu hóa. ' +
+        'Thể trạng ổn định, nhưng cần chú ý gan, thận và tiêu hóa. ' +
         'Nên hạn chế đồ uống có cồn và duy trì vận động.',
       advice:
         'Tận dụng sự năng động và khả năng kết nối. ' +
@@ -78,7 +78,7 @@ const archetype: StarArchetype = {
     },
     binh: {
       meaning:
-        'Tham Lang Bình hòa cho thấy đương số có nhiều sở thích nhưng đôi khi thiếu mục tiêu rõ ràng. ' +
+        'Tham Lang ổn định cho thấy đương số có nhiều sở thích nhưng đôi khi thiếu mục tiêu rõ ràng. ' +
         'Bản tính vui vẻ, thích giao lưu nhưng dễ bị cuốn theo đám đông. ' +
         'Có thể thành công trong công việc dịch vụ nếu biết tập trung. ' +
         'Cần rèn luyện tính kỷ luật và khả năng quản lý thời gian.',
@@ -91,7 +91,7 @@ const archetype: StarArchetype = {
         'Đôi khi thiếu sự sâu sắc khiến đối phương cảm thấy thiếu an toàn. ' +
         'Cần lắng nghe và chia sẻ cảm xúc nhiều hơn.',
       health:
-        'Sức khỏe trung bình, cần chú ý gan, thận và tiêu hóa. ' +
+        'Sức khỏe ở mức ổn định, cần chú ý gan, thận và tiêu hóa. ' +
         'Nên hạn chế đồ ăn nhiều dầu mỡ và duy trì vận động.',
       advice:
         'Tập trung vào một mục tiêu chính và kiên trì theo đuổi. ' +

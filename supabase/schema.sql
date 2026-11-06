@@ -1,5 +1,6 @@
 -- Enable UUID extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 -- Users table (extends Supabase auth.users)
 CREATE TABLE public.profiles (
@@ -32,6 +33,34 @@ CREATE TABLE public.current_charts (
   updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Love compatibility requests (write-only for clients)
+CREATE TABLE IF NOT EXISTS public.love_compatibility_requests (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
+  person1_name TEXT NOT NULL,
+  person2_name TEXT NOT NULL,
+  person1_gender TEXT NOT NULL,
+  person2_gender TEXT NOT NULL,
+  person1_birth_info JSONB NOT NULL,
+  person2_birth_info JSONB NOT NULL,
+  compatibility_score INTEGER,
+  compatibility_level TEXT,
+  result JSONB,
+  created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+  CONSTRAINT love_compatibility_requests_person1_gender_check
+    CHECK (person1_gender IN ('nam', 'nu')),
+  CONSTRAINT love_compatibility_requests_person2_gender_check
+    CHECK (person2_gender IN ('nam', 'nu')),
+  CONSTRAINT love_compatibility_requests_opposite_genders_check
+    CHECK (person1_gender <> person2_gender),
+  CONSTRAINT love_compatibility_requests_person1_name_check
+    CHECK (char_length(btrim(person1_name)) BETWEEN 1 AND 120),
+  CONSTRAINT love_compatibility_requests_person2_name_check
+    CHECK (char_length(btrim(person2_name)) BETWEEN 1 AND 120),
+  CONSTRAINT love_compatibility_requests_score_check
+    CHECK (compatibility_score IS NULL OR compatibility_score BETWEEN 0 AND 100)
+);
+
 -- Shares table
 CREATE TABLE public.shares (
   id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -47,11 +76,16 @@ CREATE INDEX idx_charts_user_id ON public.charts(user_id);
 CREATE INDEX idx_charts_created_at ON public.charts(created_at DESC);
 CREATE INDEX idx_shares_chart_id ON public.shares(chart_id);
 CREATE INDEX idx_shares_share_url ON public.shares(share_url);
+CREATE INDEX idx_love_compatibility_requests_created_at
+  ON public.love_compatibility_requests(created_at DESC);
+CREATE INDEX idx_love_compatibility_requests_user_id
+  ON public.love_compatibility_requests(user_id);
 
 -- Row Level Security (RLS)
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.charts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.current_charts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.love_compatibility_requests ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.shares ENABLE ROW LEVEL SECURITY;
 
 -- Policies for profiles
@@ -86,6 +120,17 @@ CREATE POLICY "Users can update own current chart" ON public.current_charts
 
 CREATE POLICY "Users can delete own current chart" ON public.current_charts
   FOR DELETE USING (auth.uid() = user_id);
+
+-- Policies for love compatibility requests: insert only, no client reads.
+CREATE POLICY "Anyone can insert love compatibility requests"
+  ON public.love_compatibility_requests FOR INSERT
+  TO anon, authenticated
+  WITH CHECK (
+    (user_id IS NULL OR user_id = auth.uid())
+    AND person1_gender <> person2_gender
+    AND char_length(btrim(person1_name)) BETWEEN 1 AND 120
+    AND char_length(btrim(person2_name)) BETWEEN 1 AND 120
+  );
 
 -- Policies for shares (public read)
 CREATE POLICY "Anyone can view shares" ON public.shares

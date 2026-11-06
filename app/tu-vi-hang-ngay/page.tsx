@@ -3,8 +3,10 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { DailyInfo } from '@/components/horoscope/DailyInfo';
 import { ZodiacGrid } from '@/components/horoscope/ZodiacGrid';
+import { getDailyCalendar } from '@/components/horoscope/daily-calendar';
+import { generateDailyContent, type DailyContent } from '@/components/horoscope/daily-content';
 import { generateDailyHoroscope } from '@/lib/ziwei/daily';
-import { EARTHLY_BRANCHES } from '@/lib/ziwei/types/enums';
+import { EARTHLY_BRANCHES, type EarthlyBranch } from '@/lib/ziwei/types/enums';
 import type { Metadata } from 'next';
 import { connection } from 'next/server';
 
@@ -18,23 +20,34 @@ async function TodayZodiacGrid(): Promise<React.ReactElement> {
   await connection();
   const today = new Date();
   const horoscopes = EARTHLY_BRANCHES.map((branch) => generateDailyHoroscope(branch, today));
+  const calendar = getDailyCalendar(horoscopes[0].date);
+  const contents = Object.fromEntries(
+    horoscopes.map((horoscope) => [
+      horoscope.branch,
+      generateDailyContent(horoscope.branch, calendar),
+    ])
+  ) as Record<EarthlyBranch, DailyContent>;
   return (
     <>
       <DailyInfo date={today} />
-      <ZodiacGrid horoscopes={horoscopes} />
+      <ZodiacGrid horoscopes={horoscopes} contents={contents} />
     </>
   );
 }
 
 export default function TuViHangNgayPage(): React.ReactElement {
   return (
-    <div className="relative z-10 flex min-h-screen flex-col bg-background">
+    <div className="relative z-10 flex min-h-screen flex-col bg-background/70">
       <Header />
 
       <main className="container mx-auto flex-1 px-4 py-8">
         <div className="mb-8 text-center">
-          <h1 className="mb-4 font-heading text-5xl font-semibold text-gold">Tử vi hàng ngày</h1>
-          <p className="text-lg text-muted">Chọn con giáp của bạn để xem tử vi ngày hôm nay</p>
+          <h1 className="mb-4 font-heading text-3xl font-semibold text-gold sm:text-4xl lg:text-5xl">
+            Tử vi hàng ngày
+          </h1>
+          <p className="text-base text-muted sm:text-lg">
+            Chọn con giáp của bạn để xem tử vi ngày hôm nay
+          </p>
         </div>
 
         <Suspense

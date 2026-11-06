@@ -49,7 +49,7 @@ const archetype: StarArchetype = {
         'Đôi khi quá chú trọng vật chất khiến đối phương cảm thấy thiếu sự đồng cảm. ' +
         'Cần lắng nghe và chia sẻ cảm xúc nhiều hơn.',
       health:
-        'Thể trạng tốt, nhưng cần chú ý cân nặng và tiêu hóa. ' +
+        'Thể trạng ổn định, nhưng cần chú ý cân nặng và tiêu hóa. ' +
         'Nên duy trì vận động đều đặn và chế độ ăn hợp lý.',
       advice:
         'Tận dụng khả năng quản lý để tạo nền tảng vững chắc. ' +
@@ -78,7 +78,7 @@ const archetype: StarArchetype = {
     },
     binh: {
       meaning:
-        'Thiên Phủ Bình hòa cho thấy đương số có ý thức tích lũy nhưng chưa thật sự nhạy bén với cơ hội. ' +
+        'Thiên Phủ ổn định cho thấy đương số có ý thức tích lũy nhưng chưa thật sự nhạy bén với cơ hội. ' +
         'Bản tính hiền lành, thích sự ổn định và ngại thay đổi. ' +
         'Có thể thành công trong công việc chuyên môn nếu kiên trì. ' +
         'Cần nâng cao kiến thức tài chính và kỹ năng quản lý.',
@@ -91,7 +91,7 @@ const archetype: StarArchetype = {
         'Đôi khi thiếu chủ động khiến đối phương hiểu lầm. ' +
         'Cần thẳng thắn chia sẻ mong muốn và cảm xúc.',
       health:
-        'Sức khỏe trung bình, cần chú ý cân nặng và tiêu hóa. ' +
+        'Sức khỏe ở mức ổn định, cần chú ý cân nặng và tiêu hóa. ' +
         'Nên vận động thường xuyên và hạn chế đồ ăn nhiều dầu mỡ.',
       advice:
         'Chủ động nâng cao kỹ năng và mở rộng hiểu biết. ' +

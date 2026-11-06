@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Cormorant_Garamond, Noto_Serif, Fira_Code } from 'next/font/google';
 import { ThemeProvider } from '@/components/layout/ThemeProvider';
+import { GlobalSkyBackdrop } from '@/components/layout/GlobalSkyBackdrop';
 import './globals.css';
 
 const cormorant = Cormorant_Garamond({
@@ -47,9 +48,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }):
         />
       </head>
       <body
-        className={`${cormorant.variable} ${notoSerif.variable} ${firaCode.variable} bg-background font-sans text-foreground antialiased`}
+        className={`${cormorant.variable} ${notoSerif.variable} ${firaCode.variable} overflow-x-hidden bg-background font-sans text-foreground antialiased`}
       >
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <GlobalSkyBackdrop />
+          <div className="relative z-10 min-w-0 overflow-x-hidden">{children}</div>
+        </ThemeProvider>
       </body>
     </html>
   );

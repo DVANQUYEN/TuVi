@@ -1,7 +1,14 @@
 import type { ZiweiChart, Palace, Period } from '../types';
+import {
+  calculatePalaceBaseScore,
+  calculatePalaceComprehensiveScore,
+  fortuneLevelFromScore,
+  getFortuneRating,
+} from './fortune-score';
+import type { FortuneLevel, FortuneRating } from './fortune-score';
 
-/** Mức độ vận hạn. */
-export type FortuneLevel = 'tốt' | 'xấu' | 'ổn định';
+export { fortuneLevelFromScore };
+export type { FortuneLevel, FortuneRating };
 
 /** Đại hạn (chu kỳ 10 năm) của lá số. */
 export interface DecadeFortune {
@@ -19,7 +26,11 @@ export interface DecadeFortune {
   majorStars: string[];
   /** Tên các phụ tinh trong cung. */
   minorStars: string[];
-  /** Mức độ vận hạn. */
+  /** Điểm tổng quan của cung đại hạn (1-5). */
+  score: number;
+  /** Mức độ vận hạn 5 cấp, suy ra từ score. */
+  rating: FortuneRating;
+  /** Mức độ vận hạn 3 cấp, suy ra từ score. */
   fortune: FortuneLevel;
   /** Đại hạn đang diễn ra tại tuổi hiện tại. */
   isCurrent: boolean;
@@ -35,12 +46,24 @@ export interface DecadeFortune {
 }
 
 /**
+ * Quy đổi một cung thành điểm tổng quan (1-5).
+ *
+ * Dùng chung mô hình chuẩn hóa với Khái quát lá số và lưu niên để điểm
+ * không thể đảo ngược giữa các màn hình: một chính tinh Miếu cho 5,
+ * Đắc cho 4, Hãm cho 1. Đây là heuristic minh bạch, không phải công
+ * thức số học chính thống của Tử Vi.
+ */
+export function calculatePalaceScore(palace: Palace): number {
+  return calculatePalaceBaseScore(palace);
+}
+
+/**
  * Tính danh sách đại hạn (10 năm) từ các chu kỳ đã có trong lá số.
  *
  * @param chart - Lá số Tử Vi.
  * @param currentAge - Tuổi hiện tại của đương số.
  * @param birthYear - Năm sinh dương lịch.
- * @returns Tối đa 8 đại hạn, sắp xếp theo tuổi tăng dần.
+ * @returns Tất cả đại hạn hợp lệ, sắp xếp theo tuổi tăng dần.
  */
 export function calculateDecadeFortune(
   chart: ZiweiChart,
@@ -54,8 +77,7 @@ export function calculateDecadeFortune(
         typeof period.startAge === 'number' &&
         typeof period.endAge === 'number'
     )
-    .sort((a, b) => a.startAge - b.startAge)
-    .slice(0, 8);
+    .sort((a, b) => a.startAge - b.startAge);
 
   return daiHanPeriods.map((period) => {
     const palace = chart.palaces.find((candidate) => candidate.branch === period.palaceBranch);
@@ -66,7 +88,9 @@ export function calculateDecadeFortune(
     const ageStart = period.startAge;
     const ageEnd = period.endAge;
     const isCurrent = currentAge >= ageStart && currentAge <= ageEnd;
-    const fortune = calculateFortuneLevel(palace);
+    const score = calculatePalaceComprehensiveScore(chart, palace);
+    const rating = getFortuneRating(score);
+    const fortune = fortuneLevelFromScore(score);
 
     return {
       decade: `${ageStart}-${ageEnd}`,
@@ -80,6 +104,8 @@ export function calculateDecadeFortune(
         ...palace.maleficStars,
         ...palace.otherStars,
       ].map((star) => star.name),
+      score,
+      rating,
       fortune,
       isCurrent,
       summary: generateDecadeSummary(palace, ageStart, ageEnd, fortune),
@@ -91,35 +117,6 @@ export function calculateDecadeFortune(
       },
     };
   });
-}
-
-/**
- * Xác định mức độ vận hạn từ độ sáng các chính tinh trong cung.
- */
-function calculateFortuneLevel(palace: Palace): FortuneLevel {
-  const majorStars = palace.majorStars;
-  if (majorStars.length === 0) return 'ổn định';
-
-  const brightnessScore = majorStars.reduce((score, star) => {
-    switch (star.brightness) {
-      case 'mieu':
-        return score + 3;
-      case 'vuong':
-        return score + 2;
-      case 'dac':
-        return score + 1;
-      case 'binh':
-        return score + 0;
-      case 'ham':
-        return score - 2;
-      default:
-        return score;
-    }
-  }, 0);
-
-  if (brightnessScore >= 4) return 'tốt';
-  if (brightnessScore <= -2) return 'xấu';
-  return 'ổn định';
 }
 
 /**
@@ -135,26 +132,26 @@ function generateDecadeSummary(
 
   if (fortune === 'xấu') {
     return (
-      `Đại hạn ${ageStart}-${ageEnd} tuổi, cung ${palace.name} với chính tinh ${majorStars}. ` +
-      'Đây là giai đoạn XẤU, nhiều tai nạn, bệnh tật, có thể gặp cảnh phá sản, chia ly. ' +
-      'Cần đặc biệt cẩn trọng, tránh đầu tư mạo hiểm, giữ gìn sức khỏe. ' +
-      'Nếu không cẩn thận, có thể gặp đại nạn.'
+      `Đại vận ${ageStart}-${ageEnd} tuổi, cung ${palace.name} với chính tinh ${majorStars}. ` +
+      'Đây là giai đoạn cần đặc biệt thận trọng: có nguy cơ tai nạn, bệnh tật, thất thoát tài chính hoặc chia ly. ' +
+      'Nên giữ tâm bình ổn, tránh đầu tư mạo hiểm và chăm sóc sức khỏe chu đáo. ' +
+      'Kiên trì và tiết chế sẽ giúp giảm bớt nghịch cảnh.'
     );
   }
 
   if (fortune === 'tốt') {
     return (
-      `Đại hạn ${ageStart}-${ageEnd} tuổi, cung ${palace.name} với chính tinh ${majorStars}. ` +
-      'Đây là giai đoạn TỐT, nhiều may mắn, tài lộc dồi dào, sự nghiệp thăng tiến. ' +
-      'Nên mạnh dạn đầu tư, nắm bắt cơ hội. ' +
-      'Có thể gặp quý nhân phù trợ, thành công lớn.'
+      `Đại vận ${ageStart}-${ageEnd} tuổi, cung ${palace.name} với chính tinh ${majorStars}. ` +
+      'Đây là giai đoạn thuận lợi: vận khí hanh thông, tài lộc và sự nghiệp có nhiều thuận lợi. ' +
+      'Nên nắm bắt cơ hội, đồng thời giữ sự cân bằng trong công việc và đời sống. ' +
+      'Quý nhân có thể xuất hiện, giúp thành quả thêm vững chắc.'
     );
   }
 
   return (
-    `Đại hạn ${ageStart}-${ageEnd} tuổi, cung ${palace.name} với chính tinh ${majorStars}. ` +
-    'Đây là giai đoạn ỔN ĐỊNH, có thăng có trầm. ' +
-    'Cần cân bằng, không nên quá mạo hiểm.'
+    `Đại vận ${ageStart}-${ageEnd} tuổi, cung ${palace.name} với chính tinh ${majorStars}. ` +
+    'Đây là giai đoạn ổn định, có thăng có trầm. ' +
+    'Nên giữ nhịp độ ổn định, tránh mạo hiểm quá mức.'
   );
 }
 
@@ -174,36 +171,36 @@ function generateAspectAdvice(
         return `Sự nghiệp thăng tiến, có cơ hội mới. ${majorStars.includes('Tử Vi') ? 'Phù hợp với vai trò lãnh đạo.' : ''} Nên nắm bắt cơ hội.`;
       }
       if (fortune === 'xấu') {
-        return `Sự nghiệp nhiều thách thức, có thể bị sa thải, giáng chức. ${majorStars.includes('Kình Dương') ? 'Cẩn trọng tranh chấp kiện tụng với đồng nghiệp, có thể bị tiểu nhân hãm hại.' : ''} Nên giữ vững, tránh thay đổi lớn.`;
+        return `Sự nghiệp có thử thách, công việc có thể biến động. ${majorStars.includes('Kình Dương') ? 'Cẩn trọng tranh chấp với đồng nghiệp và giữ hòa khí trong công việc.' : ''} Nên giữ vững chuyên môn, tránh thay đổi lớn khi chưa chuẩn bị.`;
       }
-      return `Sự nghiệp ổn định, có thăng có trầm. Nên cân bằng, không nên quá mạo hiểm.`;
+      return `Sự nghiệp ổn định, có thăng có trầm. Nên giữ cân bằng, tránh mạo hiểm quá mức.`;
 
     case 'wealth':
       if (fortune === 'tốt') {
-        return `Tài lộc vững, có khoản thu bất ngờ. ${majorStars.includes('Lộc Tồn') ? 'Đặc biệt may mắn về tiền bạc.' : ''} Có thể đầu tư.`;
+        return `Tài lộc vững, có thể có khoản thu bất ngờ. ${majorStars.includes('Lộc Tồn') ? 'Đặc biệt thuận lợi về tiền bạc.' : ''} Có thể cân nhắc đầu tư trong khả năng.`;
       }
       if (fortune === 'xấu') {
-        return `Tài lộc bấp bênh, có thể phá sản, mất tiền lớn. ${majorStars.includes('Địa Không') ? 'Tuyệt đối tránh đầu tư mạo hiểm.' : ''} Nên giữ tiền mặt.`;
+        return `Tài lộc cần thận trọng, tránh đầu tư mạo hiểm. ${majorStars.includes('Địa Không') ? 'Nên giữ khoản dự phòng và tránh các cam kết tài chính lớn.' : ''} Nên giữ tiền mặt và chi tiêu có kế hoạch.`;
       }
-      return `Tài lộc trung bình, thu nhập ổn định. Không nên đầu tư quá nhiều.`;
+      return `Tài lộc ổn định, thu nhập ổn định. Không nên đầu tư quá nhiều.`;
 
     case 'love':
       if (fortune === 'tốt') {
-        return `Tình cảm thuận lợi. ${majorStars.includes('Hồng Loan') ? 'Có hỷ sự, kết hôn.' : ''} Mối quan hệ vững bền.`;
+        return `Tình cảm thuận lợi. ${majorStars.includes('Hồng Loan') ? 'Có hỷ sự, có thể tính chuyện kết hôn.' : ''} Mối quan hệ vững bền.`;
       }
       if (fortune === 'xấu') {
-        return `Tình cảm nhiều trắc trở, dễ gặp cảnh chia ly, cô độc. ${majorStars.includes('Đào Hoa') ? 'Cẩn trọng người thứ ba.' : ''} Cần thấu hiểu nhau.`;
+        return `Tình cảm có thể gặp hiểu lầm, cần lắng nghe và nhường nhịn để giữ hòa khí. ${majorStars.includes('Đào Hoa') ? 'Cần giữ chừng mực với người khác giới.' : ''} Sự chân thành sẽ giúp hàn gắn.`;
       }
       return `Tình cảm ổn định, cần dành thời gian cho nhau.`;
 
     case 'health':
       if (fortune === 'tốt') {
-        return `Sức khỏe tốt, tinh thần minh mẫn. Nên duy trì lối sống lành mạnh.`;
+        return `Sức khỏe ổn định, tinh thần minh mẫn. Nên duy trì lối sống lành mạnh.`;
       }
       if (fortune === 'xấu') {
-        return `Có thể gặp bệnh nặng, cần phòng ngừa. ${majorStars.includes('Hỏa Tinh') ? 'Cẩn trọng tai nạn bất ngờ.' : ''} Nên khám sức khỏe định kỳ.`;
+        return `Sức khỏe cần chú ý, nên khám định kỳ và giữ lối sống điều độ. ${majorStars.includes('Hỏa Tinh') ? 'Cẩn trọng rủi ro bất ngờ khi đi lại.' : ''}`;
       }
-      return `Sức khỏe trung bình, cần chú ý nghỉ ngơi.`;
+      return `Sức khỏe ổn định, cần chú ý nghỉ ngơi.`;
 
     default:
       return '';
@@ -228,14 +225,16 @@ function createDefaultDecade(
     palaceName: 'Không xác định',
     majorStars: [],
     minorStars: [],
+    score: 3,
+    rating: 'onDinh',
     fortune: 'ổn định',
     isCurrent: currentAge >= startAge && currentAge <= endAge,
-    summary: 'Đại hạn ổn định, cần cân bằng.',
+    summary: 'Đại vận ổn định, cần giữ cân bằng.',
     aspects: {
       career: 'Sự nghiệp ổn định.',
-      wealth: 'Tài lộc trung bình.',
+      wealth: 'Tài lộc ổn định.',
       love: 'Tình cảm ổn định.',
-      health: 'Sức khỏe trung bình.',
+      health: 'Sức khỏe ổn định.',
     },
   };
 }

@@ -12,6 +12,7 @@ export interface PalaceCardProps {
   onHover: (branch: EarthlyBranch | null) => void;
   onSelect: (branch: EarthlyBranch) => void;
   isFocused?: boolean;
+  isSelected?: boolean;
 }
 
 interface PalaceTheme {
@@ -134,6 +135,7 @@ export function PalaceCard({
   onHover,
   onSelect,
   isFocused = false,
+  isSelected = false,
 }: PalaceCardProps): React.ReactElement {
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>): void => {
     if (event.key === 'Enter' || event.key === ' ') {
@@ -151,10 +153,12 @@ export function PalaceCard({
     <div
       className={[
         'relative isolate flex h-full flex-col justify-between overflow-hidden',
-        `border-2 ${theme.border} rounded-sm bg-surface shadow-[0_0_15px_rgba(212,175,55,0.2)]`,
-        'p-2 transition-all duration-200 cursor-pointer',
-        'hover:bg-elevated focus:outline-none focus-visible:ring-2 focus-visible:ring-gold',
+        `border-2 ${theme.border} rounded-sm bg-linear-to-b from-surface to-background shadow-[0_0_15px_rgba(212,175,55,0.2)]`,
+        'p-2 transition-[transform,box-shadow,border-color,background-color] duration-200 ease-out motion-reduce:transition-none',
+        'hover:border-gold/80 hover:bg-elevated hover:shadow-[0_10px_26px_rgba(212,175,55,0.28)] motion-safe:hover:-translate-y-0.5',
+        'focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-background',
         HIGHLIGHT_STYLES[highlightRole],
+        isSelected ? 'ring-2 ring-gold-bright' : '',
         isFocused ? 'bg-elevated' : '',
       ].join(' ')}
       onMouseEnter={() => onHover(palace.branch)}
@@ -163,6 +167,7 @@ export function PalaceCard({
       onKeyDown={handleKeyDown}
       role="button"
       tabIndex={0}
+      aria-pressed={isSelected}
       aria-label={`Cung ${palace.name} tại ${getBranchLabel(palace.branch)}, ${palace.majorStars.length} chính tinh`}
     >
       {/* Lớp nền trang trí (-z-10): gradient ngũ hành, chữ Hán mờ, viền kép bên trong */}
@@ -175,6 +180,10 @@ export function PalaceCard({
         aria-hidden="true"
         className="pointer-events-none absolute inset-[3px] -z-10 rounded-[2px] border border-gold/40"
       />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-[6px] -z-10 rounded-[2px] border border-gold/15"
+      />
 
       <CornerOrnaments size="sm" />
 
@@ -182,19 +191,19 @@ export function PalaceCard({
       {hasTuanOrTriet && (
         <div className="absolute right-5 top-1 z-10 flex gap-1">
           {palace.hasTuan && (
-            <span className="rounded bg-gold px-1 py-0.5 text-[9px] font-semibold leading-none text-background">
+            <span className="rounded bg-gold px-1 py-0.5 text-[11px] font-semibold leading-none text-background sm:text-[9px]">
               TUẦN
             </span>
           )}
           {palace.hasTriet && (
-            <span className="rounded bg-gold px-1 py-0.5 text-[9px] font-semibold leading-none text-background">
+            <span className="rounded bg-gold px-1 py-0.5 text-[11px] font-semibold leading-none text-background sm:text-[9px]">
               TRIỆT
             </span>
           )}
         </div>
       )}
 
-      {/* Header: Can Chi | Tên cung | Đại hạn */}
+      {/* Header: Can Chi | Tên cung | Đại vận */}
       <div
         className={`flex items-center justify-between text-xs mb-1 gap-1 ${hasTuanOrTriet ? 'pt-4' : ''}`}
       >
@@ -203,15 +212,22 @@ export function PalaceCard({
         </span>
         <span className="font-serif font-bold text-foreground uppercase text-center leading-tight">
           {palace.name}
-          {palace.isBodyPalace && <span className="ml-1 text-gold text-[10px]">&lt;THÂN&gt;</span>}
+          {palace.isBodyPalace && (
+            <span className="ml-1 text-[11px] text-gold sm:text-[10px]">&lt;THÂN&gt;</span>
+          )}
         </span>
-        <span className="text-muted font-mono shrink-0">
-          {palace.majorPeriod.startAge}-{palace.majorPeriod.endAge}
+        <span className="shrink-0 text-right leading-none">
+          <span className="block text-[11px] uppercase tracking-[0.14em] text-gold/80 sm:text-[8px]">
+            Đại vận
+          </span>
+          <span className="mt-0.5 block font-mono text-muted">
+            {palace.majorPeriod.startAge}-{palace.majorPeriod.endAge}
+          </span>
         </span>
       </div>
 
       {/* Chính tinh */}
-      <div className="min-h-[2.75rem] flex flex-col items-center justify-center gap-0.5 mb-1">
+      <div className="min-h-[2.75rem] flex flex-col items-center justify-center gap-1 mb-1">
         {palace.majorStars.length > 0 ? (
           palace.majorStars.map((star) => <StarDisplay key={star.id} star={star} />)
         ) : (
@@ -220,7 +236,7 @@ export function PalaceCard({
       </div>
 
       {/* Phụ tinh 2 cột */}
-      <div className="grid grid-cols-2 gap-x-2 text-[11px] leading-tight mb-1">
+      <div className="grid grid-cols-2 gap-x-2 gap-y-0.5 text-xs leading-tight mb-1 sm:text-[11px]">
         <div className="text-left">
           {hasAuspicious ? (
             palace.auspiciousStars.slice(0, 6).map((star) => (
@@ -246,11 +262,11 @@ export function PalaceCard({
       </div>
 
       {/* Footer: Vòng | Cục | Thần sát | Chi */}
-      <div className="flex items-center justify-between text-[10px] text-muted border-t border-border-subtle pt-1 gap-1">
-        <span className="truncate">{palace.boshi12}</span>
-        <span className="truncate">{palace.changsheng12}</span>
-        <span className="truncate">{palace.suiqian12}</span>
-        <span className="font-mono shrink-0">{getBranchLabel(palace.branch)}</span>
+      <div className="flex flex-wrap items-center justify-between gap-x-1 gap-y-0.5 border-t border-border-subtle pt-1 text-[11px] text-muted sm:text-[10px]">
+        <span className="min-w-0 break-words">{palace.boshi12}</span>
+        <span className="min-w-0 break-words">{palace.changsheng12}</span>
+        <span className="min-w-0 break-words">{palace.suiqian12}</span>
+        <span className="shrink-0 font-mono">{getBranchLabel(palace.branch)}</span>
       </div>
     </div>
   );
@@ -261,7 +277,7 @@ function StarDisplay({ star }: { star: Star }): React.ReactElement {
     <div className="flex items-center gap-1.5">
       <span className={`font-semibold ${ELEMENT_TEXT_COLORS[star.element]}`}>{star.name}</span>
       {star.brightnessLabel && (
-        <span className="text-[10px] text-muted">({star.brightnessLabel})</span>
+        <span className="text-[11px] text-muted sm:text-[10px]">({star.brightnessLabel})</span>
       )}
       {star.mutagen && <MutagenBadge mutagen={star.mutagen} />}
     </div>
@@ -280,7 +296,7 @@ function StarInline({ star }: { star: Star }): React.ReactElement {
 function MutagenBadge({ mutagen }: { mutagen: MutagenType }): React.ReactElement {
   return (
     <span
-      className={`inline-block ml-0.5 ${MUTAGEN_COLORS[mutagen]} text-background text-[9px] px-1 rounded`}
+      className={`inline-block ml-0.5 ${MUTAGEN_COLORS[mutagen]} rounded px-1 text-[11px] text-background sm:text-[9px]`}
     >
       {MUTAGEN_LABELS[mutagen]}
     </span>

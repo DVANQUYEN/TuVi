@@ -224,6 +224,7 @@ export function ZiweiBoard({ chart }: ZiweiBoardProps): React.ReactElement {
               onHover={handleHover}
               onSelect={handleSelect}
               isFocused={focusedBranch === branch}
+              isSelected={selectedBranch === branch}
             />
           </div>
         );
@@ -281,6 +282,7 @@ export function ZiweiBoard({ chart }: ZiweiBoardProps): React.ReactElement {
               onHover={handleHover}
               onSelect={handleSelect}
               isFocused={focusedBranch === branch}
+              isSelected={selectedBranch === branch}
             />
           </div>
         );

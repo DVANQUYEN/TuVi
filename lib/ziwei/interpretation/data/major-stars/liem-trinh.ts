@@ -28,7 +28,7 @@ const archetype: StarArchetype = {
         'Đôi khi sự nguyên tắc khiến đối phương cảm thấy bị gò bó. ' +
         'Cần học cách linh hoạt và lắng nghe cảm xúc của nhau.',
       health:
-        'Sức khỏe khá tốt nhưng cần chú ý tim mạch và huyết áp. ' +
+        'Sức khỏe ổn định nhưng cần chú ý tim mạch và huyết áp. ' +
         'Nên tránh căng thẳng kéo dài và duy trì lối sống điều độ.',
       advice:
         'Giữ vững sự chính trực và uy tín. ' +
@@ -43,13 +43,13 @@ const archetype: StarArchetype = {
       career:
         'Công việc thuận lợi nhờ uy tín và năng lực tổ chức. ' +
         'Phù hợp với quản lý nhân sự, luật, hành chính hoặc giám sát chất lượng. ' +
-        'Nên xây dựng văn hóa làm việc tích cực thay vì chỉ dựa vào kỷ luật.',
+        'Nên xây dựng văn hóa làm việc lành mạnh thay vì chỉ dựa vào kỷ luật.',
       love:
         'Tình cảm ổn định, đương số là người đáng tin cậy và có trách nhiệm. ' +
         'Tuy nhiên sự nghiêm khắc đôi khi khiến đối phương khó gần. ' +
         'Cần thể hiện sự quan tâm bằng lời nói và hành động nhẹ nhàng hơn.',
       health:
-        'Thể trạng tốt, nhưng cần chú ý tim mạch và huyết áp. ' +
+        'Thể trạng ổn định, nhưng cần chú ý tim mạch và huyết áp. ' +
         'Nên duy trì vận động và tránh thức khuya.',
       advice:
         'Phát huy tinh thần kỷ luật và chính trực. ' +
@@ -78,7 +78,7 @@ const archetype: StarArchetype = {
     },
     binh: {
       meaning:
-        'Liêm Trinh Bình hòa cho thấy đương số có ý thức về đúng sai nhưng đôi khi thiếu quyết tâm theo đuổi. ' +
+        'Liêm Trinh ổn định cho thấy đương số có ý thức về đúng sai nhưng đôi khi thiếu quyết tâm theo đuổi. ' +
         'Bản tính hiền lành, ít tranh giành và thích sự ổn định. ' +
         'Có thể thành công trong công việc chuyên môn nếu kiên trì. ' +
         'Cần rèn luyện bản lĩnh để bảo vệ quan điểm chính đáng.',
@@ -91,7 +91,7 @@ const archetype: StarArchetype = {
         'Đôi khi thiếu chủ động khiến đối phương hiểu lầm. ' +
         'Cần thẳng thắn chia sẻ mong muốn và cảm xúc.',
       health:
-        'Sức khỏe trung bình, cần chú ý huyết áp và tim mạch. ' +
+        'Sức khỏe ở mức ổn định, cần chú ý huyết áp và tim mạch. ' +
         'Nên duy trì chế độ ăn uống lành mạnh và vận động đều đặn.',
       advice:
         'Rèn luyện bản lĩnh và sự tự tin. ' +

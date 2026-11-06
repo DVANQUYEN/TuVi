@@ -53,7 +53,7 @@ export default async function TuViChiTietPage({ params }: PageProps): Promise<Re
   }
 
   return (
-    <div className="relative z-10 flex min-h-screen flex-col bg-background">
+    <div className="relative z-10 flex min-h-screen flex-col bg-background/70">
       <Header />
 
       <main className="container mx-auto max-w-2xl flex-1 px-4 py-8">

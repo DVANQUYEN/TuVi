@@ -1,12 +1,26 @@
 'use client';
 
 import type { YearlyFortune } from '@/lib/ziwei/interpretation/yearly-fortune';
+import type { FortuneLevel } from '@/lib/ziwei/interpretation/fortune-score';
+import { FORTUNE_RATING_LABELS } from '@/lib/ziwei/interpretation/fortune-score';
 import { CARD_VARIANT_CLASSES, CornerOrnaments } from '@/components/ui/Card';
 import { HanIcon } from '@/components/ui/HanIcon';
 
 interface YearlyFortuneProps {
   fortune: YearlyFortune;
 }
+
+const FORTUNE_TEXT_CLASS: Readonly<Record<FortuneLevel, string>> = {
+  tốt: 'text-green-600',
+  xấu: 'text-red-600',
+  'ổn định': 'text-yellow-600',
+};
+
+const FORTUNE_HAN: Readonly<Record<FortuneLevel, string>> = {
+  tốt: '吉',
+  xấu: '厄',
+  'ổn định': '平',
+};
 
 export function YearlyFortuneCard({ fortune }: YearlyFortuneProps): React.ReactElement {
   return (
@@ -21,18 +35,24 @@ export function YearlyFortuneCard({ fortune }: YearlyFortuneProps): React.ReactE
 
       <div className="mb-6">
         <div className="mb-2 flex items-center justify-between">
-          <span className="font-semibold">Tổng quan</span>
+          <span className="font-semibold">Khái quát tiểu vận</span>
           <div className="flex items-center gap-1" aria-label={`${fortune.score} trên 5 điểm`}>
             {[1, 2, 3, 4, 5].map((star) => (
               <span
                 key={star}
-                className={star <= fortune.score ? 'text-gold' : 'text-muted'}
+                className={star <= Math.round(fortune.score) ? 'text-gold' : 'text-muted'}
                 aria-hidden="true"
               >
                 ★
               </span>
             ))}
           </div>
+        </div>
+        <div
+          className={`mb-2 flex items-center gap-2 text-sm ${FORTUNE_TEXT_CLASS[fortune.fortune]}`}
+        >
+          <HanIcon han={FORTUNE_HAN[fortune.fortune]} size="sm" />
+          <span>{FORTUNE_RATING_LABELS[fortune.rating]}</span>
         </div>
         <p className="mb-2 text-sm leading-relaxed">{fortune.summary}</p>
         <p className="flex items-start gap-2 text-sm leading-relaxed italic">

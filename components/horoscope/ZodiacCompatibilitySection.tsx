@@ -4,23 +4,25 @@ import { useId, useState, type FormEvent } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
+import type { EarthlyBranch } from '@/lib/ziwei/types/enums';
 import {
   BRANCH_LABELS,
+  getBranchExampleYears,
   getZodiacCompatibility,
   MAX_ZODIAC_YEAR,
   MIN_ZODIAC_YEAR,
   type ZodiacCompatibility,
 } from '@/lib/ziwei/zodiac-compatibility';
 
-function BranchList({ branches }: { branches: ZodiacCompatibility['tamHop'] }): React.ReactElement {
+function BranchList({ branches }: { branches: readonly EarthlyBranch[] }): React.ReactElement {
   return (
     <ul className="flex flex-wrap gap-2">
       {branches.map((branch) => (
-        <li
-          key={branch}
-          className="rounded-md border border-border-subtle bg-elevated px-3 py-1 text-sm font-medium"
-        >
-          {BRANCH_LABELS[branch]}
+        <li key={branch} className="rounded-md border border-border-subtle bg-elevated px-3 py-1.5">
+          <span className="block text-sm font-medium text-foreground">{BRANCH_LABELS[branch]}</span>
+          <span className="mt-0.5 block text-xs text-muted">
+            {getBranchExampleYears(branch).join(' · ')}
+          </span>
         </li>
       ))}
     </ul>
@@ -102,9 +104,15 @@ export function ZodiacCompatibilitySection(): React.ReactElement {
 
       {result && (
         <section aria-labelledby={resultTitleId} className="space-y-4">
-          <h3 id={resultTitleId} className="text-xl font-semibold">
-            Tuổi {result.branchLabel} ({result.year})
-          </h3>
+          <div>
+            <h3 id={resultTitleId} className="text-xl font-semibold">
+              Tuổi {result.branchLabel} ({result.year})
+            </h3>
+            <p className="mt-1 text-xs text-muted">
+              Các năm sinh tuổi {result.branchLabel}:{' '}
+              {getBranchExampleYears(result.branch).join(' · ')}
+            </p>
+          </div>
 
           <div className="grid gap-4 md:grid-cols-3">
             <Card>
@@ -139,6 +147,11 @@ export function ZodiacCompatibilitySection(): React.ReactElement {
               </CardContent>
             </Card>
           </div>
+
+          <p className="text-xs leading-relaxed text-muted">
+            Năm sinh chỉ là ví dụ theo chu kỳ 12 năm; Tam hợp/Lục hợp/Tứ hành xung chỉ mang tính
+            tham khảo.
+          </p>
         </section>
       )}
     </section>

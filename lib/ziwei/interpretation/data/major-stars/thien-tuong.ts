@@ -49,7 +49,7 @@ const archetype: StarArchetype = {
         'Đôi khi sự nhường nhịn khiến đối phương không nhận ra mong muốn thật của đương số. ' +
         'Cần thẳng thắn chia sẻ để tránh tích tụ ấm ức.',
       health:
-        'Thể trạng tốt, nhưng cần chú ý hệ tiêu hóa và tinh thần. ' +
+        'Thể trạng ổn định, nhưng cần chú ý hệ tiêu hóa và tinh thần. ' +
         'Nên duy trì vận động và tránh lo âu quá mức.',
       advice:
         'Tận dụng khả năng dung hòa và xây dựng quan hệ. ' +
@@ -78,7 +78,7 @@ const archetype: StarArchetype = {
     },
     binh: {
       meaning:
-        'Thiên Tướng Bình hòa cho thấy đương số có tinh thần hợp tác nhưng đôi khi thiếu chính kiến. ' +
+        'Thiên Tướng ổn định cho thấy đương số có tinh thần hợp tác nhưng đôi khi thiếu chính kiến. ' +
         'Bản tính hiền lành, ít tranh giành và thích sự ổn định. ' +
         'Có thể thành công trong công việc hỗ trợ nếu kiên trì. ' +
         'Cần rèn luyện sự tự tin và khả năng ra quyết định.',
@@ -91,8 +91,8 @@ const archetype: StarArchetype = {
         'Đôi khi thiếu chủ động khiến đối phương hiểu lầm. ' +
         'Cần thẳng thắn chia sẻ mong muốn và cảm xúc.',
       health:
-        'Sức khỏe trung bình, cần chú ý tiêu hóa và tinh thần. ' +
-        'Nên vận động thường xuyên và giữ tâm trạng tích cực.',
+        'Sức khỏe ở mức ổn định, cần chú ý tiêu hóa và tinh thần. ' +
+        'Nên vận động thường xuyên và giữ tâm trạng lạc quan.',
       advice:
         'Rèn luyện sự tự tin và khả năng ra quyết định. ' +
         'Đừng ngại thể hiện ý kiến và nhận vai trò mới.',

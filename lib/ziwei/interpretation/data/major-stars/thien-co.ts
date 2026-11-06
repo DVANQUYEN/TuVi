@@ -28,7 +28,7 @@ const archetype: StarArchetype = {
         'Đương số cần người bạn đời biết thông cảm với nhịp sống bận rộn. ' +
         'Hãy dành thời gian lắng nghe thay vì cố phân tích mọi chuyện.',
       health:
-        'Sức khỏe khá tốt nhưng dễ mệt mỏi về thần kinh do suy nghĩ nhiều. ' +
+        'Sức khỏe khá ổn định nhưng dễ mệt mỏi về thần kinh do suy nghĩ nhiều. ' +
         'Cần ngủ đủ giấc và tránh làm việc liên tục trong thời gian dài.',
       advice:
         'Phát huy khả năng hoạch định và thích ứng. ' +
@@ -78,7 +78,7 @@ const archetype: StarArchetype = {
     },
     binh: {
       meaning:
-        'Thiên Cơ Bình hòa cho thấy đương số có trí tuệ nhưng chưa biết cách phát huy hết. ' +
+        'Thiên Cơ ổn định cho thấy đương số có trí tuệ nhưng chưa biết cách phát huy hết. ' +
         'Bản tính cẩn thận, đôi khi thiếu tự tin và dễ bị ảnh hưởng bởi ý kiến người khác. ' +
         'Phù hợp với công việc ổn định, ít biến động. ' +
         'Cần rèn luyện tính độc lập và kỹ năng ra quyết định.',
@@ -91,7 +91,7 @@ const archetype: StarArchetype = {
         'Đôi khi sự do dự khiến đối phương hiểu lầm là thiếu quan tâm. ' +
         'Cần chủ động chia sẻ suy nghĩ và cảm xúc nhiều hơn.',
       health:
-        'Sức khỏe trung bình, cần chú ý đến thần kinh và tiêu hóa. ' +
+        'Sức khỏe ở mức ổn định, cần chú ý đến thần kinh và tiêu hóa. ' +
         'Nên giảm căng thẳng bằng cách sắp xếp công việc khoa học.',
       advice:
         'Tăng cường tự tin bằng những mục tiêu nhỏ và hoàn thành đúng hạn. ' +

@@ -39,7 +39,7 @@ export function VanHanClient({ savedId }: VanHanClientProps): React.ReactElement
   }, [chart, birthYear]);
 
   return (
-    <div className="relative z-10 flex min-h-screen flex-col bg-background">
+    <div className="relative z-10 flex min-h-screen flex-col bg-background/70">
       <Header />
 
       <main className="flex-1 px-4 py-6 md:py-8 lg:py-10">
@@ -47,7 +47,7 @@ export function VanHanClient({ savedId }: VanHanClientProps): React.ReactElement
           <h1 className="mb-2 text-center font-serif text-2xl font-bold text-foreground md:text-3xl lg:text-4xl">
             Vận <span className="text-gold">hạn</span>
           </h1>
-          <p className="mb-8 text-center text-muted">Đại hạn và lưu niên theo từng năm</p>
+          <p className="mb-8 text-center text-muted">Đại vận và lưu niên theo từng năm</p>
 
           {chart ? (
             <div>

@@ -1,16 +1,35 @@
 import { HTMLAttributes, forwardRef } from 'react';
 
-export type CardVariant = 'default' | 'ancient';
+export type CardVariant = 'default' | 'ancient' | 'ancient-hero' | 'ancient-soft' | 'ancient-ember';
 
 export interface CardProps extends HTMLAttributes<HTMLDivElement> {
-  /** `ancient`: khung lá bài/cổ thư với viền vàng và góc trang trí. */
+  /**
+   * `ancient`: khung lá bài/cổ thư với viền vàng và góc trang trí.
+   * `ancient-hero`: biến thể nền tối cho phần giới thiệu.
+   * `ancient-soft`: biến thể viền mảnh cho khối biểu mẫu.
+   * `ancient-ember`: nền đỏ đen huyền bí cho huy hiệu Thiên Bàn Tử Vi.
+   */
   variant?: CardVariant;
 }
 
+/** Hiệu ứng chuyển động dùng chung, tắt khi người dùng bật reduced-motion. */
+const CARD_MOTION =
+  'transition-[transform,box-shadow,border-color] duration-300 ease-out motion-reduce:transition-none motion-safe:hover:-translate-y-0.5';
+
+/** Vòng focus nhất quán cho các thẻ có thể nhận tương tác bàn phím. */
+const CARD_FOCUS =
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-background';
+
+/** Viền gold mảnh bên trong, tạo cảm giác khung cổ thư mà không lấn nội dung. */
+const ANCIENT_HAIRLINE =
+  "relative before:pointer-events-none before:absolute before:inset-[5px] before:rounded-[inherit] before:border before:border-gold/20 before:content-['']";
+
 export const CARD_VARIANT_CLASSES: Readonly<Record<CardVariant, string>> = {
-  default: 'border-border-subtle bg-surface shadow-sm',
-  ancient:
-    'relative border-gold/50 bg-linear-to-b from-surface to-background shadow-[0_0_24px_rgba(212,175,55,0.18)]',
+  default: `border-border-subtle bg-linear-to-b from-surface to-background shadow-sm hover:border-gold/40 hover:shadow-[0_8px_24px_rgba(212,175,55,0.16)] ${CARD_MOTION} ${CARD_FOCUS}`,
+  ancient: `${ANCIENT_HAIRLINE} border-gold/50 bg-linear-to-b from-surface to-background shadow-[0_0_24px_rgba(212,175,55,0.18)] hover:border-gold/70 hover:shadow-[0_10px_30px_rgba(212,175,55,0.24)] ${CARD_MOTION} ${CARD_FOCUS}`,
+  'ancient-hero': `${ANCIENT_HAIRLINE} border-gold/35 bg-linear-to-b from-[#0d1712] via-surface to-background shadow-[0_0_24px_rgba(212,175,55,0.18)] hover:border-gold/55 hover:shadow-[0_10px_30px_rgba(212,175,55,0.22)] ${CARD_MOTION} ${CARD_FOCUS}`,
+  'ancient-soft': `${ANCIENT_HAIRLINE} border-gold/30 bg-linear-to-b from-surface to-background/95 shadow-[0_0_24px_rgba(212,175,55,0.18)] hover:border-gold/50 hover:shadow-[0_10px_30px_rgba(212,175,55,0.2)] ${CARD_MOTION} ${CARD_FOCUS}`,
+  'ancient-ember': `${ANCIENT_HAIRLINE} overflow-hidden border-gold/40 bg-[radial-gradient(circle_at_50%_16%,#240808_0%,#1c0505_44%,#120303_100%)] shadow-[0_0_38px_rgba(251,191,36,0.16)] hover:border-gold/60 hover:shadow-[0_12px_34px_rgba(251,191,36,0.22)] ${CARD_MOTION} ${CARD_FOCUS}`,
 };
 
 const CORNER_SIZE_CLASSES = {
@@ -40,10 +59,10 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
     return (
       <div
         ref={ref}
-        className={`rounded-lg border p-6 ${CARD_VARIANT_CLASSES[variant]} ${className ?? ''}`}
+        className={`rounded-lg border p-4 sm:p-6 ${CARD_VARIANT_CLASSES[variant]} ${className ?? ''}`}
         {...props}
       >
-        {variant === 'ancient' && <CornerOrnaments size="md" />}
+        {variant !== 'default' && <CornerOrnaments size="md" />}
         {children}
       </div>
     );

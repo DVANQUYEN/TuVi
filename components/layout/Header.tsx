@@ -11,9 +11,10 @@ import { useAuth } from '@/lib/supabase/use-auth';
 const navLinks = [
   { href: '/', label: 'Trang chủ' },
   { href: '/lap-la-so', label: 'Lập lá số' },
-  { href: '/ho-so', label: 'Quẻ đã lưu' },
+  { href: '/ho-so', label: 'Lá số đã lưu' },
   { href: '/tu-vi-hang-ngay', label: 'Tử vi hàng ngày' },
-  { href: '/hop-tuoi', label: 'Tam hợp & Lục hợp' },
+  { href: '/hop-tuoi', label: 'Tình duyên' },
+  { href: '/xem-tuoi', label: 'Xem tuổi' },
 ];
 
 export function Header(): React.ReactElement {
@@ -25,7 +26,10 @@ export function Header(): React.ReactElement {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border-subtle bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="font-serif text-2xl font-bold text-gold">
+        <Link
+          href="/"
+          className="min-w-0 truncate font-serif text-xl font-bold text-gold sm:text-2xl"
+        >
           Sao Mệnh
         </Link>
 
@@ -59,7 +63,6 @@ export function Header(): React.ReactElement {
           {user && <UserMenu user={user} onSignOut={signOut} />}
           <Button
             variant="ghost"
-            size="sm"
             aria-label={isMobileMenuOpen ? 'Đóng menu' : 'Mở menu'}
             aria-expanded={isMobileMenuOpen}
             aria-controls="mobile-menu"

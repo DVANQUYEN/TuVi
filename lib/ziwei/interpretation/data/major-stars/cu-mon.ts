@@ -28,7 +28,7 @@ const archetype: StarArchetype = {
         'Cần học cách lắng nghe và tôn trọng quan điểm của nhau. ' +
         'Sự hài hước và nhường nhịn sẽ giúp mối quan hệ bền vững.',
       health:
-        'Sức khỏe khá tốt nhưng cần chú ý họng, phổi và tiêu hóa. ' +
+        'Sức khỏe ổn định nhưng cần chú ý họng, phổi và tiêu hóa. ' +
         'Nên tránh nói quá nhiều và duy trì lối sống điều độ.',
       advice:
         'Phát huy khả năng diễn đạt và phân tích. ' +
@@ -52,7 +52,7 @@ const archetype: StarArchetype = {
         'Thể trạng ổn, nhưng cần chú ý họng, phổi và tiêu hóa. ' +
         'Nên tránh căng thẳng và duy trì chế độ ăn uống lành mạnh.',
       advice:
-        'Dùng khả năng ăn nói để truyền đạt tích cực. ' +
+        'Dùng khả năng ăn nói để truyền đạt thiện ý. ' +
         'Học cách kiềm chế và tôn trọng cảm xúc của người khác.',
     },
     dac: {
@@ -78,7 +78,7 @@ const archetype: StarArchetype = {
     },
     binh: {
       meaning:
-        'Cự Môn Bình hòa cho thấy đương số có khả năng ăn nói nhưng đôi khi thiếu tự tin. ' +
+        'Cự Môn ổn định cho thấy đương số có khả năng ăn nói nhưng đôi khi thiếu tự tin. ' +
         'Bản tính hiền lành, ít tranh cãi và thích sự ổn định. ' +
         'Có thể thành công trong công việc chuyên môn nếu kiên trì. ' +
         'Cần rèn luyện sự tự tin và kỹ năng giao tiếp.',
@@ -91,7 +91,7 @@ const archetype: StarArchetype = {
         'Đôi khi thiếu chủ động khiến đối phương hiểu lầm. ' +
         'Cần thẳng thắn chia sẻ mong muốn và cảm xúc.',
       health:
-        'Sức khỏe trung bình, cần chú ý họng, phổi và tiêu hóa. ' +
+        'Sức khỏe ở mức ổn định, cần chú ý họng, phổi và tiêu hóa. ' +
         'Nên duy trì chế độ ăn uống cân bằng và vận động nhẹ.',
       advice:
         'Rèn luyện sự tự tin và kỹ năng giao tiếp. ' +
@@ -112,7 +112,7 @@ const archetype: StarArchetype = {
         'Đương số cần học cách lắng nghe và thấu hiểu đối phương. ' +
         'Nên chọn người biết nhường nhịn và bao dung.',
       health:
-        'Sức khỏe trung bình, cần chú ý họng, phổi và tiêu hóa. ' +
+        'Sức khỏe cần lưu tâm, nhất là họng, phổi và tiêu hóa. ' +
         'Căng thẳng do thị phi có thể ảnh hưởng đến tinh thần, nên tập thiền hoặc yoga để giảm căng thẳng.',
       advice:
         'Học cách giao tiếp khéo léo và tránh nói thẳng quá mức. ' +

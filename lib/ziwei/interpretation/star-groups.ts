@@ -23,7 +23,7 @@ export const STAR_GROUPS: StarGroup[] = [
     stars: ['Tử Vi', 'Thất Sát'],
     meaning:
       'Tử Vi và Thất Sát cùng một cung tạo cách "Tử Sát đồng cung". ' +
-      'Đây là cách cục quyền lực nhưng cô độc, nhiều thăng trầm. ' +
+      'Đây là cách cục quyền lực nhưng dễ có cảm giác đơn độc, nhiều thăng trầm. ' +
       'Đương số có tài năng nhưng dễ gặp trắc trở trong quan hệ. ' +
       'Cần học cách nhường nhịn, tránh độc đoán.',
     level: 'trung bình',
@@ -58,10 +58,10 @@ export const STAR_GROUPS: StarGroup[] = [
     stars: ['Kình Dương', 'Đà La', 'Hỏa Tinh', 'Linh Tinh'],
     meaning:
       'Kình Dương, Đà La, Hỏa Tinh, Linh Tinh tạo bộ "Tứ sát". ' +
-      'Đây là bộ sao RẤT XẤU, chủ về tai nạn huyết quang, tranh chấp kiện tụng, thị phi liên miên. ' +
-      'Đương số dễ gặp đại nạn, có thể phải nằm viện, hoặc gặp cảnh máu chảy đầu rơi. ' +
-      'Nếu không cẩn thận, có thể gặp cảnh tù tội, hoặc tai nạn chết người. ' +
-      'Cần đặc biệt cẩn trọng, làm việc thiện để hóa giải.',
+      'Đây là bộ sao nặng về hung khí, chủ về tai nạn nghiêm trọng, tranh chấp kiện tụng và thị phi dai dẳng. ' +
+      'Đương số cần đề phòng chấn thương nặng, có thể phải điều trị y tế hoặc đối diện hệ quả pháp lý. ' +
+      'Trong hoàn cảnh bất lợi, nguy cơ tai nạn nghiêm trọng, thậm chí đe dọa tính mạng, là điều cần lưu tâm. ' +
+      'Cần đặc biệt cẩn trọng, giữ thiện ý và tránh nóng vội để giảm bớt hung khí.',
     level: 'xấu',
     scope: 'tamPhuong',
   },
@@ -104,8 +104,8 @@ export const STAR_GROUPS: StarGroup[] = [
     stars: ['Địa Không', 'Địa Kiếp'],
     meaning:
       'Địa Không và Địa Kiếp tạo bộ "Không Kiếp". ' +
-      'Đây là bộ sao xấu, chủ về tai họa, mất mát. ' +
-      'Đương số dễ gặp khó khăn, trở ngại lớn trong cuộc sống. ' +
+      'Đây là bộ sao bất lợi, chủ về biến động và mất mát. ' +
+      'Đương số có thể gặp khó khăn, trở ngại lớn trong một số giai đoạn. ' +
       'Cần cẩn trọng trong quyết định, tránh đầu tư mạo hiểm.',
     level: 'xấu',
   },

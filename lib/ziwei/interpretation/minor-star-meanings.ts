@@ -37,7 +37,7 @@ export const MINOR_STAR_MEANINGS: Readonly<Record<string, MinorStarMeaningConten
     impact: 'xấu',
     aspect: 'tranh chấp',
     description:
-      'Sát tinh chủ về tranh chấp, kiện tụng. Dễ có mâu thuẫn với người khác, có thể gặp tai nạn.',
+      'Sát tinh chủ về tranh chấp, kiện tụng. Dễ có mâu thuẫn với người khác, cần đề phòng chấn thương bất ngờ.',
     advice:
       'Cần nhẫn nhịn, tránh xung đột. Không nên ký hợp đồng quan trọng trong giai đoạn này.',
   },
@@ -50,17 +50,17 @@ export const MINOR_STAR_MEANINGS: Readonly<Record<string, MinorStarMeaningConten
   },
   'Hỏa Tinh': {
     impact: 'xấu',
-    aspect: 'tai nạn',
+    aspect: 'sự cố bất ngờ',
     description:
-      'Sát tinh chủ về tai nạn bất ngờ, hỏa hoạn. Cần chú ý an toàn khi đi lại, tránh nơi nguy hiểm.',
+      'Sát tinh chủ về sự cố bất ngờ và rủi ro hỏa hoạn. Cần chú ý an toàn khi đi lại, tránh nơi nguy hiểm.',
     advice: 'Giữ bình tĩnh, tránh nóng giận. Có thể dùng nước để hóa giải.',
   },
   'Linh Tinh': {
     impact: 'xấu',
     aspect: 'thị phi',
     description:
-      'Sát tinh chủ về tranh cãi, thị phi. Dễ bị người khác nói xấu, có mâu thuẫn trong quan hệ.',
-    advice: 'Giữ im lặng, không nên tranh luận. Tránh xa những người thị phi.',
+      'Sát tinh chủ về tranh cãi, thị phi. Dễ phát sinh hiểu lầm, lời ra tiếng vào và mâu thuẫn trong quan hệ.',
+    advice: 'Giữ im lặng, không nên tranh luận. Tránh xa những môi trường nhiều thị phi.',
   },
   'Văn Xương': {
     impact: 'tốt',

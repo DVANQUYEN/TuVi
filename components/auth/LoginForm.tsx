@@ -6,6 +6,11 @@ import { useAuth } from '@/lib/supabase/use-auth';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 
+const SIGN_IN_ERROR =
+  'Không thể đăng nhập. Vui lòng kiểm tra email, mật khẩu và xác nhận tài khoản nếu cần, rồi thử lại.';
+const SIGN_UP_ERROR =
+  'Không thể đăng ký. Vui lòng kiểm tra thông tin và kết nối mạng rồi thử lại.';
+
 export function LoginForm(): React.ReactElement {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -37,8 +42,8 @@ export function LoginForm(): React.ReactElement {
         if (signInError) throw signInError;
         router.push('/ho-so');
       }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Có lỗi xảy ra');
+    } catch {
+      setError(isSignUp ? SIGN_UP_ERROR : SIGN_IN_ERROR);
     } finally {
       setLoading(false);
     }

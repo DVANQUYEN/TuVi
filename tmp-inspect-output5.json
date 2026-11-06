@@ -1,0 +1,129 @@
+{
+  "calendar": {
+    "lunarDay": 2,
+    "lunarMonth": 6,
+    "lunarYear": 2004,
+    "isLeapMonth": false,
+    "dayCanChi": "Mậu Tuất",
+    "dayStem": "mau",
+    "dayStemElement": "tho",
+    "dayBranchElement": "tho",
+    "dayNapAmName": "Bình Địa Mộc",
+    "dayNapAmElement": "moc",
+    "dayNapAmElementLabel": "Mộc",
+    "napAm": "Bình Địa Mộc",
+    "dayBranch": "tuat",
+    "conflictBranch": "thin",
+    "truc": {
+      "name": "Bình",
+      "lucky": true
+    },
+    "luckyHours": [
+      "dan",
+      "thin",
+      "ti",
+      "than",
+      "dau",
+      "hoi"
+    ]
+  },
+  "annual": {
+    "branchLabel": "Thân",
+    "palaceName": "Tài Bạch",
+    "taiSuiPalace": "Tài Bạch",
+    "locTonPalace": "Phúc Đức",
+    "kinhDuongPalace": "Điền Trạch",
+    "daLaPalace": "Phụ Mẫu",
+    "mutagens": [
+      {
+        "type": "Lộc",
+        "star": "Liêm Trinh",
+        "palace": "Thiên Di"
+      },
+      {
+        "type": "Quyền",
+        "star": "Phá Quân",
+        "palace": "Mệnh"
+      },
+      {
+        "type": "Khoa",
+        "star": "Vũ Khúc",
+        "palace": "Phu Thê"
+      },
+      {
+        "type": "Kỵ",
+        "star": "Thái Dương",
+        "palace": "Huynh Đệ"
+      }
+    ]
+  },
+  "starPalaces": [
+    {
+      "name": "Phúc Đức",
+      "branch": "dan",
+      "stars": [
+        "Lộc Tồn"
+      ]
+    },
+    {
+      "name": "Điền Trạch",
+      "branch": "mao",
+      "stars": [
+        "Kình Dương"
+      ]
+    },
+    {
+      "name": "Quan Lộc",
+      "branch": "thin",
+      "stars": []
+    },
+    {
+      "name": "Nô Bộc",
+      "branch": "ti",
+      "stars": []
+    },
+    {
+      "name": "Thiên Di",
+      "branch": "ngo",
+      "stars": []
+    },
+    {
+      "name": "Tật Ách",
+      "branch": "mui",
+      "stars": []
+    },
+    {
+      "name": "Tài Bạch",
+      "branch": "than",
+      "stars": []
+    },
+    {
+      "name": "Tử Tức",
+      "branch": "dau",
+      "stars": []
+    },
+    {
+      "name": "Phu Thê",
+      "branch": "tuat",
+      "stars": []
+    },
+    {
+      "name": "Huynh Đệ",
+      "branch": "hoi",
+      "stars": []
+    },
+    {
+      "name": "Mệnh",
+      "branch": "ty",
+      "stars": []
+    },
+    {
+      "name": "Phụ Mẫu",
+      "branch": "suu",
+      "stars": [
+        "Đà La",
+        "Đài Phụ"
+      ]
+    }
+  ]
+}

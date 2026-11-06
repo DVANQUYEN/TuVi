@@ -1,3 +1,4 @@
+export * from './default-locations';
 export * from './brightness-tan-bien';
 export * from './brightness-fallback-map';
 export * from './vietnam-timezones';
