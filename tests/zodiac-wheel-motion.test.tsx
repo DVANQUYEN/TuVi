@@ -266,4 +266,17 @@ describe('ZodiacWheel rotating reference layout', () => {
     expect(reducedContainer.innerHTML).toBe(standardMarkup);
     expect(reducedContainer.querySelectorAll('[data-motion-state]')).toHaveLength(0);
   });
+
+  it('disables the wheel spin only below the mobile breakpoint', (): void => {
+    const css = readFileSync(path.join(process.cwd(), 'app/globals.css'), 'utf8');
+
+    const mobileStart = css.indexOf('@media (max-width: 639.98px)');
+    expect(mobileStart).toBeGreaterThan(-1);
+
+    const mobileCss = css.slice(mobileStart);
+    // Both rotating layers opt out of the animation while desktop keeps it.
+    expect(mobileCss).toMatch(
+      /\.zodiac-wheel \[data-spin-duration\],[\s\S]*?\.zodiac-wheel \[data-counter-spin-duration\]\s*\{[\s\S]*?animation:\s*none\s*!important;/
+    );
+  });
 });

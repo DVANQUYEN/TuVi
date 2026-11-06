@@ -12,6 +12,7 @@ const { pushMock, signInMock, signUpMock } = vi.hoisted(() => ({
 
 vi.mock('next/navigation', () => ({
   useRouter: (): { push: typeof pushMock } => ({ push: pushMock }),
+  usePathname: (): string => '/',
 }));
 
 vi.mock('@/lib/supabase/use-auth', () => ({

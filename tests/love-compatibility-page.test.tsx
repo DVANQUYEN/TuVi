@@ -2019,7 +2019,14 @@ describe('Tình Duyên compatibility experience', () => {
 
     // Merge animations live only inside the motion-preference media gate.
     expect(preMedia).not.toMatch(/animation\s*:/);
-    const mergeMediaCss = css.slice(mergeMediaStart);
+    // Scope the slice to the merge media block only: later unrelated media
+    // queries (e.g. the mobile zodiac-wheel spin override) must not be
+    // mistaken for love-emblem merge animations.
+    const nextMediaStart = css.indexOf('@media', mergeMediaStart + 1);
+    const mergeMediaCss = css.slice(
+      mergeMediaStart,
+      nextMediaStart === -1 ? css.length : nextMediaStart
+    );
     const animationDeclarations = Array.from(
       mergeMediaCss.matchAll(/animation:\s*([^;]+);/g),
       (match) => match[1].trim()

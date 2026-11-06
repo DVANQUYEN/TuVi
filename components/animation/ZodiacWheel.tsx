@@ -320,16 +320,16 @@ function BranchMedallion({ han, label }: BranchMedallionProps): React.ReactEleme
     <span
       data-testid="branch-content"
       data-counter-spin-duration={WHEEL_SPIN_DURATION_SECONDS}
-      className={`flex flex-col items-center gap-1 origin-center ${WHEEL_COUNTER_SPIN_CLASS}`}
+      className={`relative flex flex-col items-center gap-1 origin-center max-sm:gap-0.5 ${WHEEL_COUNTER_SPIN_CLASS}`}
     >
       <span
         data-testid="branch-medallion"
-        className="relative flex h-10 w-10 items-center justify-center rounded-full md:h-12 md:w-12"
+        className="relative flex h-9 w-9 items-center justify-center rounded-full sm:h-10 sm:w-10 md:h-12 md:w-12"
       >
         {/* Quầng vàng rất nhẹ quanh medallion. */}
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute inset-[-18%] rounded-full blur-md"
+          className="pointer-events-none absolute inset-[-18%] rounded-full blur-md max-sm:inset-[-10%] max-sm:blur-sm"
           style={{
             background:
               'radial-gradient(circle, rgba(212,175,55,0.24) 0%, rgba(212,175,55,0.10) 48%, transparent 74%)',
@@ -372,10 +372,11 @@ function BranchMedallion({ han, label }: BranchMedallionProps): React.ReactEleme
         </span>
       </span>
 
-      {/* Nhãn tiếng Việt nhỏ, in nghiêng, màu bạc mờ — không nền, viền hay pill. */}
+      {/* Nhãn tiếng Việt nhỏ, in nghiêng, màu bạc mờ — không nền, viền hay pill.
+          Đặt tuyệt đối bên dưới medallion để không đẩy tâm medallion lệch khỏi quỹ đạo 40%. */}
       <span
         data-testid="branch-label"
-        className="whitespace-nowrap font-serif text-[11px] italic leading-none text-[#d8ccae] sm:text-xs"
+        className="absolute left-1/2 top-full mt-0.5 -translate-x-1/2 whitespace-nowrap font-serif text-[11px] italic leading-none text-[#d8ccae] max-sm:text-[10px] max-sm:leading-tight sm:text-xs"
       >
         {label}
       </span>
@@ -384,12 +385,12 @@ function BranchMedallion({ han, label }: BranchMedallionProps): React.ReactEleme
 }
 
 interface ZodiacWheelProps {
-  /** Lớp kích thước của vòng tròn (mặc định: 288px mobile, 416px từ md). */
+  /** Lớp kích thước của vòng tròn (mặc định: 352px mobile, 416px từ md). */
   sizeClassName?: string;
 }
 
 export function ZodiacWheel({
-  sizeClassName = 'w-[min(18rem,100%)] md:w-[26rem]',
+  sizeClassName = 'w-[min(22rem,100%)] md:w-[26rem]',
 }: ZodiacWheelProps = {}): React.ReactElement {
   return (
     <div className="flex max-w-full min-w-0 flex-col items-center gap-4">
@@ -397,7 +398,7 @@ export function ZodiacWheel({
         role="img"
         aria-label={WHEEL_ARIA_LABEL}
         data-testid="zodiac-wheel"
-        className={`relative aspect-square max-w-full ${sizeClassName}`}
+        className={`zodiac-wheel relative aspect-square max-w-full min-w-0 overflow-hidden ${sizeClassName}`}
       >
         <WheelRings />
 

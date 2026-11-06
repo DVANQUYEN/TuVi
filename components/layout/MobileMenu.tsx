@@ -2,6 +2,7 @@
 
 import { type MouseEvent as ReactMouseEvent, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
 
 interface MobileMenuProps {
@@ -14,6 +15,7 @@ export function MobileMenu({ isOpen, onClose, links }: MobileMenuProps): React.R
   const overlayRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const previousActiveElement = useRef<Element | null>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     if (!isOpen) return;
@@ -45,11 +47,12 @@ export function MobileMenu({ isOpen, onClose, links }: MobileMenuProps): React.R
     };
 
     document.addEventListener('keydown', handleKeyDown);
+    const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
 
     return (): void => {
       document.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = '';
+      document.body.style.overflow = previousOverflow;
       if (previousActiveElement.current instanceof HTMLElement) {
         previousActiveElement.current.focus();
       }
@@ -68,12 +71,12 @@ export function MobileMenu({ isOpen, onClose, links }: MobileMenuProps): React.R
     <div
       ref={overlayRef}
       role="presentation"
-      className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm lg:hidden"
+      className="fixed inset-0 z-[60] bg-black/65 lg:hidden"
       onClick={handleOverlayClick}
     >
       <div
         id="mobile-menu"
-        className="absolute right-0 top-0 h-full w-72 max-w-full bg-surface shadow-xl"
+        className="fixed inset-y-0 right-0 z-[70] h-[100dvh] max-h-[100dvh] w-72 max-w-[85vw] overflow-y-auto overscroll-contain border-l border-border-subtle bg-surface shadow-2xl"
         role="dialog"
         aria-modal="true"
         aria-label="Menu điều hướng"
@@ -85,22 +88,34 @@ export function MobileMenu({ isOpen, onClose, links }: MobileMenuProps): React.R
             variant="ghost"
             aria-label="Đóng menu"
             onClick={onClose}
+            className="shrink-0 p-0"
+            style={{ height: 44, width: 44 }}
           >
             ✕
           </Button>
         </div>
 
         <nav className="flex flex-col p-4">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="rounded-md px-4 py-3 text-foreground transition-colors hover:bg-elevated hover:text-gold"
-              onClick={onClose}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {links.map((link) => {
+            const isActive =
+              link.href === '/' ? pathname === '/' : pathname?.startsWith(link.href) === true;
+
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                aria-current={isActive ? 'page' : undefined}
+                className={`flex w-full items-center rounded-md px-4 py-3 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold ${
+                  isActive
+                    ? 'bg-elevated font-semibold text-gold'
+                    : 'text-foreground hover:bg-elevated hover:text-gold'
+                }`}
+                onClick={onClose}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
         </nav>
       </div>
     </div>

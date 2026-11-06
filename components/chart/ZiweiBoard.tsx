@@ -210,14 +210,24 @@ export function ZiweiBoard({ chart }: ZiweiBoardProps): React.ReactElement {
     );
   }, [activeBranch]);
 
-  // Mobile list view
+  // Mobile list view: 2 cột từ 360px để mỗi màn hình thấy nhiều cung hơn.
   const listView = (
-    <div className="space-y-3 lg:hidden" role="list" aria-label="Danh sách 12 cung">
+    <div
+      className="grid grid-cols-1 items-start gap-2 min-[360px]:grid-cols-2 lg:hidden"
+      role="list"
+      aria-label="Danh sách 12 cung"
+    >
       {BOARD_RING.map((branch) => {
         const palace = palaceByBranch.get(branch);
         if (!palace) return null;
         return (
-          <div key={branch} role="listitem" onFocus={() => handleFocus(branch)} onBlur={handleBlur}>
+          <div
+            key={branch}
+            role="listitem"
+            className="min-w-0"
+            onFocus={() => handleFocus(branch)}
+            onBlur={handleBlur}
+          >
             <PalaceCard
               palace={palace}
               highlightRole={getHighlightRole(branch)}
@@ -225,6 +235,7 @@ export function ZiweiBoard({ chart }: ZiweiBoardProps): React.ReactElement {
               onSelect={handleSelect}
               isFocused={focusedBranch === branch}
               isSelected={selectedBranch === branch}
+              compact
             />
           </div>
         );
