@@ -3,6 +3,18 @@ import { NextRequest } from 'next/server';
 import { decodeChartUrl } from '@/lib/utils/share';
 import { createChartEngine } from '@/lib/ziwei';
 
+function getRequestHost(request: NextRequest): string {
+  const configuredUrl = process.env.NEXT_PUBLIC_APP_URL;
+  if (configuredUrl) {
+    try {
+      return new URL(configuredUrl).host;
+    } catch {
+      // Fall through to the request host when the env value is not a valid URL.
+    }
+  }
+  return new URL(request.url).host;
+}
+
 export async function GET(request: NextRequest): Promise<Response> {
   const { searchParams } = new URL(request.url);
   const data = searchParams.get('data');
@@ -18,6 +30,7 @@ export async function GET(request: NextRequest): Promise<Response> {
 
   const engine = createChartEngine();
   const chart = engine.generateChart(shareData.birthInfo, shareData.preferences);
+  const host = getRequestHost(request);
 
   return new ImageResponse(
     <div
@@ -65,7 +78,7 @@ export async function GET(request: NextRequest): Promise<Response> {
       </div>
 
       <div style={{ display: 'flex', marginTop: 'auto', alignItems: 'center' }}>
-        <span style={{ fontSize: '20px', color: '#A0A0B0' }}>saomenh.vercel.app</span>
+        <span style={{ fontSize: '20px', color: '#A0A0B0' }}>{host}</span>
       </div>
     </div>,
     {

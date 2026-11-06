@@ -10,6 +10,22 @@ const MUTED: [number, number, number] = [112, 104, 92];
 const PAPER: [number, number, number] = [255, 253, 247];
 const PANEL: [number, number, number] = [250, 244, 228];
 const RULE: [number, number, number] = [220, 205, 165];
+const DEFAULT_APP_HOST = 'saomenh.vercel.app';
+
+function getAppHost(): string {
+  const configuredUrl = process.env.NEXT_PUBLIC_APP_URL;
+  if (configuredUrl) {
+    try {
+      return new URL(configuredUrl).host;
+    } catch {
+      // Ignore invalid URLs and fall back to the runtime host.
+    }
+  }
+  if (typeof window !== 'undefined' && window.location.host) {
+    return window.location.host;
+  }
+  return DEFAULT_APP_HOST;
+}
 
 const MUTAGEN_LABELS: Readonly<Record<MutagenType, string>> = {
   hoaLoc: 'L',
@@ -199,7 +215,7 @@ function drawCoverPage(
 
   doc.setFontSize(8);
   doc.setTextColor(...MUTED);
-  doc.text('Sao Menh - saomenh.vercel.app', center, pageHeight - 10, { align: 'center' });
+  doc.text(`Sao Menh - ${getAppHost()}`, center, pageHeight - 10, { align: 'center' });
 }
 
 function drawPalaceCell(
@@ -436,7 +452,7 @@ function drawBoardPage(
 
   doc.setFontSize(8);
   doc.setTextColor(...MUTED);
-  doc.text('Sao Menh - saomenh.vercel.app', pageWidth / 2, pageHeight - 10, { align: 'center' });
+  doc.text(`Sao Menh - ${getAppHost()}`, pageWidth / 2, pageHeight - 10, { align: 'center' });
 }
 
 export function generateChartPdf(chart: ZiweiChart): Blob {

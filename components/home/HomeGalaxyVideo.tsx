@@ -5,6 +5,7 @@ import { usePrefersReducedMotion } from '@/lib/hooks/use-prefers-reduced-motion'
 
 const DESKTOP_MEDIA_QUERY = '(min-width: 768px)';
 const GALAXY_VIDEO_SRC = '/video/galaxy.mp4';
+const GALAXY_POSTER_SRC = '/video/galaxy-poster.webp';
 
 interface GalaxyVideoProps {
   onError: () => void;
@@ -21,6 +22,7 @@ function GalaxyVideo({ onError }: GalaxyVideoProps): React.ReactElement {
     <video
       data-testid="home-galaxy-video"
       src={GALAXY_VIDEO_SRC}
+          poster={GALAXY_POSTER_SRC}
       autoPlay
       muted
       loop

@@ -8,18 +8,18 @@ import type { DailyContent } from './daily-content';
 
 /** Ảnh nền trang trí cho từng con giáp (public/images/zodiac). Khóa khớp với EarthlyBranch. */
 const ZODIAC_IMAGES: Partial<Record<EarthlyBranch, string>> = {
-  ty: '/images/zodiac/ty.png', // Tý - chuột
-  suu: '/images/zodiac/suu.png', // Sửu - trâu
-  dan: '/images/zodiac/dan.png', // Dần - hổ
-  mao: '/images/zodiac/mao.png', // Mão - mèo
-  thin: '/images/zodiac/thin.png', // Thìn - rồng
-  ti: '/images/zodiac/ran.png', // Tỵ - rắn
-  ngo: '/images/zodiac/ngo.png', // Ngọ - ngựa
-  mui: '/images/zodiac/mui.png', // Mùi - dê
-  than: '/images/zodiac/than.png', // Thân - khỉ
-  dau: '/images/zodiac/dau.png', // Dậu - gà
-  tuat: '/images/zodiac/tuat.png', // Tuất - chó
-  hoi: '/images/zodiac/hoi.png', // Hợi - lợn
+  ty: '/images/zodiac-grid/ty.webp', // Tý - chuột
+  suu: '/images/zodiac-grid/suu.webp', // Sửu - trâu
+  dan: '/images/zodiac-grid/dan.webp', // Dần - hổ
+  mao: '/images/zodiac-grid/mao.webp', // Mão - mèo
+  thin: '/images/zodiac-grid/thin.webp', // Thìn - rồng
+  ti: '/images/zodiac-grid/ran.webp', // Tỵ - rắn
+  ngo: '/images/zodiac-grid/ngo.webp', // Ngọ - ngựa
+  mui: '/images/zodiac-grid/mui.webp', // Mùi - dê
+  than: '/images/zodiac-grid/than.webp', // Thân - khỉ
+  dau: '/images/zodiac-grid/dau.webp', // Dậu - gà
+  tuat: '/images/zodiac-grid/tuat.webp', // Tuất - chó
+  hoi: '/images/zodiac-grid/hoi.webp', // Hợi - lợn
 };
 
 /** Nhãn xu hướng trong ngày theo chỉ số tổng hợp (1-10). */
