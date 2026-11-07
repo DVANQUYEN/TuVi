@@ -210,52 +210,11 @@ export function ZiweiBoard({ chart }: ZiweiBoardProps): React.ReactElement {
     );
   }, [activeBranch]);
 
-  // Mobile list view: 2 cột từ 360px để mỗi màn hình thấy nhiều cung hơn.
-  const listView = (
-    <div
-      className="grid grid-cols-1 items-start gap-2 min-[360px]:grid-cols-2 lg:hidden"
-      role="list"
-      aria-label="Danh sách 12 cung"
-    >
-      {BOARD_RING.map((branch) => {
-        const palace = palaceByBranch.get(branch);
-        if (!palace) return null;
-        return (
-          <div
-            key={branch}
-            role="listitem"
-            className="min-w-0"
-            onFocus={() => handleFocus(branch)}
-            onBlur={handleBlur}
-          >
-            <PalaceCard
-              palace={palace}
-              highlightRole={getHighlightRole(branch)}
-              onHover={handleHover}
-              onSelect={handleSelect}
-              isFocused={focusedBranch === branch}
-              isSelected={selectedBranch === branch}
-              compact
-            />
-          </div>
-        );
-      })}
-    </div>
-  );
-
-  // Desktop 4x4 grid view
+  // Single 4x4 board used at every width (mobile centers use compact card density).
   const gridView = (
     <div
       ref={boardRef}
-      className="relative mx-auto hidden lg:grid"
-      style={{
-        gridTemplateColumns: 'repeat(4, 1fr)',
-        // Hàng tự co giãn theo nội dung (không cố định chiều cao) để card không bị cắt chữ
-        gridTemplateRows: 'repeat(4, minmax(auto, 1fr))',
-        gap: '0.25rem',
-        // Giới hạn chiều rộng theo chiều cao viewport để cả bàn nằm gọn trên màn hình (không cần cuộn)
-        width: 'min(100%, calc(100svh - 6rem))',
-      }}
+      className="relative mx-auto grid w-full max-w-full grid-cols-4 grid-rows-[repeat(4,minmax(6.5rem,auto))] gap-0.5 sm:gap-1 lg:w-[min(100%,calc(100svh-6rem))] lg:grid-rows-[repeat(4,minmax(auto,1fr))] lg:gap-1"
       onKeyDown={handleKeyDown}
       role="region"
       aria-label="Bàn lá số Tử Vi 4x4"
@@ -279,7 +238,7 @@ export function ZiweiBoard({ chart }: ZiweiBoardProps): React.ReactElement {
           <div
             key={branch}
             data-branch={branch}
-            className="h-full"
+            className="h-full min-w-0"
             style={{
               gridRow: `${row + 1} / ${row + 2}`,
               gridColumn: `${col + 1} / ${col + 2}`,
@@ -294,6 +253,7 @@ export function ZiweiBoard({ chart }: ZiweiBoardProps): React.ReactElement {
               onSelect={handleSelect}
               isFocused={focusedBranch === branch}
               isSelected={selectedBranch === branch}
+              compact
             />
           </div>
         );
@@ -301,7 +261,7 @@ export function ZiweiBoard({ chart }: ZiweiBoardProps): React.ReactElement {
 
       {/* Center heaven plate */}
       <div
-        className="z-10"
+        className="z-10 min-w-0 overflow-hidden"
         style={{
           gridRow: '2 / 4',
           gridColumn: '2 / 4',
@@ -309,13 +269,11 @@ export function ZiweiBoard({ chart }: ZiweiBoardProps): React.ReactElement {
       >
         <CenterHeavenPlate chart={chart} />
       </div>
-
     </div>
   );
 
   return (
-    <section id="ziwei-board" className="w-full" aria-label="Bàn lá số Tử Vi">
-      {listView}
+    <section id="ziwei-board" className="w-full max-w-full" aria-label="Bàn lá số Tử Vi">
       {gridView}
     </section>
   );

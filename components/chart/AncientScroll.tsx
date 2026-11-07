@@ -136,7 +136,7 @@ export function AncientScroll({
         {/* inert: khi cuộn lại, nội dung bị ẩn không nhận focus và không đọc được */}
         <div className="min-h-0 overflow-hidden" inert={!isOpen}>
           <div
-            className="relative flex flex-col overflow-hidden rounded-[3px] border-x-4 border-[#7a2318] shadow-[0_18px_44px_rgba(0,0,0,0.38)] sm:border-x-[10px]"
+            className="relative flex flex-col overflow-hidden rounded-[3px] border-x-2 border-[#7a2318] shadow-[0_18px_44px_rgba(0,0,0,0.38)] sm:border-x-[10px]"
             style={PAPER_BACKGROUND}
           >
             {/* Hạt giấy và mây mờ, nằm dưới nội dung */}
@@ -149,8 +149,8 @@ export function AncientScroll({
             <MeanderBand id="ancient-scroll-meander-top" />
 
             {/* Khung gold kép bên trong, bao quanh phần nội dung */}
-            <div className="relative z-10 mx-2 my-2 border border-[#a97422]/75 p-[3px] sm:mx-3">
-              <div className="relative border border-[#a97422]/35 px-2 py-4 sm:px-4 sm:py-5 md:px-8">
+            <div className="relative z-10 mx-1 my-2 border border-[#a97422]/75 p-[3px] sm:mx-3">
+              <div className="relative border border-[#a97422]/35 px-1 py-4 sm:px-4 sm:py-5 md:px-8">
                 <PaperCornerOrnaments />
                 <TitleBand />
 

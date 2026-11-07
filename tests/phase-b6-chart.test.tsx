@@ -172,19 +172,32 @@ describe('B6 BirthForm', () => {
 });
 
 describe('B6 ZiweiBoard', () => {
-  it('renders the 4x4 board, center plate and both responsive palace views', (): void => {
+  it('renders a single 4x4 board with 12 palace buttons and the center plate', (): void => {
     render(<ZiweiBoard chart={chart} />);
 
-    expect(screen.getByRole('region', { name: 'Bàn lá số Tử Vi 4x4' })).toBeInTheDocument();
-    expect(screen.getByRole('region', { name: 'Bàn lá số Tử Vi' })).toBeInTheDocument();
-    expect(screen.getByRole('list', { name: 'Danh sách 12 cung' })).toBeInTheDocument();
-    expect(screen.getByText(/Nạp Âm:/)).toBeInTheDocument();
+    const board = screen.getByRole('region', { name: 'Bàn lá số Tử Vi 4x4' });
+    expect(board).toBeInTheDocument();
 
-    expect(screen.getAllByRole('listitem')).toHaveLength(12);
+    const section = screen.getByRole('region', { name: 'Bàn lá số Tử Vi' });
+    expect(section).toBeInTheDocument();
+    expect(section.tagName).toBe('SECTION');
+
+    expect(screen.queryByRole('list', { name: 'Danh sách 12 cung' })).not.toBeInTheDocument();
+    expect(screen.queryAllByRole('listitem')).toHaveLength(0);
+
+    // The single board is a 4-column grid containing all 12 palace cells.
+    expect(board.className).toContain('grid-cols-4');
+    expect(board.querySelectorAll('[data-branch]')).toHaveLength(12);
 
     const palaceButtons = screen.getAllByRole('button', {
       name: /^Cung .+ tại .+, \d+ chính tinh$/,
     });
-    expect(palaceButtons).toHaveLength(24);
+    expect(palaceButtons).toHaveLength(12);
+
+    // Center plate metadata is still rendered inside the board.
+    expect(screen.getByText(/Nạp Âm:/)).toBeInTheDocument();
+    expect(screen.getByText(/Cục:/)).toBeInTheDocument();
+    expect(screen.getAllByText(chart.heavenPlate.soulLord).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(chart.heavenPlate.bodyLord).length).toBeGreaterThan(0);
   });
 });

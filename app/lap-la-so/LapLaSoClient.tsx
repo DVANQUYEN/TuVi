@@ -431,7 +431,7 @@ export function LapLaSoClient({ savedId }: LapLaSoClientProps): React.ReactEleme
     <div className="relative z-10 flex min-h-screen flex-col bg-background/70">
       <Header />
 
-      <main className="flex-1 px-4 py-6 md:py-8 lg:py-10">
+      <main className="flex-1 px-2 py-6 sm:px-4 md:py-8 lg:py-10">
         <div className="mx-auto max-w-7xl">
           <h1 className="mb-6 text-center font-serif text-2xl font-bold text-foreground md:text-3xl lg:text-4xl">
             Lập lá số <span className="text-gold">Tử Vi</span>

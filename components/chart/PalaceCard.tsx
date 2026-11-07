@@ -151,14 +151,14 @@ export function PalaceCard({
   const hasMalefic = palace.maleficStars.length > 0;
   const hasTuanOrTriet = palace.hasTuan || palace.hasTriet;
   const theme = PALACE_THEMES[palace.id];
-  const minorStarLimit = compact ? 3 : 6;
+  const minorStarLimit = 6;
 
   return (
     <div
       className={[
         'relative isolate flex flex-col justify-between overflow-hidden',
-        compact ? 'h-auto min-h-0 p-1.5 text-[11px]' : 'h-full p-2',
-        `border-2 ${theme.border} rounded-sm bg-linear-to-b from-surface to-background shadow-[0_0_15px_rgba(212,175,55,0.2)]`,
+        compact ? 'h-full min-h-0 p-1 text-[8px] sm:text-[9px] lg:p-2 lg:text-xs' : 'h-full p-2',
+        `rounded-sm ${compact ? 'border sm:border-2' : 'border-2'} ${theme.border} bg-linear-to-b from-surface to-background shadow-[0_0_15px_rgba(212,175,55,0.2)]`,
         'transition-[transform,box-shadow,border-color,background-color] duration-200 ease-out motion-reduce:transition-none',
         'hover:border-gold/80 hover:bg-elevated hover:shadow-[0_10px_26px_rgba(212,175,55,0.28)] motion-safe:hover:-translate-y-0.5',
         'focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-background',
@@ -180,28 +180,34 @@ export function PalaceCard({
         aria-hidden="true"
         className={`pointer-events-none absolute inset-0 -z-10 bg-linear-to-br ${theme.gradient} ${theme.glow}`}
       />
-      <PalaceWatermark palaceId={palace.id} />
+      <PalaceWatermark palaceId={palace.id} className={compact ? 'max-sm:hidden' : ''} />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-[3px] -z-10 rounded-[2px] border border-gold/40"
+        className={`pointer-events-none absolute inset-[3px] -z-10 rounded-[2px] border border-gold/40 ${
+          compact ? 'max-sm:hidden' : ''
+        }`}
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-[6px] -z-10 rounded-[2px] border border-gold/15"
+        className={`pointer-events-none absolute inset-[6px] -z-10 rounded-[2px] border border-gold/15 ${
+          compact ? 'max-sm:hidden' : ''
+        }`}
       />
 
-      <CornerOrnaments size="sm" />
+      <div aria-hidden="true" className={compact ? 'contents max-sm:hidden' : 'contents'}>
+        <CornerOrnaments size="sm" />
+      </div>
 
       {/* Tuần/Triệt: góc trên phải. Header được đệm trên khi có badge để không bị che đại hạn. */}
       {hasTuanOrTriet && (
-        <div className="absolute right-5 top-1 z-10 flex gap-1">
+        <div className="absolute right-1 top-0.5 z-10 flex gap-0.5 max-sm:hidden sm:right-5 sm:top-1 sm:gap-1">
           {palace.hasTuan && (
-            <span className="rounded bg-gold px-1 py-0.5 text-[11px] font-semibold leading-none text-background sm:text-[9px]">
+            <span className="rounded bg-gold px-1 py-0.5 text-[7px] font-semibold leading-none text-background sm:text-[9px]">
               TUẦN
             </span>
           )}
           {palace.hasTriet && (
-            <span className="rounded bg-gold px-1 py-0.5 text-[11px] font-semibold leading-none text-background sm:text-[9px]">
+            <span className="rounded bg-gold px-1 py-0.5 text-[7px] font-semibold leading-none text-background sm:text-[9px]">
               TRIỆT
             </span>
           )}
@@ -210,17 +216,33 @@ export function PalaceCard({
 
       {/* Header: Can Chi | Tên cung | Đại vận */}
       <div
-        className={`flex items-center justify-between gap-1 ${
-          compact ? 'mb-0.5 text-[10px]' : 'mb-1 text-xs'
-        } ${hasTuanOrTriet ? (compact ? 'pt-3' : 'pt-4') : ''}`}
+        className={`flex items-center justify-between ${
+          compact
+            ? 'mb-0.5 flex-wrap gap-x-0.5 gap-y-0.5 text-[8px] sm:gap-x-1 sm:text-[9px] lg:flex-nowrap lg:gap-1 lg:text-xs'
+            : 'mb-1 gap-1 text-xs'
+        } ${hasTuanOrTriet ? (compact ? 'sm:pt-4' : 'pt-4') : ''}`}
       >
-        <span className="text-muted font-mono shrink-0">
+        <span
+          className={`text-muted font-mono shrink-0 ${
+            compact ? 'text-[7px] sm:text-[8px] lg:text-[11px]' : ''
+          }`}
+        >
           {getStemBranchLabel(palace.stem, palace.branch)}
         </span>
-        <span className="font-serif font-bold text-foreground uppercase text-center leading-tight">
+        <span
+          className={`font-serif font-bold text-foreground uppercase text-center leading-tight ${
+            compact
+              ? 'order-last basis-full min-w-0 max-w-full truncate text-[9px] sm:text-[10px] lg:order-none lg:basis-auto lg:text-sm'
+              : ''
+          }`}
+        >
           {palace.name}
           {palace.isBodyPalace && (
-            <span className={`ml-1 text-gold ${compact ? 'text-[9px]' : 'text-[11px] sm:text-[10px]'}`}>
+            <span
+              className={`ml-1 text-gold ${
+                compact ? 'text-[6px] sm:text-[8px] lg:text-[10px]' : 'text-[11px] sm:text-[10px]'
+              }`}
+            >
               &lt;THÂN&gt;
             </span>
           )}
@@ -228,12 +250,18 @@ export function PalaceCard({
         <span className="shrink-0 text-right leading-none">
           <span
             className={`block uppercase tracking-[0.14em] text-gold/80 ${
-              compact ? 'text-[9px]' : 'text-[11px] sm:text-[8px]'
+              compact
+                ? 'max-sm:hidden text-[7px] sm:text-[8px] lg:text-[10px]'
+                : 'text-[11px] sm:text-[8px]'
             }`}
           >
             Đại vận
           </span>
-          <span className="mt-0.5 block font-mono text-muted">
+          <span
+            className={`mt-0.5 block font-mono text-muted ${
+              compact ? 'text-[7px] sm:text-[8px] lg:text-[10px]' : ''
+            }`}
+          >
             {palace.majorPeriod.startAge}-{palace.majorPeriod.endAge}
           </span>
         </span>
@@ -242,13 +270,21 @@ export function PalaceCard({
       {/* Chính tinh */}
       <div
         className={`flex flex-col items-center justify-center ${
-          compact ? 'mb-0.5 min-h-0 gap-0.5 text-sm' : 'mb-1 min-h-[2.75rem] gap-1'
+          compact
+            ? 'mb-0.5 min-h-0 gap-0.5 text-[8px] sm:text-[10px] lg:text-sm'
+            : 'mb-1 min-h-[2.75rem] gap-1'
         }`}
       >
         {palace.majorStars.length > 0 ? (
-          palace.majorStars.map((star) => <StarDisplay key={star.id} star={star} />)
+          palace.majorStars.map((star) => (
+            <StarDisplay key={star.id} star={star} compact={compact} />
+          ))
         ) : (
-          <span className={`text-muted italic ${compact ? 'text-[11px]' : 'text-xs'}`}>
+          <span
+            className={`text-muted italic ${
+              compact ? 'text-[7px] sm:text-[9px] lg:text-xs' : 'text-xs'
+            }`}
+          >
             Vô Chính Diệu
           </span>
         )}
@@ -256,14 +292,16 @@ export function PalaceCard({
 
       {/* Phụ tinh 2 cột */}
       <div
-        className={`grid grid-cols-2 gap-x-2 leading-tight ${
-          compact ? 'mb-0.5 gap-y-0 text-[11px]' : 'mb-1 gap-y-0.5 text-xs sm:text-[11px]'
+        className={`grid grid-cols-2 leading-tight ${
+          compact
+            ? 'mb-0.5 gap-x-1 gap-y-0 text-[7px] sm:text-[8px] lg:gap-x-2 lg:text-[11px]'
+            : 'mb-1 gap-x-2 gap-y-0.5 text-xs sm:text-[11px]'
         }`}
       >
-        <div className="text-left">
+        <div className="min-w-0 text-left">
           {hasAuspicious ? (
             palace.auspiciousStars.slice(0, minorStarLimit).map((star) => (
-              <div key={star.id}>
+              <div key={star.id} className="min-w-0 truncate">
                 <StarInline star={star} />
               </div>
             ))
@@ -271,10 +309,10 @@ export function PalaceCard({
             <span className="invisible">-</span>
           )}
         </div>
-        <div className="text-right">
+        <div className="min-w-0 text-right">
           {hasMalefic ? (
             palace.maleficStars.slice(0, minorStarLimit).map((star) => (
-              <div key={star.id}>
+              <div key={star.id} className="min-w-0 truncate">
                 <StarInline star={star} />
               </div>
             ))
@@ -284,25 +322,47 @@ export function PalaceCard({
         </div>
       </div>
 
-      {/* Footer: Vòng | Cục | Thần sát | Chi — ẩn ở bản compact để giảm chiều cao. */}
-      {!compact && (
-        <div className="flex flex-wrap items-center justify-between gap-x-1 gap-y-0.5 border-t border-border-subtle pt-1 text-[11px] text-muted sm:text-[10px]">
-          <span className="min-w-0 break-words">{palace.boshi12}</span>
-          <span className="min-w-0 break-words">{palace.changsheng12}</span>
-          <span className="min-w-0 break-words">{palace.suiqian12}</span>
-          <span className="shrink-0 font-mono">{getBranchLabel(palace.branch)}</span>
-        </div>
-      )}
+      {/* Footer: Vòng | Cục | Thần sát | Chi — ẩn ở mobile, hiện đầy đủ từ desktop. */}
+      <div
+        className={`flex-wrap items-center justify-between gap-x-1 gap-y-0.5 border-t border-border-subtle pt-1 text-[11px] text-muted sm:text-[10px] ${
+          compact ? 'hidden lg:flex' : 'flex'
+        }`}
+      >
+        <span className="min-w-0 break-words">{palace.boshi12}</span>
+        <span className="min-w-0 break-words">{palace.changsheng12}</span>
+        <span className="min-w-0 break-words">{palace.suiqian12}</span>
+        <span className="shrink-0 font-mono">{getBranchLabel(palace.branch)}</span>
+      </div>
     </div>
   );
 }
 
-function StarDisplay({ star }: { star: Star }): React.ReactElement {
+function StarDisplay({
+  star,
+  compact = false,
+}: {
+  star: Star;
+  compact?: boolean;
+}): React.ReactElement {
   return (
-    <div className="flex items-center gap-1.5">
+    <div
+      className={
+        compact
+          ? 'flex max-w-full min-w-0 flex-wrap items-center justify-center gap-x-0.5 gap-y-0'
+          : 'flex items-center gap-1.5'
+      }
+    >
       <span className={`font-semibold ${ELEMENT_TEXT_COLORS[star.element]}`}>{star.name}</span>
       {star.brightnessLabel && (
-        <span className="text-[11px] text-muted sm:text-[10px]">({star.brightnessLabel})</span>
+        <span
+          className={
+            compact
+              ? 'text-[6px] text-muted sm:text-[8px] lg:text-[10px]'
+              : 'text-[11px] text-muted sm:text-[10px]'
+          }
+        >
+          ({star.brightnessLabel})
+        </span>
       )}
       {star.mutagen && <MutagenBadge mutagen={star.mutagen} />}
     </div>
@@ -321,7 +381,7 @@ function StarInline({ star }: { star: Star }): React.ReactElement {
 function MutagenBadge({ mutagen }: { mutagen: MutagenType }): React.ReactElement {
   return (
     <span
-      className={`inline-block ml-0.5 ${MUTAGEN_COLORS[mutagen]} rounded px-1 text-[11px] text-background sm:text-[9px]`}
+      className={`inline-block shrink-0 ml-0.5 ${MUTAGEN_COLORS[mutagen]} rounded px-0.5 text-[6px] text-background sm:px-1 sm:text-[9px]`}
     >
       {MUTAGEN_LABELS[mutagen]}
     </span>

@@ -21,11 +21,17 @@ export const PALACE_GLYPHS: Readonly<Record<PalaceId, string>> = {
  * Chữ Hán lớn mờ làm nền trang trí. Ẩn khỏi screen reader và không nhận sự kiện chuột.
  * Đặt trong vùng `absolute inset-0` của thẻ cung.
  */
-export function PalaceWatermark({ palaceId }: { palaceId: PalaceId }): ReactElement {
+export function PalaceWatermark({
+  palaceId,
+  className = '',
+}: {
+  palaceId: PalaceId;
+  className?: string;
+}): ReactElement {
   return (
     <span
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 -z-10 flex select-none items-center justify-center font-han text-7xl leading-none text-gold/10"
+      className={`pointer-events-none absolute inset-0 -z-10 flex select-none items-center justify-center font-han text-7xl leading-none text-gold/10 ${className}`}
     >
       {PALACE_GLYPHS[palaceId]}
     </span>
