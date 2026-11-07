@@ -168,7 +168,10 @@ export class VietnameseChartDecorator {
     name: string;
     element: import('../types/enums').FiveElement;
   } {
-    const entry = NAP_AM_60.find((item) => item.startsWith(yearLabel));
+    const normalizedLabel = yearLabel.replace(/\s+/g, '');
+    const entry = NAP_AM_60.find(
+      (item) => item.split(' - ')[0].replace(/\s+/g, '') === normalizedLabel
+    );
     const defaultResult = { name: 'Hải Trung Kim', element: 'kim' as const };
 
     if (!entry) return defaultResult;

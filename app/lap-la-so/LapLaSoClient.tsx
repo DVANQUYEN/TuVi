@@ -152,6 +152,12 @@ export function LapLaSoClient({ savedId }: LapLaSoClientProps): React.ReactEleme
     () => false
   );
 
+  // Mobile: mỗi lần vào trang đều mở form, kể cả khi lần trước đã thu gọn.
+  // Chỉ chạy sau khi mount để tránh lệch hydration; desktop giữ nguyên.
+  useEffect(() => {
+    if (isMobileViewport()) setFormCollapsed(false);
+  }, []);
+
   // Trên mobile, phím Esc đóng form đang mở; desktop không đổi hành vi.
   useEffect(() => {
     if (isFormCollapsed) return undefined;

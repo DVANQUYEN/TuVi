@@ -1,11 +1,13 @@
 import { vi } from 'vitest';
 
-export interface ReducedMotionController {
+export interface MediaQueryController {
   setMatches: (matches: boolean) => void;
 }
 
-/** Stub matchMedia with a live `matches` value and working change listeners. */
-export function installReducedMotion(matches: boolean): ReducedMotionController {
+export type ReducedMotionController = MediaQueryController;
+
+/** Stub matchMedia for one query with a live `matches` value and working change listeners. */
+export function installMediaQuery(query: string, matches: boolean): MediaQueryController {
   let currentMatches = matches;
   const listeners = new Set<(event: MediaQueryListEvent) => void>();
 
@@ -13,7 +15,7 @@ export function installReducedMotion(matches: boolean): ReducedMotionController 
     get matches(): boolean {
       return currentMatches;
     },
-    media: '(prefers-reduced-motion: reduce)',
+    media: query,
     onchange: null,
     addEventListener: vi.fn((type: string, listener: (event: MediaQueryListEvent) => void) => {
       if (type === 'change') listeners.add(listener);
@@ -43,4 +45,9 @@ export function installReducedMotion(matches: boolean): ReducedMotionController 
       listeners.forEach((listener) => listener(event));
     },
   };
+}
+
+/** Stub the reduced-motion media query. */
+export function installReducedMotion(matches: boolean): ReducedMotionController {
+  return installMediaQuery('(prefers-reduced-motion: reduce)', matches);
 }

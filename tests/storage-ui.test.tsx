@@ -6,6 +6,16 @@ import { SaveChartButton } from '@/components/storage/SaveChartButton';
 import { SavedChartsList } from '@/components/storage/SavedChartsList';
 import type { SavedChart } from '@/lib/utils/storage';
 import type { ZiweiChart } from '@/lib/ziwei/types';
+import { installMediaQuery } from './helpers/match-media';
+
+const DESKTOP_MEDIA_QUERY = '(min-width: 1024px)';
+const FORM_COLLAPSED_KEY = 'lapLaSo.formCollapsed';
+
+function getBirthFormPanel(): HTMLElement {
+  const panel = document.getElementById('birth-form-panel');
+  if (!panel) throw new Error('Birth form panel not found');
+  return panel;
+}
 
 const {
   authMock,
@@ -141,10 +151,12 @@ async function renderClient(props: { savedId?: string } = {}): Promise<void> {
 
 afterEach(() => {
   cleanup();
+  vi.unstubAllGlobals();
   vi.restoreAllMocks();
 });
 
 beforeEach(() => {
+  localStorage.clear();
   authMock.mockReset();
   deleteChartMock.mockReset();
   getCurrentChartMock.mockReset();
@@ -277,6 +289,60 @@ describe('LapLaSoClient migration', () => {
     render(<LapLaSoClient />);
 
     await waitFor(() => expect(migrateMock).toHaveBeenCalledWith(user));
+  });
+});
+
+describe('LapLaSoClient birth form visibility', () => {
+  it('starts with the form open on mobile even when it was collapsed last visit', async () => {
+    mockAuth(null);
+    installMediaQuery(DESKTOP_MEDIA_QUERY, false);
+    localStorage.setItem(FORM_COLLAPSED_KEY, '1');
+
+    await renderClient();
+
+    const panel = getBirthFormPanel();
+    expect(panel).not.toHaveAttribute('hidden');
+    expect(screen.getByRole('button', { name: 'Thu gọn form thông tin sinh' })).toHaveAttribute(
+      'aria-expanded',
+      'true'
+    );
+
+    // Người dùng vẫn có thể tự thu gọn sau khi trang đã mount.
+    fireEvent.click(screen.getByRole('button', { name: 'Thu gọn form thông tin sinh' }));
+
+    expect(panel).toHaveAttribute('hidden');
+    expect(screen.getByRole('button', { name: 'Mở form thông tin sinh' })).toHaveAttribute(
+      'aria-expanded',
+      'false'
+    );
+  });
+
+  it('leaves desktop behavior unchanged: form open by default and toggleable', async () => {
+    mockAuth(null);
+    installMediaQuery(DESKTOP_MEDIA_QUERY, true);
+
+    await renderClient();
+
+    const panel = getBirthFormPanel();
+    expect(panel).not.toHaveAttribute('hidden');
+    const collapseButton = screen.getByRole('button', { name: 'Thu gọn form thông tin sinh' });
+    expect(collapseButton).toHaveAttribute('aria-expanded', 'true');
+
+    fireEvent.click(collapseButton);
+
+    expect(panel).toHaveAttribute('hidden');
+    expect(screen.getByRole('button', { name: 'Mở form thông tin sinh' })).toHaveAttribute(
+      'aria-expanded',
+      'false'
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'Mở form thông tin sinh' }));
+
+    expect(panel).not.toHaveAttribute('hidden');
+    expect(screen.getByRole('button', { name: 'Thu gọn form thông tin sinh' })).toHaveAttribute(
+      'aria-expanded',
+      'true'
+    );
   });
 });
 

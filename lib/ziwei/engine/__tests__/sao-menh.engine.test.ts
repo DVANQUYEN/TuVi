@@ -182,4 +182,81 @@ describe('SaoMenhChartEngine', () => {
 
     expect(() => engine.generateChart({ ...sampleBirthInfo, year: 1800 })).toThrow();
   });
+
+  it('produces the same chart for lunar 1/3/2003 and solar 2/4/2003', () => {
+    const engine = createChartEngine();
+    const lunarBirthInfo: BirthInfo = {
+      name: 'Hồ Xuân Huy',
+      gender: 'nam',
+      calendarType: 'lunar',
+      year: 2003,
+      month: 3,
+      day: 1,
+      hour: 1,
+      minute: 45,
+      location: { region: 'north', longitude: 105.8542 },
+    };
+    const solarBirthInfo: BirthInfo = {
+      ...lunarBirthInfo,
+      calendarType: 'solar',
+      month: 4,
+      day: 2,
+    };
+
+    const lunarChart = engine.generateChart(lunarBirthInfo);
+    const solarChart = engine.generateChart(solarBirthInfo);
+
+    for (const chart of [lunarChart, solarChart]) {
+      expect(chart.auditTrail.calendarResolution.solarDate).toBe('2/4/2003');
+      expect(chart.auditTrail.calendarResolution.lunarDate).toBe('1/3/2003');
+      expect(chart.heavenPlate.effectiveLunarDate).toMatchObject({
+        year: 2003,
+        month: 3,
+        day: 1,
+        isLeapMonthOriginal: false,
+      });
+      expect(chart.heavenPlate.soulPalaceBranch).toBe('mao');
+      expect(chart.heavenPlate.soulLord).toBe('Văn Khúc');
+      expect(chart.heavenPlate.bodyLord).toBe('Thiên Tướng');
+      expect(chart.heavenPlate.fiveElementsClass).toMatchObject({
+        name: 'Thủy Nhị Cục',
+        element: 'thuy',
+        number: 2,
+      });
+      expect(chart.heavenPlate.napAm).toEqual({ name: 'Dương Liễu Mộc', element: 'moc' });
+
+      const menhPalace = chart.palaces.find((palace) => palace.id === 'menh');
+      expect(menhPalace?.branch).toBe('mao');
+      expect(menhPalace?.majorStars.map((star) => star.id)).toContain('thienPhu');
+    }
+
+    const majorsByPalace = (chart: (typeof lunarChart)): Record<string, string[]> =>
+      Object.fromEntries(
+        chart.palaces.map((palace) => [palace.branch, palace.majorStars.map((star) => star.id)])
+      );
+    expect(majorsByPalace(lunarChart)).toEqual(majorsByPalace(solarChart));
+  });
+
+  it('resolves Nạp Âm from the year Can Chi', () => {
+    const engine = createChartEngine();
+    const cases: Array<[year: number, expected: string]> = [
+      [2003, 'Dương Liễu Mộc'],
+      [1984, 'Hải Trung Kim'],
+      [2000, 'Bạch Lạp Kim'],
+    ];
+
+    for (const [year, expected] of cases) {
+      const chart = engine.generateChart({
+        gender: 'nam',
+        calendarType: 'solar',
+        year,
+        month: 7,
+        day: 15,
+        hour: 12,
+        minute: 0,
+      });
+
+      expect(chart.heavenPlate.napAm.name).toBe(expected);
+    }
+  });
 });

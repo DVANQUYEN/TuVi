@@ -125,23 +125,26 @@ export class VietnameseCalendarAdapter {
       year = date.getFullYear();
     }
 
-    // 2. Chuyển đổi Dương → Âm
-    let lunarDate;
+    // 2. Chuyển đổi Dương ↔ Âm
+    let solarDate: { day: number; month: number; year: number };
+    let lunarDate: { day: number; month: number; year: number; isLeapMonth: boolean };
+
     if (birthInfo.calendarType === 'solar') {
+      solarDate = { day, month, year };
       lunarDate = convertSolarToLunarVN(day, month, year);
     } else {
-      const solarDate = convertLunarToSolarVN(
+      lunarDate = {
+        day,
+        month,
+        year,
+        isLeapMonth: birthInfo.isLeapMonthInput ?? false,
+      };
+      solarDate = convertLunarToSolarVN(
         day,
         month,
         year,
         birthInfo.isLeapMonthInput ?? false
       );
-      lunarDate = {
-        day: solarDate.day,
-        month: solarDate.month,
-        year: solarDate.year,
-        isLeapMonth: birthInfo.isLeapMonthInput ?? false,
-      };
     }
 
     // 3. Xử lý tháng nhuận
@@ -167,8 +170,8 @@ export class VietnameseCalendarAdapter {
     // 4. Xác định năm Can Chi
     let effectiveLunarYear = lunarDate.year;
     if (config.yearBoundary === 'lapXuan') {
-      const lapXuan = getLapXuanMomentUtc7(year);
-      const birthDate = new Date(year, month - 1, day);
+      const lapXuan = getLapXuanMomentUtc7(solarDate.year);
+      const birthDate = new Date(solarDate.year, solarDate.month - 1, solarDate.day);
 
       if (birthDate < lapXuan) {
         effectiveLunarYear -= 1;
@@ -176,13 +179,17 @@ export class VietnameseCalendarAdapter {
     }
 
     // 5. Tính Julian Day và Tứ trụ
-    const jd = jdFromDate(day, month, year);
+    const jd = jdFromDate(solarDate.day, solarDate.month, solarDate.year);
     const fourPillars = buildFourPillarsWithLabels(
       getFourPillars(effectiveLunarYear, effectiveLunarMonth, jd, hour)
     );
 
     // 6. Kiểm tra lệch lịch Việt-Trung
-    const solarToLunarDiffWithChina = this.checkVietnamChinaDivergence(day, month, year);
+    const solarToLunarDiffWithChina = this.checkVietnamChinaDivergence(
+      solarDate.day,
+      solarDate.month,
+      solarDate.year
+    );
     if (solarToLunarDiffWithChina) {
       warnings.push({
         code: 'VIETNAM_CHINA_DIVERGENCE',
@@ -200,7 +207,7 @@ export class VietnameseCalendarAdapter {
       fourPillars,
       jd,
       calendarResolution: {
-        solarDate: `${day}/${month}/${year}`,
+        solarDate: `${solarDate.day}/${solarDate.month}/${solarDate.year}`,
         lunarDate: `${lunarDate.day}/${effectiveLunarMonth}/${lunarDate.year}${lunarDate.isLeapMonth ? ' (nhuận)' : ''}`,
         lunarYear: lunarDate.year,
         lunarMonth: effectiveLunarMonth,

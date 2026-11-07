@@ -185,10 +185,10 @@ describe('generatePersonalSummary - luận giải chi tiết', () => {
     }
     expect(technicalText).not.toContain('Lá số của');
 
-    expect(chart.heavenPlate.napAm.name).toBe('Hải Trung Kim');
+    expect(chart.heavenPlate.napAm.name).toBe('Lộ Bàng Thổ');
     const technicalIntro = technicalParagraphs[0];
-    expect(technicalIntro).toContain('Hải Trung Kim');
-    expect(technicalIntro).toContain('(vàng dưới biển)');
+    expect(technicalIntro).toContain('Lộ Bàng Thổ');
+    expect(technicalIntro).toContain('(đất ven đường)');
 
     const technicalConclusion = technicalParagraphs[technicalParagraphs.length - 1];
     expect(technicalConclusion.startsWith('Xét riêng cung Mệnh')).toBe(true);
