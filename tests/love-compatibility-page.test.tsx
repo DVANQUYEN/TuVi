@@ -373,6 +373,44 @@ function getRightColumn(): HTMLElement {
   return rightColumn as HTMLElement;
 }
 
+/** The grid wrapper around the emblem aside that owns the mobile/desktop order classes. */
+function getEmblemWrapper(): HTMLElement {
+  const aside = getEmblem().closest('aside');
+  expect(aside).not.toBeNull();
+  return (aside as HTMLElement).parentElement as HTMLElement;
+}
+
+/**
+ * jsdom does not implement `scrollIntoView`, so install a spy only when needed
+ * and always restore the original prototype entry afterwards.
+ */
+function stubScrollIntoView(): { scrollIntoView: ReturnType<typeof vi.fn>; restore: () => void } {
+  const original = Element.prototype.scrollIntoView;
+  const scrollIntoView = vi.fn();
+
+  Object.defineProperty(Element.prototype, 'scrollIntoView', {
+    configurable: true,
+    writable: true,
+    value: scrollIntoView,
+  });
+
+  return {
+    scrollIntoView,
+    restore: (): void => {
+      if (original === undefined) {
+        delete (Element.prototype as Partial<Element>).scrollIntoView;
+        return;
+      }
+
+      Object.defineProperty(Element.prototype, 'scrollIntoView', {
+        configurable: true,
+        writable: true,
+        value: original,
+      });
+    },
+  };
+}
+
 function advanceMerge(milliseconds: number = TOTAL_REVEAL_MS): void {
   act((): void => {
     vi.advanceTimersByTime(milliseconds);
@@ -563,17 +601,27 @@ describe('Tình Duyên compatibility experience', () => {
     expect(screen.getByTestId('compatibility-result')).toBeInTheDocument();
   });
 
-  it('shows the privacy notice next to the submit CTA', (): void => {
+  it('keeps the helper lines next to the submit CTA and omits the old privacy notice', (): void => {
     render(<CompatibilityForm />);
 
     const submitButton = screen.getByRole('button', { name: 'Luận Định Duyên Đôi Lứa' });
-    const notice = screen.getByText(
-      (_content, element) =>
-        element?.tagName === 'P' &&
-        Boolean(element.textContent?.includes('Thông tin của hai người được lưu'))
+    const methodLine = screen.getByText('Luận giải dựa trên Tử Vi cổ truyền.');
+    const accuracyLine = screen.getByText(
+      'Giờ sinh càng chính xác, lá số càng sát với thực tế.'
     );
-    expect(notice).toBeInTheDocument();
-    expect(submitButton.parentElement).toContainElement(notice);
+
+    expect(submitButton.parentElement).toContainElement(methodLine);
+    expect(submitButton.parentElement).toContainElement(accuracyLine);
+    expect(
+      screen.queryByText(
+        (_content, element) =>
+          element?.tagName === 'P' &&
+          Boolean(element.textContent?.includes('Thông tin của hai người được lưu'))
+      )
+    ).not.toBeInTheDocument();
+    expect(document.body.textContent ?? '').not.toContain(
+      'Thông tin của hai người được lưu để cải thiện luận giải và không hiển thị công khai.'
+    );
   });
 
   it('shows the subtle saved notice only when the background save succeeds', async (): Promise<void> => {
@@ -1013,6 +1061,74 @@ describe('Tình Duyên compatibility experience', () => {
     expect(screen.getAllByLabelText(/^Họ tên/)[0]).toHaveFocus();
   });
 
+  it('scrolls the emblem wrapper to the start when a valid submit enters merging', (): void => {
+    const { scrollIntoView, restore } = stubScrollIntoView();
+
+    try {
+      render(<CompatibilityForm />);
+      fillBothProfiles();
+      fireEvent.click(screen.getByRole('button', { name: 'Luận Định Duyên Đôi Lứa' }));
+
+      expect(screen.queryByTestId('compatibility-result')).not.toBeInTheDocument();
+      expect(getEmblem()).toHaveAttribute('data-phase', 'merging');
+      expect(scrollIntoView).toHaveBeenCalledTimes(1);
+      expect(scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' });
+      expect(scrollIntoView.mock.contexts[0]).toBe(getEmblemWrapper());
+    } finally {
+      restore();
+    }
+  });
+
+  it('does not scroll the emblem wrapper when the submit is invalid', (): void => {
+    const { scrollIntoView, restore } = stubScrollIntoView();
+
+    try {
+      render(<CompatibilityForm />);
+      fireEvent.click(screen.getByRole('button', { name: 'Luận Định Duyên Đôi Lứa' }));
+
+      expect(screen.getByRole('alert')).toBeInTheDocument();
+      expect(getEmblem()).toHaveAttribute('data-phase', 'idle');
+      expect(scrollIntoView).not.toHaveBeenCalled();
+    } finally {
+      restore();
+    }
+  });
+
+  it('keeps the emblem first on mobile while preserving the desktop column order', (): void => {
+    render(<CompatibilityForm />);
+
+    const emblemWrapper = getEmblemWrapper();
+    const grid = emblemWrapper.parentElement as HTMLElement;
+    const rightWrapper = grid.children[1] as HTMLElement;
+
+    expect(grid.children).toHaveLength(2);
+    expect(grid.children[0]).toBe(emblemWrapper);
+    expect(Array.from(emblemWrapper.classList)).toContain('lg:order-1');
+    expect(Array.from(emblemWrapper.classList)).not.toContain('order-2');
+    expect(Array.from(rightWrapper.classList)).toContain('lg:order-2');
+    expect(Array.from(rightWrapper.classList)).not.toContain('order-1');
+  });
+
+  it('keeps a revealed result below the emblem in the mobile grid order', (): void => {
+    installReducedMotion(true);
+    render(<CompatibilityForm />);
+    fillBothProfiles();
+    fireEvent.click(screen.getByRole('button', { name: 'Luận Định Duyên Đôi Lứa' }));
+
+    const result = screen.getByTestId('compatibility-result');
+    const emblemWrapper = getEmblemWrapper();
+    const grid = emblemWrapper.parentElement as HTMLElement;
+    const rightWrapper = result.parentElement as HTMLElement;
+
+    expect(grid.children[0]).toBe(emblemWrapper);
+    expect(grid.children[1]).toBe(rightWrapper);
+    expect(grid.children.length).toBe(2);
+    expect(Array.from(grid.children).indexOf(rightWrapper)).toBeGreaterThan(
+      Array.from(grid.children).indexOf(emblemWrapper)
+    );
+    expect(rightWrapper).toContainElement(result);
+  });
+
   it('reveals immediately and renders the static emblem path under reduced motion', (): void => {
     installReducedMotion(true);
     vi.useFakeTimers();
@@ -1196,12 +1312,6 @@ describe('Tình Duyên compatibility experience', () => {
     expect(emblem.querySelector('svg')).toHaveAttribute('aria-hidden', 'true');
     expect(emblem.querySelector('svg')).toHaveAttribute('focusable', 'false');
 
-    expect(
-      screen.getByText((_content, element) =>
-        element?.tagName === 'P' &&
-        Boolean(element.textContent?.includes('Thông tin của hai người được lưu'))
-      )
-    ).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Luận Định Duyên Đôi Lứa' })).toBeInTheDocument();
 
     const pageText = document.body.textContent ?? '';

@@ -227,6 +227,7 @@ export function CompatibilityForm(): React.ReactElement {
   const [activeStarIds, setActiveStarIds] = useState<ReadonlySet<string>>(NO_ACTIVE_STAR_IDS);
   const reducedMotion = usePrefersReducedMotion();
 
+  const emblemRef = useRef<HTMLDivElement>(null);
   const summaryRef = useRef<HTMLDivElement>(null);
   const errorRef = useRef<HTMLDivElement>(null);
   const resultRef = useRef<HTMLElement>(null);
@@ -308,7 +309,15 @@ export function CompatibilityForm(): React.ReactElement {
   }, [errors]);
 
   useEffect(() => {
-    if (phase === 'revealed' && result) resultRef.current?.focus();
+    if (phase !== 'merging') return;
+    const node = emblemRef.current;
+    if (node && typeof node.scrollIntoView === 'function') {
+      node.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'start' });
+    }
+  }, [phase, reducedMotion]);
+
+  useEffect(() => {
+    if (phase === 'revealed' && result) resultRef.current?.focus({ preventScroll: true });
   }, [phase, result]);
 
   useEffect(() => {
@@ -477,7 +486,7 @@ export function CompatibilityForm(): React.ReactElement {
       </p>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-start lg:gap-10">
-        <div className="order-2 min-w-0 lg:order-1">
+        <div ref={emblemRef} className="min-w-0 scroll-mt-24 lg:order-1">
           <LoveEmblemPanel
             previews={previews}
             phase={phase}
@@ -486,7 +495,7 @@ export function CompatibilityForm(): React.ReactElement {
           />
         </div>
 
-        <div className="order-1 min-w-0 lg:order-2" aria-busy={phase === 'merging'}>
+        <div className="min-w-0 lg:order-2" aria-busy={phase === 'merging'}>
           {saveState === 'saved' && (
             <p role="status" className="mb-3 text-center text-[11px] text-muted">
               Đã ghi nhận thông tin
@@ -585,10 +594,6 @@ export function CompatibilityForm(): React.ReactElement {
                   </Button>
                   <p className="text-center text-xs leading-relaxed text-muted">
                     Luận giải dựa trên Tử Vi cổ truyền.
-                  </p>
-                  <p className="text-center text-[11px] leading-relaxed text-muted/80">
-                    Thông tin của hai người được lưu để cải thiện luận giải và không hiển thị công
-                    khai.
                   </p>
                   <p className="text-center text-[11px] leading-relaxed text-muted/80">
                     Giờ sinh càng chính xác, lá số càng sát với thực tế.
