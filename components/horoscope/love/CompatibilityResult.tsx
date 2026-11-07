@@ -2,6 +2,7 @@ import type { RefObject } from 'react';
 import { Button } from '@/components/ui/Button';
 import type {
   CompatibilityAspectKey,
+  CompatibilityPeriodSnapshot,
   CompatibilityResult as CompatibilityResultData,
 } from '@/lib/ziwei/compatibility';
 
@@ -17,6 +18,32 @@ const ASPECT_LABELS: Record<CompatibilityAspectKey, string> = {
 function formatAspectScore(score: number): string {
   const rounded = Math.round(score * 10) / 10;
   return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1);
+}
+
+function PeriodRow({
+  label,
+  snapshot,
+}: {
+  label: string;
+  snapshot: CompatibilityPeriodSnapshot | null;
+}): React.ReactElement {
+  return (
+    <p>
+      <span className="font-semibold text-foreground">{label}: </span>
+      {snapshot ? (
+        <>
+          <span>
+            {snapshot.palace} ({snapshot.detail})
+          </span>
+          {snapshot.stars.length > 0 && (
+            <span className="mt-0.5 block text-xs text-muted">{snapshot.stars.join(', ')}</span>
+          )}
+        </>
+      ) : (
+        <span className="text-muted">Chưa đủ dữ liệu</span>
+      )}
+    </p>
+  );
 }
 
 export interface CompatibilityResultProps {
@@ -42,7 +69,11 @@ export function CompatibilityResult({
   onReset,
 }: CompatibilityResultProps): React.ReactElement {
   const adviceHeadingId = `${headingId}-advice`;
+  const periodsHeadingId = `${headingId}-periods`;
   const aspectKeys = Object.keys(ASPECT_LABELS) as CompatibilityAspectKey[];
+  const hasPeriodContext = result.periodContext.readings.some(
+    (reading) => reading.daiHan || reading.tieuHan || reading.luuNien
+  );
 
   return (
     <section
@@ -62,14 +93,14 @@ export function CompatibilityResult({
         <div
           data-testid="compatibility-score"
           role="img"
-          aria-label={`Điểm hợp nhau ${result.score} trên 100`}
+          aria-label={`Độ tương hợp ${result.score} trên 100`}
           className="mx-auto mt-4 flex h-28 w-28 flex-col items-center justify-center rounded-full border-2 border-gold/50 bg-gold/10 text-center shadow-[0_0_24px_rgba(212,175,55,0.18)] sm:h-32 sm:w-32"
         >
           <p className="font-serif text-3xl font-semibold leading-none text-gold sm:text-4xl">
             {result.score}/100
           </p>
           <p className="mt-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-gold/80 sm:text-xs">
-            Điểm hợp nhau
+            Độ tương hợp
           </p>
         </div>
         <p
@@ -119,7 +150,7 @@ export function CompatibilityResult({
                 </span>
               </div>
               <p className="mt-1 text-sm font-semibold text-foreground">{aspect.meaning}</p>
-              <p className="mt-2 text-sm leading-relaxed text-muted">
+              <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-muted">
                 {aspect.explanation}
               </p>
               <p className="mt-2 text-sm leading-relaxed text-muted">
@@ -130,6 +161,34 @@ export function CompatibilityResult({
           );
         })}
       </ul>
+
+      {hasPeriodContext && (
+        <section
+          data-testid="compatibility-periods"
+          aria-labelledby={periodsHeadingId}
+          className="mt-6 rounded-lg border border-border-subtle bg-background/40 p-4"
+        >
+          <h3 id={periodsHeadingId} className="mb-2 font-serif text-lg font-semibold text-gold">
+            Vận trình hiện tại {result.periodContext.year}
+          </h3>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {result.periodContext.readings.map((reading, index) => (
+              <div
+                key={`${reading.label}-${index}`}
+                className="space-y-2 rounded-lg border border-border-subtle bg-background/40 p-4 text-sm"
+              >
+                <p className="font-semibold text-gold">{reading.label}</p>
+                <PeriodRow label="Đại vận" snapshot={reading.daiHan} />
+                <PeriodRow label="Tiểu vận" snapshot={reading.tieuHan} />
+                <PeriodRow label={`Lưu niên ${result.periodContext.year}`} snapshot={reading.luuNien} />
+              </div>
+            ))}
+          </div>
+          <p className="mt-3 text-xs leading-relaxed text-muted">
+            Vận trình là bối cảnh tham khảo, không cộng vào độ tương hợp.
+          </p>
+        </section>
+      )}
 
       <section
         aria-labelledby={adviceHeadingId}
@@ -202,6 +261,10 @@ export function CompatibilityResult({
               </li>
             ))}
           </ul>
+          <p>
+            Riêng Cung Phu Thê: chất lượng tự thân 65%, tam phương (Phúc Đức, Quan Lộc, Thiên Di)
+            35%.
+          </p>
           <p>
             Các khía cạnh có phần chồng lấn: sao tại cung Phu Thê cũng góp phần vào Tương hợp tinh
             tú và Tương tác cung vị. Khía cạnh Cung Phu Thê phản ánh chất lượng nền duyên hôn nhân

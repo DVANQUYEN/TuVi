@@ -28,8 +28,9 @@ duyên hôn nhân của mỗi người, không phải một phép đo thuần t�
 ## Năm khía cạnh và trọng số
 
 Điểm tổng trên thang điểm 100 bằng tổng có trọng số của năm khía cạnh, mỗi khía cạnh chấm trên
-thang điểm 10. Giao diện hiển thị điểm tổng dạng `x/100` và điểm từng khía cạnh dạng `x/10`;
-phần giải thích định tính đi kèm không chứa điểm số.
+thang điểm 10. Giao diện hiển thị điểm tổng dạng `x/100` dưới nhãn `Độ tương hợp` (không dùng
+nhãn “Điểm hợp nhau”) và điểm từng khía cạnh dạng `x/10`; phần giải thích định tính đi kèm không
+chứa điểm số.
 
 | Khía cạnh | Trọng số | Nội dung chính |
 | --- | ---: | --- |
@@ -44,10 +45,11 @@ Lời khuyên tổng cũng dùng đúng ba ngưỡng này.
 
 ## Kết luận khẩu khí
 
-Giao diện hiển thị điểm tổng `/100` và điểm từng khía cạnh `/10`. Điểm thời vận chỉ mang tính
-tham khảo, không nằm trong tỷ lệ tương hợp và không tham gia vào điểm tổng. Khối phương pháp
-trong giao diện nêu rõ trọng số của năm khía cạnh. Câu khẩu khí là kết luận định tính đi kèm
-điểm số; người dùng thấy cả điểm, mức xếp loại, câu khẩu khí ngắn và phần luận giải định tính.
+Giao diện hiển thị điểm tổng `/100` dưới nhãn `Độ tương hợp` (không dùng nhãn “Điểm hợp nhau”)
+và điểm từng khía cạnh `/10`. Điểm thời vận chỉ mang tính tham khảo, không nằm trong tỷ lệ tương
+hợp và không tham gia vào điểm tổng. Khối phương pháp trong giao diện nêu rõ trọng số của năm
+khía cạnh. Câu khẩu khí là kết luận định tính đi kèm điểm số; người dùng thấy cả điểm, mức xếp
+loại, câu khẩu khí ngắn và phần luận giải định tính.
 
 Câu khẩu khí là **cách diễn đạt văn hóa có chọn lọc**, không phải lời phán quyết định mệnh.
 Nó không khẳng định duyên phận cố định, không bảo đảm kết quả và không thay thế lựa chọn, nỗ
@@ -56,21 +58,32 @@ gọn trên một dòng máy tính và tối đa hai dòng trên điện thoại
 
 - Dải điểm của khẩu khí: `high` từ 70 trở lên, `balanced` từ 50 đến dưới 70, `challenging`
   dưới 50. Trường `conclusion.tone` phản ánh dải này.
-- Câu khẩu khí được chọn **tất định** theo dải điểm và hồ sơ năm khía cạnh, không ngẫu nhiên:
-  - `high`:
-    - Cung Phu Thê từ 7 và Tương hợp tinh tú từ 7: câu về âm dương thuận hòa, phu thê vinh
-      hiển khi cả hai đồng lòng.
-    - Nền tảng bản mệnh từ 7 và Tương tác cung vị từ 7: câu về đôi bên tương sinh tương trợ,
-      gia đạo hưng long nhờ đồng tâm vun đắp.
-    - Can Chi từ 7: câu về thiên định lương duyên, còn bền lâu là nhờ nghĩa tình và nhường nhịn.
-    - Tương tác cung vị từ 7: câu về tơ hồng se mối, đôi người nâng đỡ nhau thì đường dài cũng
-      vững.
-    - Các trường hợp còn lại: câu về duyên lành gặp hội, trăm năm viên mãn bởi lòng người vun
-      đắp.
-  - `balanced`: ưu tiên Tương tác cung vị từ 6; kế đến Can Chi từ 5,5, Cung Phu Thê từ 6 rồi
-    nền tảng bản mệnh từ 6; còn lại dùng câu về âm dương lệch pha đôi chút.
-  - `challenging`: ưu tiên Cung Phu Thê dưới 5; kế đến nền tảng bản mệnh dưới 5, Tương tác
-    cung vị dưới 5 và Can Chi dưới 5; còn lại dùng câu về nhiều điểm xung, khẩu thiệt dễ sinh.
+- Mỗi dải có **50 câu**, tổ chức thành 10 nhóm tất định × 5 nhánh nền. Câu khẩu khí được chọn
+  **tất định** theo dải điểm và hồ sơ năm khía cạnh, không ngẫu nhiên:
+  - Nhánh nền (chỉ số 0–4) do hồ sơ khía cạnh quyết định:
+    - `high`:
+      - Cung Phu Thê từ 7 và Tương hợp tinh tú từ 7: câu về âm dương thuận hòa, phu thê vinh
+        hiển khi cả hai đồng lòng (0).
+      - Nền tảng bản mệnh từ 7 và Tương tác cung vị từ 7: câu về đôi bên tương sinh tương trợ,
+        gia đạo hưng long nhờ đồng tâm vun đắp (1).
+      - Can Chi từ 7: câu về thiên định lương duyên, còn bền lâu là nhờ nghĩa tình và nhường
+        nhịn (3).
+      - Tương tác cung vị từ 7: câu về tơ hồng se mối, đôi người nâng đỡ nhau thì đường dài
+        cũng vững (4).
+      - Các trường hợp còn lại: câu về duyên lành gặp hội, một đời ấm áp nhờ đôi tay cùng vun đắp
+        (2).
+    - `balanced`: ưu tiên Tương tác cung vị từ 6 (0); kế đến Can Chi từ 5,5 (1), Cung Phu Thê
+      từ 6 (3) rồi nền tảng bản mệnh từ 6 (4); còn lại dùng câu về âm dương lệch pha đôi chút (2).
+    - `challenging`: ưu tiên Cung Phu Thê dưới 5 (0); kế đến nền tảng bản mệnh dưới 5 (1),
+      Tương tác cung vị dưới 5 (3) và Can Chi dưới 5 (4); còn lại dùng câu về nhiều điểm xung,
+      khẩu thiệt dễ sinh (2).
+  - Nhóm (0–9) do một hàm băm tất định của điểm tổng và năm điểm khía cạnh (quy về phần mười),
+    kết hợp với dấu hiệu của các cung trọng yếu (Mệnh, Phu Thê, Thân): tên/cặp sao, Tứ Hóa
+    (mutagen), độ sáng, Tuần/Triệt và can chi của cung. Dấu hiệu của hai lá số được sắp xếp
+    trước khi băm nên thứ tự hai lá số không làm đổi câu. Chỉ số câu cuối = nhánh nền + nhóm × 5
+    (nhóm 0–9, mỗi nhóm 5 câu).
+  - Cùng đầu vào và cùng năm xem cho cùng một câu; các hồ sơ khác nhau phân bố câu đa dạng hơn
+    thay vì dồn về một câu cho mỗi nhánh. Cách chọn vẫn hoàn toàn tất định, không ngẫu nhiên.
 - Mỗi dải có nhiều câu dự phòng để kết luận phù hợp bối cảnh. Câu `high` luôn có yếu tố chủ
   động hoặc điều kiện của con người (vun đắp, đồng lòng, nhường nhịn, nâng đỡ). Câu `balanced`
   giữ giọng khuyên nhủ, có điều kiện. Câu `challenging` **luôn kèm một lời kêu gọi hành động**
@@ -82,8 +95,9 @@ gọn trên một dòng máy tính và tối đa hai dòng trên điện thoại
 
   `quality` được đặt cùng lúc với `meaning` bằng chính ngưỡng của từng khía cạnh: Nền tảng bản
   mệnh dùng 7,5 và 5,5; bốn khía cạnh còn lại dùng 7 và 5. Giao diện chỉ hiển thị nhãn do dữ
-  liệu cung cấp, không tự tính lại ngưỡng. Điểm thời vận chỉ mang tính tham khảo và không hiển
-  thị.
+  liệu cung cấp, không tự tính lại ngưỡng. Điểm thời vận không được hiển thị hay chấm vào độ
+  tương hợp; mục `Vận trình hiện tại` trong giao diện chỉ trình bày bối cảnh đại vận/tiểu vận/lưu
+  niên.
 
 
 ## Giá trị trung tính khi thiếu dữ liệu
@@ -170,8 +184,10 @@ mức trung tính 5,5.
 
 ## Thời vận tham khảo
 
-Phần này **không nằm trong tỷ lệ tương hợp** và không tham gia vào điểm tổng thang điểm 100. Thời vận được
-tính **theo lá số thứ nhất**, nên có thể khác khi hoán đổi thứ tự hai lá số.
+Phần này **không nằm trong tỷ lệ tương hợp** và không tham gia vào điểm tổng thang điểm 100.
+Điểm thời vận không được hiển thị hay chấm vào độ tương hợp; mục `Vận trình hiện tại` trong giao
+diện chỉ trình bày bối cảnh đại vận/tiểu vận/lưu niên. Thời vận được tính **theo lá số thứ nhất**,
+nên có thể khác khi hoán đổi thứ tự hai lá số.
 
 - Năm xem mặc định là năm hiện tại, có thể truyền `currentYear` để cố định kết quả. Biểu mẫu
   dùng cùng một năm cho cả `viewingYear` của lá số và `calculateCompatibility`.

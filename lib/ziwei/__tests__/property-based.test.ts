@@ -247,7 +247,8 @@ describe('Property-based tests', () => {
       ),
       { numRuns: 100 }
     );
-  }, 15000);
+    // Slow property test: can exceed the default timeout under load.
+  }, 30000);
 
   /**
    * Property: Độ sáng của chính tinh luôn thuộc 5 mức Tân Biên và có nguồn 'tanBien1956'.

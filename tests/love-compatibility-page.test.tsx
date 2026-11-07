@@ -14,7 +14,7 @@ import {
 } from '@/components/horoscope/love/merge-timing';
 import type { LoveProfileValue } from '@/components/horoscope/love/LoveProfileFields';
 import { SaoMenhChartEngine, createChartEngine } from '@/lib/ziwei';
-import { calculateCompatibility } from '@/lib/ziwei/compatibility';
+import { calculateCompatibility, CONCLUSION_QUOTES } from '@/lib/ziwei/compatibility';
 import { DEFAULT_LOCATION } from '@/lib/ziwei/data';
 import type { BirthInfo, ZiweiChart } from '@/lib/ziwei/types';
 import HopTuoiPage from '@/app/hop-tuoi/page';
@@ -78,30 +78,6 @@ const SECOND_PROFILE: ProfileValues = {
 const MERGE_DURATION_MS = LOVE_EMBLEM_MERGE_DURATION_MS;
 const REVEAL_DELAY_MS = LOVE_RESULT_REVEAL_DELAY_MS;
 const TOTAL_REVEAL_MS = LOVE_TOTAL_REVEAL_MS;
-
-const CONCLUSION_QUOTES = {
-  high: [
-    'Âm dương thuận hòa, phu thê vinh hiển khi cả hai đồng lòng.',
-    'Đôi bên tương sinh tương trợ, gia đạo hưng long nhờ đồng tâm vun đắp.',
-    'Duyên lành gặp hội, trăm năm viên mãn bởi lòng người vun đắp.',
-    'Thiên định lương duyên, còn bền lâu là nhờ nghĩa tình và nhường nhịn.',
-    'Tơ hồng se mối, đôi người nâng đỡ nhau thì đường dài cũng vững.',
-  ],
-  balanced: [
-    'Duyên phận do trời, hạnh phúc do người; biết nhường nhịn thì êm ấm.',
-    'Căn duyên tiền định, dẫu trắc trở nhưng đồng lòng thì vượt qua.',
-    'Âm dương lệch pha đôi chút, cốt ở chữ nhẫn và sự thấu hiểu.',
-    'Vợ chồng hòa hợp, bước đầu cần bao dung, lâu dài cần cùng vun đắp.',
-    'Duyên đến từ thương, bền từ nhịn, hai bên cùng giữ thì mới nên duyên.',
-  ],
-  challenging: [
-    'Duyên mỏng nợ sâu, càng cần lấy nhẫn nhịn và đức độ mà giữ lấy nhau.',
-    'Đường duyên trắc trở, cần tu tâm dưỡng tính, lấy đức thắng số.',
-    'Nhiều điểm xung, khẩu thiệt dễ sinh, cần khắc chế cái tôi giữ gia đạo.',
-    'Duyên khởi có nhiều thử thách, cần bền tâm và nhẫn nhịn lẫn nhau.',
-    'Duyên chưa thuận, lấy chân thành và nhẫn nại làm nền mới mong dài lâu.',
-  ],
-} as const;
 
 // Năm khía cạnh của hồ sơ cố định trong test merge (tone balanced).
 const ASPECT_CARDS = [
@@ -1015,13 +991,13 @@ describe('Tình Duyên compatibility experience', () => {
       within(result).getByRole('heading', { name: 'Duyên phận đôi lứa', level: 2 })
     ).toBeInTheDocument();
 
-    // Điểm tổng hiển thị công khai dạng x/100 kèm nhãn "Điểm hợp nhau".
+    // Điểm tổng hiển thị công khai dạng x/100 kèm nhãn "Độ tương hợp".
     const score = within(result).getByTestId('compatibility-score');
     expect(score.textContent ?? '').toMatch(/\d{1,3}\/100/);
-    expect(score).toHaveTextContent('Điểm hợp nhau');
+    expect(score).toHaveTextContent('Độ tương hợp');
     expect(score).toHaveAttribute('role', 'img');
     expect(score.getAttribute('aria-label') ?? '').toMatch(
-      /^Điểm hợp nhau \d{1,3} trên 100$/
+      /^Độ tương hợp \d{1,3} trên 100$/
     );
 
     // Nhãn tổng kết định tính đã bị gỡ bỏ hoàn toàn.
@@ -1063,6 +1039,16 @@ describe('Tình Duyên compatibility experience', () => {
       const explanation = paragraphs[1].textContent ?? '';
       expect(explanation.trim().length).toBeGreaterThan(0);
       expect(paragraphs[2]).toHaveTextContent(/Lời khuyên:/);
+
+      // Explanation của Cung Phu Thê có nhiều đoạn/xuống dòng nên phải giữ
+      // whitespace-pre-line để cấu trúc hiển thị đúng.
+      if (key === 'marriagePalace') {
+        const marriageExplanation = paragraphs.find((paragraph) =>
+          paragraph.textContent?.includes('Cung Phu Thê cho biết')
+        );
+        expect(marriageExplanation).toBeDefined();
+        expect(marriageExplanation).toHaveClass('whitespace-pre-line');
+      }
     }
 
     expect(
@@ -1088,6 +1074,11 @@ describe('Tình Duyên compatibility experience', () => {
     expect(method).toHaveTextContent('Can Chi bốn trụ: 20%');
     expect(method).toHaveTextContent('Tương tác cung vị: 10%');
     expect(method).toHaveTextContent(/không phải công thức số học chính thống/i);
+
+    // Cơ sở luận giải nêu rõ tỷ lệ 65/35 riêng của Cung Phu Thê.
+    expect(method).toHaveTextContent('Cơ sở luận giải');
+    expect(method).toHaveTextContent(/Riêng Cung Phu Thê: chất lượng tự thân 65%/);
+    expect(method).toHaveTextContent(/35%/);
 
     // Phương pháp nêu rõ phần chồng lấn và bản chất biên soạn, không phải quy định cổ điển.
     expect(method).toHaveTextContent(/chồng lấn/i);
@@ -1151,6 +1142,59 @@ describe('Tình Duyên compatibility experience', () => {
     expect(screen.getAllByLabelText(/^Họ tên/)[0]).toHaveFocus();
   });
 
+  it('renders the current period context for both people and hides it without period data', (): void => {
+    const engine = createChartEngine();
+    const periodChart = engine.generateChart({
+      ...toTestBirthInfo({ ...FIRST_PROFILE, name: '' }),
+      viewingYear: 2026,
+    });
+    const withPeriods = calculateCompatibility(periodChart, periodChart, {
+      currentYear: 2026,
+    });
+
+    const sectionRef = createRef<HTMLElement>();
+    const { rerender } = render(
+      <CompatibilityResult
+        result={withPeriods}
+        headingId="periods-result-heading"
+        strengthsHeadingId="periods-strengths-heading"
+        challengesHeadingId="periods-challenges-heading"
+        sectionRef={sectionRef}
+        onReset={(): void => {}}
+      />
+    );
+
+    const periods = screen.getByTestId('compatibility-periods');
+    expect(
+      within(periods).getByRole('heading', { name: 'Vận trình hiện tại 2026', level: 3 })
+    ).toBeInTheDocument();
+    expect(within(periods).getAllByText('Đại vận:')).toHaveLength(2);
+    expect(within(periods).getAllByText('Tiểu vận:')).toHaveLength(2);
+    expect(within(periods).getAllByText('Lưu niên 2026:')).toHaveLength(2);
+    expect(within(periods).getByText('Người thứ nhất')).toBeInTheDocument();
+    expect(within(periods).getByText('Người thứ hai')).toBeInTheDocument();
+
+    // The old standalone timing block must stay removed.
+    expect(screen.queryByTestId('compatibility-timing')).not.toBeInTheDocument();
+
+    const empty = calculateCompatibility({} as ZiweiChart, {} as ZiweiChart, {
+      currentYear: 2026,
+    });
+    rerender(
+      <CompatibilityResult
+        result={empty}
+        headingId="periods-empty-heading"
+        strengthsHeadingId="periods-empty-strengths-heading"
+        challengesHeadingId="periods-empty-challenges-heading"
+        sectionRef={sectionRef}
+        onReset={(): void => {}}
+      />
+    );
+
+    expect(screen.queryByTestId('compatibility-periods')).not.toBeInTheDocument();
+    expect(screen.queryByText(/Vận trình hiện tại/)).not.toBeInTheDocument();
+  });
+
   it('renders one responsive overall score badge and /10 aspect labels for mobile and desktop', (): void => {
     const partial = calculateCompatibility({} as ZiweiChart, {} as ZiweiChart, {
       currentYear: 2026,
@@ -1171,7 +1215,7 @@ describe('Tình Duyên compatibility experience', () => {
     const score = screen.getByTestId('compatibility-score');
     expect(score).toHaveClass('h-28', 'w-28', 'sm:h-32', 'sm:w-32');
     expect(score.textContent ?? '').toMatch(/\d{1,3}\/100/);
-    expect(score).toHaveTextContent('Điểm hợp nhau');
+    expect(score).toHaveTextContent('Độ tương hợp');
     expect(screen.queryByTestId('compatibility-level')).not.toBeInTheDocument();
 
     // Every aspect badge exposes a numeric x/10 in both its text and its

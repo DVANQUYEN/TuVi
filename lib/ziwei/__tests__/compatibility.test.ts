@@ -1,5 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import { calculateCompatibility, type CompatibilityAspectKey } from '../compatibility';
+import {
+  calculateCompatibility,
+  CONCLUSION_QUOTES,
+  type CompatibilityAspectKey,
+} from '../compatibility';
 import type { ZiweiChart, Palace, Star, Period } from '../types';
 import {
   EARTHLY_BRANCHES,
@@ -115,6 +119,7 @@ interface ChartParts {
   pillars?: Partial<Record<PillarKey, Partial<Pillar>>>;
   periods?: Period[];
   birthYear?: number;
+  birthName?: string;
 }
 
 const BASE_PILLAR: Pillar = { stem: 'giap', branch: 'ty' };
@@ -152,7 +157,13 @@ function makeChart(parts: ChartParts = {}): ZiweiChart {
   ];
 
   return {
-    birthInfo: parts.birthYear === undefined ? undefined : { year: parts.birthYear },
+    birthInfo:
+      parts.birthYear === undefined && parts.birthName === undefined
+        ? undefined
+        : {
+            ...(parts.birthYear === undefined ? {} : { year: parts.birthYear }),
+            ...(parts.birthName === undefined ? {} : { name: parts.birthName }),
+          },
     heavenPlate: {
       napAm: { name: 'test', element: parts.napAm ?? 'kim' },
       fiveElementsClass: { name: 'test', element: parts.cuc ?? 'kim', number: 2 },
@@ -555,6 +566,134 @@ describe('calculateCompatibility – hợp đồng 5 khía cạnh', () => {
     }
   });
 
+  it('giải thích Cung Phu Thê dùng copy riêng theo độ sáng, phụ tinh hỗ trợ và nhãn người', () => {
+    const first = makeChart({
+      phuTheStars: [
+        makeStar({ id: 'thienCo', name: 'Thiên Cơ', brightness: 'mieu', mutagen: 'hoaKy' }),
+        makeStar({ id: 'cuMon', name: 'Cự Môn', brightness: 'mieu' }),
+      ],
+      phuTheOtherStars: [makeStar({ id: 'Hữu Bật', name: 'Hữu Bật', category: 'lucCat' })],
+      extraPalaces: [
+        {
+          id: 'phucDuc',
+          majorStars: [makeStar({ id: 'thienPhu', name: 'Thiên Phủ', brightness: 'mieu' })],
+        },
+        {
+          id: 'quanLoc',
+          majorStars: [makeStar({ id: 'vuKhuc', name: 'Vũ Khúc', brightness: 'vuong' })],
+        },
+        {
+          id: 'thienDi',
+          majorStars: [makeStar({ id: 'thienLuong', name: 'Thiên Lương', brightness: 'dac' })],
+        },
+      ],
+    });
+    const second = makeChart({
+      phuTheStars: [
+        makeStar({ id: 'thienCo', name: 'Thiên Cơ', brightness: 'ham' }),
+        makeStar({ id: 'thaiAm', name: 'Thái Âm', brightness: 'ham' }),
+      ],
+      extraPalaces: [
+        {
+          id: 'phucDuc',
+          majorStars: [makeStar({ id: 'thienDong', name: 'Thiên Đồng', brightness: 'mieu' })],
+        },
+        {
+          id: 'quanLoc',
+          majorStars: [makeStar({ id: 'thaiDuong', name: 'Thái Dương', brightness: 'vuong' })],
+        },
+        {
+          id: 'thienDi',
+          majorStars: [makeStar({ id: 'thienTuong', name: 'Thiên Tướng', brightness: 'dac' })],
+        },
+      ],
+    });
+
+    const explanation = calculateCompatibility(first, second, {
+      currentYear: 2026,
+    }).aspects.marriagePalace.explanation;
+
+    expect(explanation).toContain('Thiên Cơ (Miếu)');
+    expect(explanation).toContain('Cự Môn (Miếu)');
+    expect(explanation).toContain('Thiên Cơ (Hãm)');
+    expect(explanation).toContain('Thái Âm (Hãm)');
+    // Copy phải lấy đúng đoạn .love riêng của từng độ sáng, không dùng câu chung.
+    expect(explanation).toContain('Tình cảm thông minh');
+    expect(explanation).toContain('dễ tranh luận');
+    expect(explanation).toContain('thiếu ổn định');
+    expect(explanation).toContain('sóng gió');
+    expect(explanation).toContain('Hữu Bật');
+    // Phụ tinh phải được nhận diện qua id thật của engine và ra nghĩa cụ thể,
+    // không rơi vào câu fallback chung chung.
+    expect(explanation).toMatch(/quý nhân|hỗ trợ/);
+    expect(explanation).not.toContain('yếu tố ảnh hưởng đến cung Phu Thê');
+
+    // Ghi chú cặp Thiên Cơ + Cự Môn phải xuất hiện nguyên văn trong phần Phu Thê.
+    expect(explanation).toContain('Hai sao cùng cung');
+    expect(explanation).toMatch(/giữ thiện chí|thắng thua/);
+
+    // Lá số không có tên nên dùng nhãn fallback thay cho "Đương số".
+    expect(explanation).toContain('Người thứ nhất');
+    expect(explanation).toContain('Người thứ hai');
+    expect(explanation).not.toContain('Đương số');
+
+    // Phần tam phương tứ chính phải nêu đủ ba cung hỗ trợ của người thứ nhất.
+    expect(explanation).toContain(
+      'Tam phương tứ chính của Người thứ nhất (không kể chính cung Phu Thê)'
+    );
+    expect(explanation).toContain('Phúc Đức');
+    expect(explanation).toContain(
+      'Tam phương tứ chính của Người thứ hai (không kể chính cung Phu Thê)'
+    );
+
+    // Tứ Hóa của chính tinh tại Phu Thê phải xuất hiện kèm ý nghĩa quan hệ.
+    expect(explanation).toContain('Tứ Hóa của Người thứ nhất');
+    expect(explanation).toContain('hóa Kỵ');
+    expect(explanation).toContain('dễ hiểu lầm');
+
+    // Giải thích có cấu trúc đoạn/xuống dòng thay vì một khối văn liền.
+    expect(explanation).toContain('\n\n');
+    expect(explanation).toContain('\n- ');
+
+    expect(explanation).not.toContain('/10');
+    expect(explanation).not.toContain('/100');
+    expect(explanation).not.toMatch(NUMERIC_SCORE_TEXT);
+  });
+
+  it('nêu ghi chú cặp Thiên Cơ + Thái Âm tại cung Phu Thê', () => {
+    const chart = makeChart({
+      phuTheStars: [
+        makeStar({ id: 'thienCo', name: 'Thiên Cơ', brightness: 'mieu' }),
+        makeStar({ id: 'thaiAm', name: 'Thái Âm', brightness: 'ham' }),
+      ],
+    });
+
+    const explanation = calculateCompatibility(chart, BASE, {
+      currentYear: 2026,
+    }).aspects.marriagePalace.explanation;
+
+    expect(explanation).toContain('Thiên Cơ (Miếu)');
+    expect(explanation).toContain('Thái Âm (Hãm)');
+    expect(explanation).toContain('Hai sao cùng cung');
+    expect(explanation).toMatch(/bổ khuyết|thu mình/);
+  });
+
+  it('tên chứa "$&" được chèn nguyên văn, không tái sinh "Đương số"', () => {
+    const name = 'An $& B';
+    const chart = makeChart({
+      birthName: name,
+      phuTheStars: [makeStar({ id: 'thienCo', name: 'Thiên Cơ', brightness: 'mieu' })],
+    });
+
+    const explanation = calculateCompatibility(chart, chart, {
+      currentYear: 2026,
+    }).aspects.marriagePalace.explanation;
+
+    // Nếu dùng chuỗi thay thế trực tiếp cho .replace, "$&" sẽ nở lại thành "Đương số".
+    expect(explanation).toContain(name);
+    expect(explanation).not.toContain('Đương số');
+  });
+
   it('chính tinh trùng, Tứ Hóa và sao tình cảm đều đổi starSynergy', () => {
     const base = calculateCompatibility(BASE, BASE, { currentYear: 2026 });
     expect(base.aspects.starSynergy.score).toBe(5.5);
@@ -637,6 +776,7 @@ describe('calculateCompatibility – hợp đồng 5 khía cạnh', () => {
   it('quan hệ ngũ hành nền tảng đổi foundation và giữ đúng chiều sinh/khắc', () => {
     const same = calculateCompatibility(BASE, BASE, { currentYear: 2026 });
     expect(same.aspects.foundation.score).toBe(7);
+    expect(same.aspects.foundation.explanation).toContain('cảm giác an toàn');
 
     const sinh = calculateCompatibility(BASE, makeChart({ napAm: 'thuy', menhElement: 'thuy' }), {
       currentYear: 2026,
@@ -790,8 +930,10 @@ describe('calculateCompatibility – hợp đồng 5 khía cạnh', () => {
     expect(majorOnly.aspects.marriagePalace.meaning).toBe('Cung Phu Thê cân bằng, cần vun đắp');
     expect(majorOnly.aspects.marriagePalace.quality).toBe('binh');
     expect(majorOnly.aspects.marriagePalace.explanation).toContain(
-      'Tự thân và tam phương (Phúc Đức, Quan Lộc, Thiên Di)'
+      'Cung Phu Thê cho biết cách mỗi người yêu'
     );
+    expect(majorOnly.aspects.marriagePalace.explanation).not.toContain('65/35');
+    expect(majorOnly.aspects.marriagePalace.explanation).not.toContain('không phải phép đo');
     expect(majorOnly.aspects.marriagePalace.explanation).not.toMatch(NUMERIC_SCORE_TEXT);
 
     const majorWithDuplicateMarker = makeChart({
@@ -924,9 +1066,9 @@ describe('calculateCompatibility – hợp đồng 5 khía cạnh', () => {
     const noMajor = calculateCompatibility(BASE, BASE, { currentYear: 2026 });
     expect(noMajor.aspects.marriagePalace.score).toBe(5.5);
     expect(noMajor.aspects.marriagePalace.quality).toBe('binh');
-    expect(noMajor.aspects.marriagePalace.explanation).toContain(
-      'Tự thân và tam phương (Phúc Đức, Quan Lộc, Thiên Di) được tổng hợp theo trọng số 65/35.'
-    );
+    expect(noMajor.aspects.marriagePalace.explanation).toContain('Vô Chính Diệu');
+    expect(noMajor.aspects.marriagePalace.explanation).not.toContain('65/35');
+    expect(noMajor.aspects.marriagePalace.explanation).not.toContain('không phải phép đo');
     expect(noMajor.aspects.marriagePalace.explanation).not.toMatch(NUMERIC_SCORE_TEXT);
 
     const majorPhuThe = makeChart({ phuTheStars: [TU_VI] });
@@ -937,8 +1079,10 @@ describe('calculateCompatibility – hợp đồng 5 khía cạnh', () => {
     expect(majorPhuTheResult.aspects.marriagePalace.score).toBe(6.3);
     expect(majorPhuTheResult.aspects.marriagePalace.quality).toBe('binh');
     expect(majorPhuTheResult.aspects.marriagePalace.explanation).toContain(
-      'Tự thân và tam phương (Phúc Đức, Quan Lộc, Thiên Di) được tổng hợp theo trọng số 65/35.'
+      'Cung Phu Thê cho biết cách mỗi người yêu'
     );
+    expect(majorPhuTheResult.aspects.marriagePalace.explanation).not.toContain('65/35');
+    expect(majorPhuTheResult.aspects.marriagePalace.explanation).not.toContain('không phải phép đo');
     expect(majorPhuTheResult.aspects.marriagePalace.explanation).not.toMatch(NUMERIC_SCORE_TEXT);
 
     // Tý và Dần không cùng chi, tam hợp, lục hợp, lục xung hay lục hại -> quan hệ trung tính 5.
@@ -1017,29 +1161,11 @@ describe('calculateCompatibility – hợp đồng 5 khía cạnh', () => {
 });
 
 describe('kết luận định tính', () => {
-  const EXPECTED_CONCLUSION_QUOTES = {
-    high: [
-      'Âm dương thuận hòa, phu thê vinh hiển khi cả hai đồng lòng.',
-      'Đôi bên tương sinh tương trợ, gia đạo hưng long nhờ đồng tâm vun đắp.',
-      'Duyên lành gặp hội, trăm năm viên mãn bởi lòng người vun đắp.',
-      'Thiên định lương duyên, còn bền lâu là nhờ nghĩa tình và nhường nhịn.',
-      'Tơ hồng se mối, đôi người nâng đỡ nhau thì đường dài cũng vững.',
-    ],
-    balanced: [
-      'Duyên phận do trời, hạnh phúc do người; biết nhường nhịn thì êm ấm.',
-      'Căn duyên tiền định, dẫu trắc trở nhưng đồng lòng thì vượt qua.',
-      'Âm dương lệch pha đôi chút, cốt ở chữ nhẫn và sự thấu hiểu.',
-      'Vợ chồng hòa hợp, bước đầu cần bao dung, lâu dài cần cùng vun đắp.',
-      'Duyên đến từ thương, bền từ nhịn, hai bên cùng giữ thì mới nên duyên.',
-    ],
-    challenging: [
-      'Duyên mỏng nợ sâu, càng cần lấy nhẫn nhịn và đức độ mà giữ lấy nhau.',
-      'Đường duyên trắc trở, cần tu tâm dưỡng tính, lấy đức thắng số.',
-      'Nhiều điểm xung, khẩu thiệt dễ sinh, cần khắc chế cái tôi giữ gia đạo.',
-      'Duyên khởi có nhiều thử thách, cần bền tâm và nhẫn nhịn lẫn nhau.',
-      'Duyên chưa thuận, lấy chân thành và nhẫn nại làm nền mới mong dài lâu.',
-    ],
-  } as const;
+  it('mỗi tone có đúng 50 quote (10 nhóm × 5 nhánh)', () => {
+    for (const tone of ['high', 'balanced', 'challenging'] as const) {
+      expect(CONCLUSION_QUOTES[tone]).toHaveLength(50);
+    }
+  });
 
   const goodA = makeChart({
     napAm: 'kim',
@@ -1083,7 +1209,7 @@ describe('kết luận định tính', () => {
     expect(result.level).toBe('tốt');
     expect(result.conclusion.tone).toBe('high');
     expect(result.conclusion.tone).toBe(expectedTone(result.score));
-    expect(EXPECTED_CONCLUSION_QUOTES.high).toContain(result.conclusion.quote);
+    expect(CONCLUSION_QUOTES.high).toContain(result.conclusion.quote);
     expect(result.conclusion.quote.trim().length).toBeGreaterThan(0);
     // Điểm tổng hiển thị dạng x/100 nên vẫn là số nguyên trong khoảng 0-100.
     expect(Number.isInteger(result.score)).toBe(true);
@@ -1096,7 +1222,7 @@ describe('kết luận định tính', () => {
     expect(result.level).toBe('trung bình');
     expect(result.conclusion.tone).toBe('balanced');
     expect(result.conclusion.tone).toBe(expectedTone(result.score));
-    expect(EXPECTED_CONCLUSION_QUOTES.balanced).toContain(result.conclusion.quote);
+    expect(CONCLUSION_QUOTES.balanced).toContain(result.conclusion.quote);
     expect(result.conclusion.quote.trim().length).toBeGreaterThan(0);
   });
 
@@ -1107,7 +1233,7 @@ describe('kết luận định tính', () => {
     expect(result.level).toBe('xấu');
     expect(result.conclusion.tone).toBe('challenging');
     expect(result.conclusion.tone).toBe(expectedTone(result.score));
-    expect(EXPECTED_CONCLUSION_QUOTES.challenging).toContain(result.conclusion.quote);
+    expect(CONCLUSION_QUOTES.challenging).toContain(result.conclusion.quote);
     expect(result.conclusion.quote.trim().length).toBeGreaterThan(0);
   });
 
@@ -1122,8 +1248,8 @@ describe('kết luận định tính', () => {
     expect(base.conclusion.tone).toBe('balanced');
     expect(variant.conclusion.tone).toBe('balanced');
     expect(base.conclusion.quote).not.toBe(variant.conclusion.quote);
-    expect(EXPECTED_CONCLUSION_QUOTES.balanced).toContain(base.conclusion.quote);
-    expect(EXPECTED_CONCLUSION_QUOTES.balanced).toContain(variant.conclusion.quote);
+    expect(CONCLUSION_QUOTES.balanced).toContain(base.conclusion.quote);
+    expect(CONCLUSION_QUOTES.balanced).toContain(variant.conclusion.quote);
   });
 
   it('kết luận deterministic cho cùng đầu vào và không phụ thuộc năm thời vận', () => {
@@ -1211,7 +1337,7 @@ describe('kết luận định tính', () => {
     for (const result of results) {
       const { tone, quote } = result.conclusion;
       expect(tone).toBe(expectedTone(result.score));
-      expect(EXPECTED_CONCLUSION_QUOTES[tone]).toContain(quote);
+      expect(CONCLUSION_QUOTES[tone]).toContain(quote);
       quotes.set(quote, tone);
     }
 
@@ -1229,5 +1355,78 @@ describe('kết luận định tính', () => {
         expect(lower, `${tone}: ${quote}`).not.toContain(phrase);
       }
     }
+  });
+});
+
+describe('periodContext – bối cảnh đại vận, tiểu vận, lưu niên', () => {
+  const PERIODS: Period[] = [
+    { type: 'daiHan', palaceBranch: 'ty', startAge: 30, endAge: 40, stem: 'giap', branch: 'ty' },
+    { type: 'tieuHan', palaceBranch: 'ty', nominalAges: [37], stem: 'giap', branch: 'ty' },
+    { type: 'luuNien', palaceBranch: 'ty', solarYear: 2026, stem: 'giap', branch: 'ty' },
+  ];
+
+  function periodChart(birthName?: string): ZiweiChart {
+    return makeChart({
+      birthYear: 1990,
+      birthName,
+      menhBranch: 'ty',
+      menhStars: [makeStar({ id: 'tuVi', name: 'Tử Vi', brightness: 'mieu' })],
+      phuTheBranch: 'ty',
+      periods: PERIODS.map((period) => ({ ...period })),
+    });
+  }
+
+  it('trả về năm hiện tại và đủ ba mốc vận trình cho cả hai lá số', () => {
+    const chart = periodChart();
+    const result = calculateCompatibility(chart, chart, { currentYear: 2026 });
+
+    expect(result.periodContext.year).toBe(2026);
+    expect(result.periodContext.readings.map((reading) => reading.label)).toEqual([
+      'Người thứ nhất',
+      'Người thứ hai',
+    ]);
+
+    for (const reading of result.periodContext.readings) {
+      expect(reading.daiHan, reading.label).not.toBeNull();
+      expect(reading.tieuHan, reading.label).not.toBeNull();
+      expect(reading.luuNien, reading.label).not.toBeNull();
+
+      for (const key of ['daiHan', 'tieuHan', 'luuNien'] as const) {
+        const snapshot = reading[key];
+        expect(snapshot?.palace, `${reading.label} ${key}`).toBeTruthy();
+        expect(Array.isArray(snapshot?.stars), `${reading.label} ${key}`).toBe(true);
+        expect(snapshot?.stars.length, `${reading.label} ${key}`).toBeGreaterThan(0);
+        expect(snapshot?.detail, `${reading.label} ${key}`).toBeTruthy();
+      }
+
+      expect(reading.daiHan?.detail, reading.label).toContain('tuổi 30–40');
+      expect(reading.tieuHan?.detail, reading.label).toContain('tuổi 37');
+      expect(reading.luuNien?.detail, reading.label).toContain('năm 2026');
+    }
+  });
+
+  it('đổi thứ tự lá số đổi nhãn đọc, nội dung vận trình đi theo từng lá số', () => {
+    const first = periodChart('Người A');
+    const second = periodChart('Người B');
+
+    const forward = calculateCompatibility(first, second, { currentYear: 2026 });
+    const reverse = calculateCompatibility(second, first, { currentYear: 2026 });
+
+    expect(forward.periodContext.readings.map((reading) => reading.label)).toEqual([
+      'Người A',
+      'Người B',
+    ]);
+    expect(reverse.periodContext.readings.map((reading) => reading.label)).toEqual([
+      'Người B',
+      'Người A',
+    ]);
+
+    // Nội dung không đổi theo vị trí đọc: vận trình của mỗi lá số đi theo lá số đó.
+    expect(forward.periodContext.readings[0].daiHan).toEqual(
+      reverse.periodContext.readings[1].daiHan
+    );
+    expect(forward.periodContext.readings[1].luuNien).toEqual(
+      reverse.periodContext.readings[0].luuNien
+    );
   });
 });

@@ -4,10 +4,22 @@ import type {
   EarthlyBranch,
   FiveElement,
   HeavenlyStem,
+  MajorStarId,
   MutagenType,
   PalaceId,
 } from './types/enums';
 import { BRANCH_LABELS } from './zodiac-compatibility';
+import { TOPIC_CONCLUSIONS } from './interpretation/data/topic-conclusions';
+import { MAJOR_STAR_MEANINGS } from './interpretation/data/major-stars';
+import { MINOR_STAR_MEANINGS as MINOR_STAR_ID_MEANINGS } from './interpretation/data/minor-stars';
+import {
+  MUTAGEN_LOVE_MEANINGS,
+  PHU_THE_PAIR_LOVE_NOTES,
+  PHU_THE_SUPPORT_CONTEXT,
+  TUAN_TRIET_LOVE_MEANING,
+  type MajorStarPairKey,
+} from './interpretation/data/love-compatibility';
+import { PALACE_MAP } from './data/palace-metadata';
 
 export type CompatibilityAspectKey =
   | 'foundation'
@@ -39,6 +51,25 @@ export interface CompatibilityTiming {
   detail: string;
 }
 
+export interface CompatibilityPeriodSnapshot {
+  palace: string;
+  stars: string[];
+  /** Khoảng tuổi hoặc năm tương ứng. */
+  detail: string;
+}
+
+export interface CompatibilityPeriodReading {
+  label: string;
+  daiHan: CompatibilityPeriodSnapshot | null;
+  tieuHan: CompatibilityPeriodSnapshot | null;
+  luuNien: CompatibilityPeriodSnapshot | null;
+}
+
+export interface CompatibilityPeriodContext {
+  year: number;
+  readings: [CompatibilityPeriodReading, CompatibilityPeriodReading];
+}
+
 export type CompatibilityConclusionTone = 'high' | 'balanced' | 'challenging';
 
 export interface CompatibilityConclusion {
@@ -56,6 +87,8 @@ export interface CompatibilityResult {
   conclusion: CompatibilityConclusion;
   aspects: Record<CompatibilityAspectKey, CompatibilityAspect>;
   timing: CompatibilityTiming;
+  /** Bối cảnh đại vận, tiểu vận, lưu niên của từng lá số; không cộng vào điểm. */
+  periodContext: CompatibilityPeriodContext;
   /**
    * `partial` khi thiếu cung trọng yếu, trụ can chi hoặc chính tinh trong dữ liệu đầu vào.
    * Khi đó kết quả vẫn được trả về nhưng chỉ nên đọc như mô hình tham chiếu.
@@ -106,12 +139,27 @@ const MUTAGEN_LABELS: Readonly<Record<MutagenType, string>> = {
   hoaKy: 'Hóa Kỵ',
 };
 
+const MUTAGEN_SHORT_LABELS: Readonly<Record<MutagenType, string>> = {
+  hoaLoc: 'Lộc',
+  hoaQuyen: 'Quyền',
+  hoaKhoa: 'Khoa',
+  hoaKy: 'Kỵ',
+};
+
 const BRIGHTNESS_LABELS: Readonly<Record<BrightnessLevel, string>> = {
   mieu: 'Miếu',
   vuong: 'Vượng',
   dac: 'Đắc',
   binh: 'Bình',
   ham: 'Hãm',
+};
+
+const BRIGHTNESS_MEANINGS: Readonly<Record<BrightnessLevel, string>> = {
+  mieu: 'mặt tốt của sao dễ phát huy',
+  vuong: 'mặt tốt của sao dễ phát huy rõ',
+  dac: 'thuận mức khá',
+  binh: 'tốt và xấu đan xen',
+  ham: 'mặt trái dễ lộ, cần bù đắp',
 };
 
 const BRIGHTNESS_SCORE: Readonly<Record<BrightnessLevel, number>> = {
@@ -241,6 +289,8 @@ const LUC_HAI: Readonly<Partial<Record<EarthlyBranch, EarthlyBranch>>> = {
 // Tam phương của cung Phu Thê: ba cung Phúc Đức, Quan Lộc, Thiên Di (không tính lại chính cung).
 const PHU_THE_TAM_PHUONG: readonly PalaceId[] = ['phucDuc', 'quanLoc', 'thienDi'];
 
+const PHU_THE_WITH_TAM_PHUONG: readonly PalaceId[] = ['phuThe', ...PHU_THE_TAM_PHUONG];
+
 // Giá trị trung tính dùng chung khi thiếu cung, không có chính tinh hoặc thiếu tam phương.
 const PALACE_NEUTRAL = 5.5;
 
@@ -307,6 +357,32 @@ const OBSTACLE_PENALTIES: readonly StarBonus[] = [
   { label: 'Thiên Khốc', aliases: ['thienKhoc', 'Thiên Khốc'], value: -0.3 },
   { label: 'Thiên Hư', aliases: ['thienHu', 'Thiên Hư'], value: -0.3 },
 ];
+
+const LOVE_MINOR_FALLBACK: Readonly<Record<string, string>> = {
+  daoHoa: 'Đào Hoa: duyên tình, sức hút',
+  thienDieu: 'Thiên Diêu: sức hút mềm, duyên ngầm',
+  hamTri: 'Hàm Trì: tình cảm đậm, dễ gần',
+  mocDuc: 'Mộc Dục: sức sống tình cảm',
+  thai: 'Thai: mầm duyên mới',
+  thienRieu: 'Thiên Riêu: duyên tình kín đáo',
+};
+
+const LOVE_MINOR_NOTES: Readonly<Record<string, string>> = {
+  huuBat: 'bạn đời/người thân dễ là người hỗ trợ, hòa giải',
+  taPhu: 'dễ có người đứng ra kết nối, giúp tình cảm hài hòa',
+  vanXuong: 'cách bày tỏ tình cảm thiên về lời nói, văn vẻ',
+  vanKhuc: 'cách bày tỏ tình cảm thiên về cảm xúc, nghệ thuật',
+};
+
+const OBSTACLE_FALLBACK: Readonly<Record<string, string>> = {
+  coThan: 'Cô Thần: dễ có lúc cảm thấy lẻ loi',
+  quaTu: 'Quả Tú: dễ có lúc thu mình, ít chia sẻ',
+  kinhDuong: 'Kình Dương: dễ nóng, cần tránh lời nói làm tổn thương',
+  daLa: 'Đà La: dễ chậm trễ, kéo dài chuyện chưa rõ',
+  thienHinh: 'Thiên Hình: dễ nguyên tắc cứng, cần mềm mỏng',
+  thienKhoc: 'Thiên Khốc: dễ buồn lòng vì chuyện nhỏ',
+  thienHu: 'Thiên Hư: dễ hụt hẫng khi kỳ vọng chưa đạt',
+};
 
 const HOA_KY_ALIASES: readonly string[] = ['hoaKy', 'Hóa Kỵ'];
 
@@ -457,19 +533,33 @@ function majorStarQuality(star: Star): number {
   return brightnessAdjustment(star) + natureAdjustment(star) + mutagenAdjustment(star);
 }
 
-function formatMajorStar(star: Star): string {
-  const brightness = normalizeBrightness(star);
-  const parts = [star.name];
-  if (brightness) parts.push(`(${BRIGHTNESS_LABELS[brightness]})`);
-  if (star.mutagen) parts.push(`– ${MUTAGEN_LABELS[star.mutagen]}`);
-  return parts.join(' ');
+function isMajorStarId(id: string): id is MajorStarId {
+  return Object.prototype.hasOwnProperty.call(MAJOR_STAR_MEANINGS, id);
 }
 
-function describeMajorStars(palace: Palace | undefined): string {
-  if (!palace) return 'thiếu dữ liệu';
-  const stars = palace.majorStars ?? [];
-  if (stars.length === 0) return 'Vô chính diệu';
-  return stars.map((star) => formatMajorStar(star)).join(', ');
+function describeMajorStarForLove(star: Star, personLabel: string): string {
+  const brightness = normalizeBrightness(star);
+  const brightnessLabel = brightness ? BRIGHTNESS_LABELS[brightness] : null;
+  const mutagen = star.mutagen ? ` – ${MUTAGEN_LABELS[star.mutagen]}` : '';
+  const heading = brightnessLabel
+    ? `${star.name} (${brightnessLabel})${mutagen}`
+    : `${star.name}${mutagen}`;
+
+  const specificLove =
+    brightness && isMajorStarId(star.id)
+      ? MAJOR_STAR_MEANINGS[star.id]?.phuThe?.[brightness]?.love
+      : undefined;
+  if (specificLove) {
+    return `${heading}: ${specificLove.replace(/[Đđ]ương số/g, () => personLabel)}`;
+  }
+
+  const meaning = TOPIC_CONCLUSIONS.love.byStar[star.id] ?? TOPIC_CONCLUSIONS.love.fallback;
+  const brightnessText =
+    brightness && brightnessLabel
+      ? ` Ở thế ${brightnessLabel}, ${BRIGHTNESS_MEANINGS[brightness]}.`
+      : '';
+
+  return `${heading}: ${meaning}${brightnessText}`;
 }
 
 function presentStarLabels(
@@ -480,6 +570,57 @@ function presentStarLabels(
   return entries
     .filter((entry) => entry.aliases.some((alias) => keys.has(alias)))
     .map((entry) => entry.label);
+}
+
+interface PresentMinorStar {
+  id: string;
+  name: string;
+}
+
+function presentMinorStars(
+  palace: Palace | undefined,
+  entries: readonly StarBonus[]
+): PresentMinorStar[] {
+  if (!palace) return [];
+  const stars = collectStars(palace);
+  const seen = new Set<string>();
+  const result: PresentMinorStar[] = [];
+
+  for (const entry of entries) {
+    const star = stars.find((candidate) =>
+      entry.aliases.some((alias) => candidate.id === alias || candidate.name === alias)
+    );
+    if (!star) continue;
+
+    const id = entry.aliases[0];
+    if (seen.has(id)) continue;
+    seen.add(id);
+    result.push({ id, name: star.name || entry.label });
+  }
+
+  return result;
+}
+
+const MINOR_STAR_DESCRIPTION_OVERRIDES: Readonly<Record<string, string>> = {
+  huuBat: 'trợ giúp, quý nhân bên cạnh',
+};
+
+function minorStarMeaning(
+  star: PresentMinorStar,
+  fallback: Readonly<Record<string, string>>
+): string {
+  const raw =
+    MINOR_STAR_ID_MEANINGS[star.id] ??
+    fallback[star.id] ??
+    `${star.name}: yếu tố ảnh hưởng đến cung Phu Thê`;
+  const withoutPrefix = raw.replace(/^[^:]+:\s*/, '');
+
+  return MINOR_STAR_DESCRIPTION_OVERRIDES[star.id] ?? withoutPrefix;
+}
+
+function personLabel(chart: ZiweiChart, fallback: string): string {
+  const name = chart.birthInfo?.name?.trim();
+  return name ? name : fallback;
 }
 
 function minorLoveAdjustment(palace: Palace | undefined): number {
@@ -521,11 +662,11 @@ function elementLabel(element: FiveElement | undefined): string {
   return element ? ELEMENT_LABELS[element] : 'không rõ';
 }
 
-function describeElementRelation(
+function describeElementRelationKind(
+  relation: ElementRelation,
   a: FiveElement | undefined,
   b: FiveElement | undefined
 ): string {
-  const relation = elementRelation(a, b);
   const first = elementLabel(a);
   const second = elementLabel(b);
 
@@ -545,6 +686,29 @@ function describeElementRelation(
     default:
       return `${first} và ${second} ở thế trung tính`;
   }
+}
+
+function describeElementRelation(
+  a: FiveElement | undefined,
+  b: FiveElement | undefined
+): string {
+  return describeElementRelationKind(elementRelation(a, b), a, b);
+}
+
+const ELEMENT_RELATION_MEANING: Readonly<Record<ElementRelation['kind'], string>> = {
+  same: 'dễ đồng cảm vì cùng chất, nhưng cần tránh giống nhau đến mức thiếu góc nhìn mới',
+  sinh: 'một bên tiếp sức, bên kia được nâng đỡ',
+  khac: 'cách phản ứng khác nhau nên dễ va chạm, cần chủ động nhường nhịn',
+  neutral: 'không sinh không khắc, hòa hợp tùy cách sống',
+};
+
+function describeElementRelationWithMeaning(
+  a: FiveElement | undefined,
+  b: FiveElement | undefined
+): string {
+  if (!a || !b) return 'thiếu dữ liệu ngũ hành, chưa kết luận được';
+  const relation = elementRelation(a, b);
+  return `${describeElementRelationKind(relation, a, b)} — ${ELEMENT_RELATION_MEANING[relation.kind]}`;
 }
 
 interface BranchRelation {
@@ -661,13 +825,14 @@ function analyzeFoundation(chart1: ZiweiChart, chart2: ZiweiChart): Compatibilit
     score >= 7.5 ? 'cat' : score >= 5.5 ? 'binh' : 'canLuuY';
 
   const thanExplanation = bodyIsMenhForBoth
-    ? 'Cung Thân trùng cung Mệnh ở cả hai lá số nên không tính thêm lần nữa.'
-    : `Cung Thân: ${describeElementRelation(than1, than2)}.`;
+    ? 'Cung Thân trùng cung Mệnh ở cả hai lá số: cá tính và cách hành động khá nhất quán, nên không tách thành yếu tố riêng.'
+    : `Cung Thân: ${describeElementRelationWithMeaning(than1, than2)}.`;
 
   const explanation =
-    `Nạp âm: ${describeElementRelation(napAm1, napAm2)}. ` +
-    `Cung Mệnh: ${describeElementRelation(menh1, menh2)}. ` +
-    `Ngũ hành Cục: ${describeElementRelation(cuc1, cuc2)}. ` +
+    'Nền tảng bản mệnh nói về cảm giác an toàn, nhịp sống và mức dễ chịu khi hai người ở gần nhau. ' +
+    `Nạp âm: ${describeElementRelationWithMeaning(napAm1, napAm2)}. ` +
+    `Cung Mệnh: ${describeElementRelationWithMeaning(menh1, menh2)}. ` +
+    `Ngũ hành Cục: ${describeElementRelationWithMeaning(cuc1, cuc2)}. ` +
     thanExplanation;
 
   const tip =
@@ -731,19 +896,151 @@ function readPhuThe(chart: ZiweiChart): PhuTheReading {
   return { palace, own, tamPhuong, score };
 }
 
-function describePhuThe(palace: Palace | undefined): string {
+function describePhuThe(palace: Palace | undefined, personLabel: string): string {
   if (!palace) return 'chưa có dữ liệu cung Phu Thê';
 
-  const parts = [describeMajorStars(palace)];
-  const loveStars = presentStarLabels(palace, LOVE_STAR_BONUSES);
-  const obstacles = presentStarLabels(palace, OBSTACLE_PENALTIES);
+  const majors = palace.majorStars ?? [];
+  const parts: string[] = [];
 
-  if (loveStars.length > 0) parts.push(`phụ tinh tình cảm: ${loveStars.join(', ')}`);
-  if (obstacles.length > 0) parts.push(`sao cần lưu tâm: ${obstacles.join(', ')}`);
-  if (palace.hasTuan) parts.push('có Tuần');
-  if (palace.hasTriet) parts.push('có Triệt');
+  if (majors.length === 0) {
+    parts.push(
+      'Vô Chính Diệu: cung không có chính tinh nào neo giữ, nên chất lượng hôn nhân phụ thuộc nhiều hơn vào cách hai người chọn sống cùng nhau và vào các phụ tinh đi kèm.'
+    );
+  } else {
+    parts.push(majors.map((star) => describeMajorStarForLove(star, personLabel)).join(' '));
+    const pairNote = phuThePairLoveNote(majors);
+    if (pairNote) parts.push(`Hai sao cùng cung: ${pairNote}`);
+  }
 
-  return parts.join('; ');
+  const loveStars = presentMinorStars(palace, LOVE_STAR_BONUSES);
+  if (loveStars.length > 0) {
+    const lines = loveStars.map((star) => {
+      const meaning = minorStarMeaning(star, LOVE_MINOR_FALLBACK);
+      const note = LOVE_MINOR_NOTES[star.id];
+      const description = note ? `${meaning} — ${note}` : meaning;
+      return `${star.name} — ${description}`;
+    });
+    parts.push(`Sao tình cảm đi kèm: ${lines.join('; ')}.`);
+  }
+
+  const obstacles = presentMinorStars(palace, OBSTACLE_PENALTIES);
+  if (obstacles.length > 0) {
+    const lines = obstacles.map(
+      (star) => `${star.name} — ${minorStarMeaning(star, OBSTACLE_FALLBACK)}`
+    );
+    parts.push(
+      `Sao cần lưu tâm: ${lines.join('; ')}. Đây là xu hướng để chủ động bù đắp, không phải điều sẽ xảy ra.`
+    );
+  }
+
+  if (palace.hasTuan || palace.hasTriet) {
+    const markers = [palace.hasTuan ? 'Tuần' : null, palace.hasTriet ? 'Triệt' : null]
+      .filter((marker): marker is string => Boolean(marker))
+      .join(' và ');
+    parts.push(`${markers}: ${TUAN_TRIET_LOVE_MEANING}`);
+  }
+
+  return parts.join(' ');
+}
+
+function phuThePairLoveNote(majors: readonly Star[]): string | null {
+  if (majors.length !== 2) return null;
+  const key = majors
+    .map((star) => star.id)
+    .sort()
+    .join('|') as MajorStarPairKey;
+  return PHU_THE_PAIR_LOVE_NOTES[key] ?? null;
+}
+
+function firstSentence(text: string): string {
+  const trimmed = text.trim();
+  const end = trimmed.indexOf('. ');
+  const sentence = end === -1 ? trimmed : trimmed.slice(0, end);
+  return sentence.replace(/\.\s*$/, '');
+}
+
+function describeSupportStar(
+  star: Star,
+  palaceId: PalaceId,
+  label: string
+): string | null {
+  const brightness = normalizeBrightness(star);
+  const name = star.name || star.id;
+  if (!name) return null;
+
+  if (!brightness) {
+    return `${name} (chưa rõ độ sáng)`;
+  }
+
+  const love = isMajorStarId(star.id)
+    ? MAJOR_STAR_MEANINGS[star.id]?.[palaceId]?.[brightness]?.love
+    : undefined;
+  const brightnessLabel = BRIGHTNESS_LABELS[brightness];
+  if (!love) return `${name} (${brightnessLabel})`;
+
+  const sentence = firstSentence(love).replace(/[Đđ]ương số/g, () => label);
+  return `${name} (${brightnessLabel}): ${sentence}`;
+}
+
+function describeSupportingPalaces(chart: ZiweiChart, label: string): string {
+  const lines: string[] = [];
+
+  for (const palaceId of PHU_THE_TAM_PHUONG) {
+    const palace = palaceById(chart, palaceId);
+    if (!palace) continue;
+
+    const palaceName = PALACE_MAP[palaceId]?.name ?? palace.name;
+    const context = PHU_THE_SUPPORT_CONTEXT[palaceId];
+    const heading = context ? `- ${palaceName} (${context}):` : `- ${palaceName}:`;
+    const majors = palace.majorStars ?? [];
+
+    if (majors.length === 0) {
+      lines.push(
+        `${heading} không có chính tinh nên phần luận giải dựa nhiều hơn vào phụ tinh và cung xung chiếu.`
+      );
+      continue;
+    }
+
+    const summaries = majors
+      .map((star) => describeSupportStar(star, palaceId, label))
+      .filter((entry): entry is string => Boolean(entry));
+    lines.push(
+      summaries.length > 0
+        ? `${heading} ${summaries.join('; ')}.`
+        : `${heading} không có chính tinh nên phần luận giải dựa nhiều hơn vào phụ tinh và cung xung chiếu.`
+    );
+  }
+
+  if (lines.length === 0) return '';
+  return `Tam phương tứ chính của ${label} (không kể chính cung Phu Thê):\n${lines.join('\n')}`;
+}
+
+function describeMutagens(chart: ZiweiChart, label: string): string {
+  const lines: string[] = [];
+  const seen = new Set<string>();
+
+  for (const palaceId of PHU_THE_WITH_TAM_PHUONG) {
+    const palace = palaceById(chart, palaceId);
+    if (!palace) continue;
+
+    for (const star of collectStars(palace)) {
+      const mutagen = starMutagen(star);
+      if (!mutagen) continue;
+      if (star.id === mutagen || star.name === MUTAGEN_LABELS[mutagen]) continue;
+
+      const key = `${starIdentity(star)}:${mutagen}:${palaceId}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+
+      const palaceName = PALACE_MAP[palaceId]?.name ?? palace.name;
+      lines.push(
+        `- ${star.name} tại ${palaceName} hóa ${MUTAGEN_SHORT_LABELS[mutagen]}: ${MUTAGEN_LOVE_MEANINGS[mutagen]}.`
+      );
+    }
+  }
+
+  if (lines.length === 0) return '';
+  return `Tứ Hóa của ${label}:\n${lines.join('\n')}`;
 }
 
 function analyzeMarriagePalace(chart1: ZiweiChart, chart2: ZiweiChart): CompatibilityAspect {
@@ -764,11 +1061,30 @@ function analyzeMarriagePalace(chart1: ZiweiChart, chart2: ZiweiChart): Compatib
   const quality: CompatibilityAspect['quality'] =
     score >= 7 ? 'cat' : score >= 5 ? 'binh' : 'canLuuY';
 
-  const explanation =
-    `Đây là chất lượng nền duyên hôn nhân của mỗi người, không phải phép đo thuần túy cặp đôi. ` +
-    `Cung Phu Thê thứ nhất: ${describePhuThe(first.palace)}. ` +
-    `Cung Phu Thê thứ hai: ${describePhuThe(second.palace)}. ` +
-    `Tự thân và tam phương (Phúc Đức, Quan Lộc, Thiên Di) được tổng hợp theo trọng số 65/35.`;
+  const firstLabel = personLabel(chart1, 'Người thứ nhất');
+  const secondLabel = personLabel(chart2, 'Người thứ hai');
+
+  const explanationSections = [
+    'Cung Phu Thê cho biết cách mỗi người yêu, kiểu bạn đời thu hút và nhu cầu riêng trong hôn nhân.',
+    `${firstLabel}:\n${describePhuThe(first.palace, firstLabel)}`,
+    `${secondLabel}:\n${describePhuThe(second.palace, secondLabel)}`,
+  ];
+
+  const firstSupport = describeSupportingPalaces(chart1, firstLabel);
+  const secondSupport = describeSupportingPalaces(chart2, secondLabel);
+  if (firstSupport) explanationSections.push(firstSupport);
+  if (secondSupport) explanationSections.push(secondSupport);
+
+  const firstMutagens = describeMutagens(chart1, firstLabel);
+  const secondMutagens = describeMutagens(chart2, secondLabel);
+  if (firstMutagens) explanationSections.push(firstMutagens);
+  if (secondMutagens) explanationSections.push(secondMutagens);
+
+  explanationSections.push(
+    'Với cặp này, điều cốt yếu là nhận ra kiểu yêu của mỗi người khác nhau ở đâu để chủ động điều chỉnh, thay vì chờ đối phương tự hiểu.'
+  );
+
+  const explanation = explanationSections.join('\n\n');
 
   const tip =
     score >= 7
@@ -1058,6 +1374,77 @@ function analyzeCrossPalace(chart1: ZiweiChart, chart2: ZiweiChart): Compatibili
   return { score, meaning, quality, explanation, tip };
 }
 
+function periodStarLabels(palace: Palace): string[] {
+  return (palace.majorStars ?? []).slice(0, 4).map((star) => {
+    const brightness = normalizeBrightness(star);
+    return brightness ? `${star.name} (${BRIGHTNESS_LABELS[brightness]})` : star.name;
+  });
+}
+
+function periodSnapshot(palace: Palace, detail: string): CompatibilityPeriodSnapshot {
+  return { palace: palace.name, stars: periodStarLabels(palace), detail };
+}
+
+function resolvePeriodContext(
+  chart: ZiweiChart,
+  currentYear: number,
+  label = 'Lá số'
+): CompatibilityPeriodReading {
+  const periods = chart.periods ?? [];
+  const birthYear = chart.birthInfo?.year;
+  const age = typeof birthYear === 'number' ? currentYear - birthYear + 1 : null;
+
+  const daiHan =
+    age === null
+      ? undefined
+      : periods.find(
+          (period) =>
+            period.type === 'daiHan' &&
+            typeof period.startAge === 'number' &&
+            typeof period.endAge === 'number' &&
+            age >= period.startAge &&
+            age <= period.endAge
+        );
+
+  const tieuHanPeriod =
+    age === null
+      ? undefined
+      : periods.find(
+          (period) => period.type === 'tieuHan' && period.nominalAges?.includes(age) === true
+        );
+
+  const tieuHanFallbackPalace =
+    age === null
+      ? undefined
+      : chart.palaces?.find((palace) => palace.minorPeriodAges?.includes(age));
+
+  const luuNien = periods.find(
+    (period) => period.type === 'luuNien' && period.solarYear === currentYear
+  );
+
+  const daiHanPalace = palaceByBranch(chart, daiHan?.palaceBranch);
+  const tieuHanPalace =
+    (tieuHanPeriod ? palaceByBranch(chart, tieuHanPeriod.palaceBranch) : undefined) ??
+    tieuHanFallbackPalace;
+  const luuNienPalace = palaceByBranch(chart, luuNien?.palaceBranch);
+
+  return {
+    label,
+    daiHan:
+      daiHan &&
+      daiHanPalace &&
+      typeof daiHan.startAge === 'number' &&
+      typeof daiHan.endAge === 'number'
+        ? periodSnapshot(daiHanPalace, `tuổi ${daiHan.startAge}–${daiHan.endAge}`)
+        : null,
+    tieuHan: tieuHanPalace && age !== null ? periodSnapshot(tieuHanPalace, `tuổi ${age}`) : null,
+    luuNien:
+      luuNien && luuNienPalace
+        ? periodSnapshot(luuNienPalace, `năm ${currentYear}`)
+        : null,
+  };
+}
+
 function analyzeTiming(chart: ZiweiChart, currentYear: number): CompatibilityTiming {
   const periods = chart.periods ?? [];
   const birthYear = chart.birthInfo?.year;
@@ -1134,71 +1521,285 @@ function analyzeTiming(chart: ZiweiChart, currentYear: number): CompatibilityTim
   return { year: currentYear, score, meaning, detail };
 }
 
-const CONCLUSION_QUOTES: Readonly<Record<CompatibilityConclusionTone, readonly string[]>> = {
+export const CONCLUSION_QUOTES: Readonly<Record<CompatibilityConclusionTone, readonly string[]>> = {
   high: [
     'Âm dương thuận hòa, phu thê vinh hiển khi cả hai đồng lòng.',
     'Đôi bên tương sinh tương trợ, gia đạo hưng long nhờ đồng tâm vun đắp.',
-    'Duyên lành gặp hội, trăm năm viên mãn bởi lòng người vun đắp.',
+    'Duyên lành gặp hội, một đời ấm áp nhờ đôi tay cùng vun đắp.',
     'Thiên định lương duyên, còn bền lâu là nhờ nghĩa tình và nhường nhịn.',
     'Tơ hồng se mối, đôi người nâng đỡ nhau thì đường dài cũng vững.',
+    'Duyên khởi tự tâm, nghĩa bền tự nhẫn; cùng giữ nhau mới dài lâu.',
+    'Tơ hồng chỉ se một mối, sợi bền hay mỏng là nhờ đôi tay cùng giữ.',
+    'Gặp nhau là duyên, ở bên là nghĩa; mỗi ngày vun đắp mới thành nhà.',
+    'Đôi lứa đồng tâm, gian nan hóa nhẹ; tình sâu bởi nhường nhịn.',
+    'Đời dài chẳng cần lời thề; chỉ cần hai bàn tay cùng nắm khi gió đổi.',
+    'Duyên chớ để phai, người thương chớ để lạnh; giữ nhau bằng chân thật.',
+    'Tình như trăng có lúc khuyết tròn; biết bao dung, đêm nào cũng sáng.',
+    'Sóng gió chỉ là thử thách; cùng nhìn một hướng, đường xa cũng tới.',
+    'Duyên đến bằng nụ cười, ở lại nhờ nghĩa; lùi một bước, nhà thêm ấm.',
+    'Không cần duyên trời se sẵn; chỉ cần mỗi sáng còn muốn nắm tay nhau.',
+    'Sao lành bên mệnh, duyên thêm ấm; phu thê cùng giữ mái nhà.',
+    'Nền xưa vững, duyên nay hòa; hai bên cùng nâng đỡ mà dựng tổ ấm.',
+    'Duyên đẹp chớ để phai; mỗi ngày cùng vun một chút thì bền.',
+    'Can Chi giao hòa, vợ chồng đồng lòng thì việc khó cũng nhẹ.',
+    'Cung vị hòa nhau là duyên; càng lâu càng cần nâng niu.',
+    'Sao tốt tình, Phu Thê ấm; hai người biết nhau mà cùng vun hạnh phúc.',
+    'Gốc rễ vững, cung vị thuận; chỉ cần cùng nhau, đường dài cũng êm.',
+    'Tình đến như mùa xuân, ở lại nhờ mỗi người biết nhường một bước.',
+    'Bốn trụ tương hòa, nền vững; vợ chồng đồng tâm thì gian nan hóa nhẹ.',
+    'Duyên hai người hòa như sông gặp biển; giữ lấy nhau mà sống dài lâu.',
+    'Cung Phu Thê có sao trợ, lòng người thêm ấm; hợp nhau mà giữ lửa ấm.',
+    'Nền vững, cung hòa, cùng nhau đi thì mưa gió cũng dịu.',
+    'Duyên lành không tự ở lại; cần đôi tay biết vun từng sớm mai.',
+    'Can Chi thuận như suối chảy, vợ chồng cùng giữ thì phúc dài.',
+    'Cung vị ăn khớp, hiểu nhau dễ hơn; ấy là duyên cần nâng niu.',
+    'Sao sáng bên Phu Thê, duyên thêm đậm; hai người cùng giữ thì ấm êm.',
+    'Gốc bền, cành thuận, hai bên cùng tựa vào nhau mà lớn.',
+    'Duyên đến dễ, giữ mới khó; biết thương nhau mỗi ngày là đủ.',
+    'Can Chi đồng điệu, lòng người đồng điệu; cùng nhau việc khó hóa nhẹ.',
+    'Hai cung như đã hẹn; gặp được nhau, hãy lấy chân thành mà giữ.',
+    'Phu Thê có sao tình, duyên thêm ấm; biết nâng đỡ nhau là bền.',
+    'Nền tảng tương sinh, cung vị tương hợp; cùng nhau dựng nhà thì yên.',
+    'Duyên như hạt giống, gieo rồi phải tưới; cần cùng vun mới nở.',
+    'Bốn trụ hòa nhau, vợ chồng thuận nhau; giữ lấy chữ nhẫn mà dài.',
+    'Duyên nở nơi cung vị đẹp như trăng, biết giữ thì sáng lâu.',
+    'Sao tốt se duyên, lòng người thêm tin; cùng nhau vun thì phúc bền.',
+    'Gốc vững, cung hòa, hai người cùng tựa nhau mà qua mọi mùa.',
+    'Duyên không phải chuyện một ngày; cần bền lòng vun từng sớm mai.',
+    'Bốn trụ thuận, duyên càng thắm; vợ chồng đồng tâm thì xa cũng gần.',
+    'Cung vị hợp nhau, hiểu nhau từ ánh mắt; giữ lấy duyên này mà thương.',
+    'Phu Thê sáng, sao tình nâng đỡ; đôi bên biết nhau mà giữ ấm lâu dài.',
+    'Gốc vững, duyên thuận; cùng nâng đỡ nhau mà yên vui.',
+    'Duyên đẹp như tranh, nhưng cần người biết giữ từng nét mỗi ngày.',
+    'Can Chi hòa hợp, vợ chồng chung chí hướng; cùng giữ thì xa cũng tới.',
+    'Duyên gặp nhau nơi cung vị; lấy thấu hiểu mà giữ thì bền.',
   ],
   balanced: [
     'Duyên phận do trời, hạnh phúc do người; biết nhường nhịn thì êm ấm.',
     'Căn duyên tiền định, dẫu trắc trở nhưng đồng lòng thì vượt qua.',
     'Âm dương lệch pha đôi chút, cốt ở chữ nhẫn và sự thấu hiểu.',
     'Vợ chồng hòa hợp, bước đầu cần bao dung, lâu dài cần cùng vun đắp.',
-    'Duyên đến từ thương, bền từ nhịn, hai bên cùng giữ thì mới nên duyên.',
+    'Duyên đến từ thương, bền từ nhịn, hai bên cùng giữ thì mới dài lâu.',
+    'Duyên do trời se, ấm lạnh do người; biết nhường nhau thì bền.',
+    'Khác biệt không phải điều tệ, chỉ cần còn muốn nghe nhau.',
+    'Tình đến dễ, ở lại mới khó; cần chút bao dung mỗi ngày.',
+    'Có lúc lệch nhịp, đừng vội buông; cần bình tĩnh hỏi nhau một câu.',
+    'Nửa kia không phải để đoán, mà để hỏi; cần nói thật lòng mới hiểu.',
+    'Duyên mỏng hay dày không bằng lòng người có chịu vun đắp.',
+    'Đôi khi im lặng làm xa nhau; một lời dịu dàng đủ giữ lại mùa xuân.',
+    'Không phải lúc nào cũng đồng ý, nhưng cần tôn trọng nhau.',
+    'Mỗi người giữ một nửa, chắp lại mới thành mái nhà che mưa.',
+    'Yêu nhau bằng lời thì dễ, giữ nhau bằng nhẫn nhịn mới khó.',
+    'Có chỗ cung vị lệch, nhưng người biết lắng nghe sẽ dần hiểu nhau.',
+    'Can Chi chưa thật hòa, cần nhường nhau một chút để mọi việc êm.',
+    'Duyên vừa đủ để gặp, còn bền là nhờ lòng người.',
+    'Cung Phu Thê còn nhạt, cần chăm chút mỗi ngày mới đượm.',
+    'Nền tảng khác nhau, chỉ cần biết bù đắp thì dần cũng quen.',
+    'Hai cung chưa ăn ý, cần hỏi nhau cho rõ rồi cùng nhường.',
+    'Can Chi có chỗ lệch, nên nhẫn lại một nhịp trước khi nói.',
+    'Không phải cứ hợp là bền; điều cần là lòng người chịu vun.',
+    'Cung duyên còn mờ, cần cả hai cùng thắp thêm chút lửa.',
+    'Gốc rễ khác nhau, nhưng biết nâng đỡ thì cây vẫn xanh.',
+    'Cung vị lệch nhịp, đừng vội trách; cần một lời hỏi thật lòng.',
+    'Can Chi như dòng nước trái chiều, cần cùng nhau chèo mới tới bến.',
+    'Duyên mỏng không đáng ngại; chỉ cần có người chịu giữ.',
+    'Phu Thê thiếu chút ấm, hơi ấm ấy là chân thành mỗi ngày.',
+    'Nền tảng chưa thật hợp, cần thấu hiểu để bù lại chỗ thiếu.',
+    'Cung vị có lúc lệch; chỉ cần hai người cùng muốn gần nhau.',
+    'Can Chi còn vênh, lấy bao dung mà hóa giải dần từng chút.',
+    'Duyên đến bằng thương, ở lại bằng nghĩa; cần người biết giữ.',
+    'Sắc duyên còn nhạt, cần thời gian và lòng kiên nhẫn.',
+    'Gốc khác, ngọn khác, nhưng cùng một đất thì vẫn nở hoa.',
+    'Cung chưa khớp nhịp, cần nói thật lòng thay vì đoán ý nhau.',
+    'Can Chi vênh nhau, nhờ nhường nhịn mà dần êm.',
+    'Duyên là cớ để gặp; còn sống cùng nhau là nhờ lòng người.',
+    'Mái ấm cần tiếng cười, cần nhau chăm sóc mỗi ngày.',
+    'Khác biệt nền tảng, nhưng biết nhẫn thì dần cũng hiểu nhau.',
+    'Cung vị chưa hòa, cần mỗi người nghe nhau một chút.',
+    'Can Chi hai mùa khác nhau, cần cùng thương để chung nhà.',
+    'Duyên không tự bền; mỗi ngày cần một chút chân thành.',
+    'Duyên mỏng cần vun đắp, lấy kiên nhẫn mà bồi thêm.',
+    'Nền khác nhau không sao, miễn hai người biết bù đắp cho nhau.',
+    'Cung vị khác nhịp, cần hỏi nhau điều mình thật sự cần.',
+    'Bốn trụ chưa thật thuận, nhờ đồng tâm mà dần hòa.',
+    'Duyên chỉ đủ để bắt đầu, cần lòng người giữ cho dài lâu.',
+    'Duyên còn nhạt, cần cả hai cùng thêm chút quan tâm.',
+    'Nền duyên chưa khớp, cần thấu hiểu để cùng đi một đường.',
   ],
   challenging: [
     'Duyên mỏng nợ sâu, càng cần lấy nhẫn nhịn và đức độ mà giữ lấy nhau.',
     'Đường duyên trắc trở, cần tu tâm dưỡng tính, lấy đức thắng số.',
-    'Nhiều điểm xung, khẩu thiệt dễ sinh, cần khắc chế cái tôi giữ gia đạo.',
-    'Duyên khởi có nhiều thử thách, cần bền tâm và nhẫn nhịn lẫn nhau.',
+    'Nhiều điểm xung, khẩu thiệt dễ sinh, cần bớt cái tôi để giữ gia đạo.',
+    'Duyên khởi có nhiều thử thách, cần bền tâm và nhường nhịn nhau.',
     'Duyên chưa thuận, lấy chân thành và nhẫn nại làm nền mới mong dài lâu.',
+    'Duyên này nhiều gió, càng cần neo bằng chân thành và kiên nhẫn.',
+    'Có những hiểu lầm không tự tan; cần ngồi lại, nói cho hết lòng.',
+    'Không phải duyên mỏng, mà là chưa đủ nhẫn; cần bớt cái tôi.',
+    'Đi qua sóng gió cần nắm chặt tay nhau, chứ không phải nắm chặt lý lẽ.',
+    'Nhiều va chạm là dịp để hiểu nhau hơn; cần chậm lại một nhịp.',
+    'Duyên khó không phải duyên hết; cần kiên nhẫn vun từng ngày.',
+    'Đừng để cơn giận nói thay lời thương; cần dừng lại và lắng nghe.',
+    'Đôi khi phải lùi một bước mới thấy nhau rõ; cần bớt hơn thua.',
+    'Tình qua thử thách mới bền, nhưng cần cả hai cùng giữ lửa.',
+    'Chông gai không đáng sợ bằng thờ ơ; cần chủ động hỏi han mỗi ngày.',
+    'Cung Phu Thê còn yếu, cần lấy chân thành mà vun lại mỗi ngày.',
+    'Nền còn chông chênh, cần cùng nhau xây từng viên gạch nhỏ.',
+    'Duyên nhiều thử thách, cần giữ lòng kiên định và biết lắng nghe.',
+    'Cung vị chưa ăn ý, cần mở lời hỏi han thay vì im lặng.',
+    'Can Chi có chỗ xung, cần bớt hơn thua để giữ hòa khí trong nhà.',
+    'Duyên Phu Thê còn nhạt, cần bền lòng vun từng ngày.',
+    'Gốc rễ chưa sâu, cần cùng nhau bồi đắp bằng sự chân thành.',
+    'Đường tình lắm gió, cần neo lòng vào chữ nhẫn và sự bao dung.',
+    'Nhịp cung chưa khớp, cần chậm lại để hiểu nhau hơn.',
+    'Can Chi trái nhịp, cần nhường nhau một bước trước khi tranh luận.',
+    'Phu Thê còn lạnh, cần hai người cùng thắp lửa sưởi ấm.',
+    'Nền còn mỏng, cần lấy sự bền bỉ mà bồi đắp theo tháng năm.',
+    'Duyên chưa êm, cần tu tâm và bớt cái tôi để giữ nhau.',
+    'Hai cung lệch nhịp, cần một người lắng nghe trước khi nói.',
+    'Can Chi khắc nhau, cần khắc chế lời nóng để giữ hòa khí.',
+    'Cung duyên còn lạnh, cần chủ động quan tâm mỗi ngày.',
+    'Nền tảng còn chênh, cần cùng nhau đi từng bước nhỏ mà chắc.',
+    'Tình nhiều sóng, cần người biết giữ và không bỏ cuộc giữa chừng.',
+    'Nhịp cung lệch nhau, cần học cách nói lời dịu dàng với nhau.',
+    'Can Chi va nhau, cần lấy nhẫn mà hóa, lấy hiểu mà giữ.',
+    'Phu Thê thiếu hơi ấm, cần cả hai cùng nhóm lại bếp lửa.',
+    'Gốc chưa bền, cần kiên trì vun và đừng ngại bắt đầu lại.',
+    'Duyên khó là dịp thử lòng, cần cùng nhau đi tiếp từng ngày.',
+    'Cung vị xa nhau, cần tìm điểm chung để bắc cầu.',
+    'Can Chi lệch nhịp, cần mỗi người lùi một bước mà giữ nhau.',
+    'Duyên còn mờ, cần thắp sáng bằng sự chân thành.',
+    'Gốc rễ còn mỏng, cần lấy đồng tâm mà bù lại từng ngày.',
+    'Duyên có nhiều lối rẽ, cần chọn nhau mỗi ngày một lần.',
+    'Cung vị lệch nhau, cần lắng nghe để hiểu điều đối phương nói.',
+    'Can Chi chưa thuận, cần bớt lý lẽ và thêm phần bao dung.',
+    'Phu Thê chưa đầy, cần cùng nhau vun bằng những điều nhỏ.',
+    'Nền nhà chưa vững, cần vun bằng sự kiên nhẫn của cả hai.',
+    'Duyên chẳng dễ, cần người biết nâng đỡ và biết giữ.',
+    'Cung vị còn cách xa, cần chủ động tìm nhau thay vì chờ đợi.',
+    'Can Chi nghịch nhịp, cần lấy nhường nhịn làm nhịp chung.',
   ],
 };
 
-function pickConclusionQuote(
+const CONCLUSION_QUOTE_BRANCHES = 5;
+const CONCLUSION_QUOTE_VARIANTS = 10;
+
+function baseConclusionQuoteIndex(
   tone: CompatibilityConclusionTone,
   aspects: Record<CompatibilityAspectKey, CompatibilityAspect>
-): string {
+): number {
   const foundation = aspects.foundation.score;
   const marriagePalace = aspects.marriagePalace.score;
   const starSynergy = aspects.starSynergy.score;
   const canChi = aspects.canChi.score;
   const crossPalace = aspects.crossPalace.score;
-  const quotes = CONCLUSION_QUOTES[tone];
 
   if (tone === 'high') {
-    if (marriagePalace >= 7 && starSynergy >= 7) return quotes[0];
-    if (foundation >= 7 && crossPalace >= 7) return quotes[1];
-    if (canChi >= 7) return quotes[3];
-    if (crossPalace >= 7) return quotes[4];
-    return quotes[2];
+    if (marriagePalace >= 7 && starSynergy >= 7) return 0;
+    if (foundation >= 7 && crossPalace >= 7) return 1;
+    if (canChi >= 7) return 3;
+    if (crossPalace >= 7) return 4;
+    return 2;
   }
 
   if (tone === 'balanced') {
-    if (crossPalace >= 6) return quotes[0];
-    if (canChi >= 5.5) return quotes[1];
-    if (marriagePalace >= 6) return quotes[3];
-    if (foundation >= 6) return quotes[4];
-    return quotes[2];
+    if (crossPalace >= 6) return 0;
+    if (canChi >= 5.5) return 1;
+    if (marriagePalace >= 6) return 3;
+    if (foundation >= 6) return 4;
+    return 2;
   }
 
-  if (marriagePalace < 5) return quotes[0];
-  if (foundation < 5) return quotes[1];
-  if (crossPalace < 5) return quotes[3];
-  if (canChi < 5) return quotes[4];
-  return quotes[2];
+  if (marriagePalace < 5) return 0;
+  if (foundation < 5) return 1;
+  if (crossPalace < 5) return 3;
+  if (canChi < 5) return 4;
+  return 2;
+}
+
+function conclusionChartSignature(chart: ZiweiChart): string {
+  const parts: string[] = [];
+  for (const palace of keyPalaces(chart)) {
+    parts.push(
+      `${palace.id}`,
+      `${palace.stem}`,
+      `${palace.branch}`,
+      palace.hasTuan ? '1' : '0',
+      palace.hasTriet ? '1' : '0'
+    );
+
+    const stars = collectStars(palace)
+      .map(
+        (star) =>
+          `${star.id || star.name}:${starMutagen(star) ?? ''}:${star.brightness ?? ''}`
+      )
+      .sort();
+    parts.push(...stars);
+  }
+
+  if (chart.tuanTriet) {
+    const tuan = chart.tuanTriet.tuan?.branches ?? [];
+    const triet = chart.tuanTriet.triet?.branches ?? [];
+    parts.push(
+      `tuan:${tuan.join(',')}`,
+      `triet:${triet.join(',')}`,
+      `overlap:${chart.tuanTriet.isOverlapping ? '1' : '0'}`
+    );
+  }
+
+  return parts.join('|');
+}
+
+function conclusionQuoteGroup(
+  totalScore: number,
+  aspects: Record<CompatibilityAspectKey, CompatibilityAspect>,
+  chart1: ZiweiChart,
+  chart2: ZiweiChart
+): number {
+  const values = [
+    totalScore * 10,
+    Math.round(aspects.foundation.score * 10),
+    Math.round(aspects.marriagePalace.score * 10),
+    Math.round(aspects.starSynergy.score * 10),
+    Math.round(aspects.canChi.score * 10),
+    Math.round(aspects.crossPalace.score * 10),
+  ];
+
+  let hash = 0;
+  for (const value of values) {
+    hash = (Math.imul(hash, 31) + value) >>> 0;
+  }
+
+  const signatures = [conclusionChartSignature(chart1), conclusionChartSignature(chart2)].sort();
+  const signatureText = signatures.join('|');
+  for (let index = 0; index < signatureText.length; index += 1) {
+    hash = (Math.imul(hash, 31) + signatureText.charCodeAt(index)) >>> 0;
+  }
+
+  return hash % CONCLUSION_QUOTE_VARIANTS;
+}
+
+function pickConclusionQuote(
+  tone: CompatibilityConclusionTone,
+  aspects: Record<CompatibilityAspectKey, CompatibilityAspect>,
+  totalScore: number,
+  chart1: ZiweiChart,
+  chart2: ZiweiChart
+): string {
+  const baseIndex = baseConclusionQuoteIndex(tone, aspects);
+  const quotes = CONCLUSION_QUOTES[tone];
+  const group = conclusionQuoteGroup(totalScore, aspects, chart1, chart2);
+  return quotes[baseIndex + group * CONCLUSION_QUOTE_BRANCHES] ?? quotes[baseIndex];
 }
 
 function buildConclusion(
   totalScore: number,
-  aspects: Record<CompatibilityAspectKey, CompatibilityAspect>
+  aspects: Record<CompatibilityAspectKey, CompatibilityAspect>,
+  chart1: ZiweiChart,
+  chart2: ZiweiChart
 ): CompatibilityConclusion {
   const tone: CompatibilityConclusionTone =
     totalScore >= 70 ? 'high' : totalScore >= 50 ? 'balanced' : 'challenging';
-  return { quote: pickConclusionQuote(tone, aspects), tone };
+  return { quote: pickConclusionQuote(tone, aspects, totalScore, chart1, chart2), tone };
 }
 
 function generateAdvice(score: number): string {
@@ -1365,6 +1966,13 @@ export function calculateCompatibility(
 
   const currentYear = options.currentYear ?? new Date().getFullYear();
   const timing = analyzeTiming(chart1, currentYear);
+  const periodContext: CompatibilityPeriodContext = {
+    year: currentYear,
+    readings: [
+      resolvePeriodContext(chart1, currentYear, personLabel(chart1, 'Người thứ nhất')),
+      resolvePeriodContext(chart2, currentYear, personLabel(chart2, 'Người thứ hai')),
+    ],
+  };
 
   const first = readPhuThe(chart1);
   const second = readPhuThe(chart2);
@@ -1373,9 +1981,10 @@ export function calculateCompatibility(
   return {
     score: totalScore,
     level,
-    conclusion: buildConclusion(totalScore, aspects),
+    conclusion: buildConclusion(totalScore, aspects, chart1, chart2),
     aspects,
     timing,
+    periodContext,
     dataQuality: dataQuality.level,
     dataWarnings: dataQuality.warnings,
     strengths: buildStrengths(aspects, first, second),
