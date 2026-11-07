@@ -267,16 +267,19 @@ describe('ZodiacWheel rotating reference layout', () => {
     expect(reducedContainer.querySelectorAll('[data-motion-state]')).toHaveLength(0);
   });
 
-  it('disables the wheel spin only below the mobile breakpoint', (): void => {
+  it('no longer disables the wheel spin below the mobile breakpoint', (): void => {
     const css = readFileSync(path.join(process.cwd(), 'app/globals.css'), 'utf8');
 
-    const mobileStart = css.indexOf('@media (max-width: 639.98px)');
-    expect(mobileStart).toBeGreaterThan(-1);
-
-    const mobileCss = css.slice(mobileStart);
-    // Both rotating layers opt out of the animation while desktop keeps it.
-    expect(mobileCss).toMatch(
-      /\.zodiac-wheel \[data-spin-duration\],[\s\S]*?\.zodiac-wheel \[data-counter-spin-duration\]\s*\{[\s\S]*?animation:\s*none\s*!important;/
+    // The old mobile-only override forced `animation: none !important` on both
+    // rotating layers. Mobile now keeps the same motion-safe spin as desktop.
+    expect(css).not.toMatch(
+      /@media\s*\(max-width:\s*639\.98px\)\s*\{[\s\S]*?\.zodiac-wheel\s+\[data-spin-duration\][\s\S]*?animation:\s*none\s*!important/
+    );
+    expect(css).not.toMatch(
+      /\.zodiac-wheel\s+\[data-spin-duration\][^{]*\{[^}]*animation:\s*none/
+    );
+    expect(css).not.toMatch(
+      /\.zodiac-wheel\s+\[data-counter-spin-duration\][^{]*\{[^}]*animation:\s*none/
     );
   });
 });

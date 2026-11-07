@@ -2,7 +2,6 @@ import type { RefObject } from 'react';
 import { Button } from '@/components/ui/Button';
 import type {
   CompatibilityAspectKey,
-  CompatibilityAspectQuality,
   CompatibilityResult as CompatibilityResultData,
 } from '@/lib/ziwei/compatibility';
 
@@ -14,20 +13,10 @@ const ASPECT_LABELS: Record<CompatibilityAspectKey, string> = {
   crossPalace: 'Tương tác cung vị',
 };
 
-/** Nhãn tổng kết theo độ chênh điểm, giữ sắc thái tích cực nhưng không tuyệt đối hóa. */
-function getLevelLabel(score: number): string {
-  if (score >= 80) return 'Hanh thông';
-  if (score >= 70) return 'Thuận lợi';
-  if (score >= 50) return 'Ổn định';
-  if (score >= 35) return 'Biến động';
-  return 'Khó khăn';
-}
-
-/** Nhãn từng khía cạnh: ưu tiên mức độ định tính, chỉ tách khó khăn khi điểm thấp rõ rệt. */
-function getQualityLabel(quality: CompatibilityAspectQuality, score: number): string {
-  if (quality === 'cat') return score >= 8.5 ? 'Hanh thông' : 'Thuận lợi';
-  if (quality === 'binh') return 'Ổn định';
-  return score < 4 ? 'Khó khăn' : 'Biến động';
+/** Điểm khía cạnh trên thang 10: tối đa một chữ số thập phân, bỏ đuôi ".0". */
+function formatAspectScore(score: number): string {
+  const rounded = Math.round(score * 10) / 10;
+  return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1);
 }
 
 export interface CompatibilityResultProps {
@@ -61,7 +50,7 @@ export function CompatibilityResult({
       tabIndex={-1}
       data-testid="compatibility-result"
       aria-labelledby={headingId}
-      className="scroll-mt-24 rounded-xl border border-gold/35 bg-linear-to-b from-surface to-background p-5 shadow-[0_0_28px_rgba(212,175,55,0.12)] focus:outline-none focus:ring-2 focus:ring-gold focus-visible:ring-2 focus-visible:ring-gold sm:p-7"
+      className="scroll-mt-24 rounded-xl border border-gold/35 bg-linear-to-b from-surface to-background p-5 shadow-[0_0_28px_rgba(212,175,55,0.12)] focus:outline-none focus:ring-2 focus:ring-gold focus-visible:ring-2 focus-visible:ring-gold sm:p-7 lg:h-[calc(100svh_-_8rem)] lg:overflow-y-auto"
     >
       <div className="text-center">
         <p className="text-xs uppercase tracking-[0.28em] text-gold/75">
@@ -70,9 +59,19 @@ export function CompatibilityResult({
         <h2 id={headingId} className="mt-2 font-serif text-3xl font-semibold text-gold">
           Duyên phận đôi lứa
         </h2>
-        <p data-testid="compatibility-level" className="mt-3 font-serif text-2xl text-foreground">
-          {getLevelLabel(result.score)}
-        </p>
+        <div
+          data-testid="compatibility-score"
+          role="img"
+          aria-label={`Điểm hợp nhau ${result.score} trên 100`}
+          className="mx-auto mt-4 flex h-28 w-28 flex-col items-center justify-center rounded-full border-2 border-gold/50 bg-gold/10 text-center shadow-[0_0_24px_rgba(212,175,55,0.18)] sm:h-32 sm:w-32"
+        >
+          <p className="font-serif text-3xl font-semibold leading-none text-gold sm:text-4xl">
+            {result.score}/100
+          </p>
+          <p className="mt-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-gold/80 sm:text-xs">
+            Điểm hợp nhau
+          </p>
+        </div>
         <p
           data-testid="compatibility-conclusion"
           data-tone={result.conclusion.tone}
@@ -112,9 +111,11 @@ export function CompatibilityResult({
                 <h3 className="font-serif text-lg font-semibold text-gold">{ASPECT_LABELS[key]}</h3>
                 <span
                   data-testid={`compatibility-aspect-${key}`}
-                  className="font-serif text-sm font-semibold text-gold"
+                  role="img"
+                  aria-label={`${ASPECT_LABELS[key]}: ${formatAspectScore(aspect.score)}/10`}
+                  className="shrink-0 font-mono text-sm font-semibold tabular-nums text-gold"
                 >
-                  {getQualityLabel(aspect.quality, aspect.score)}
+                  {formatAspectScore(aspect.score)}/10
                 </span>
               </div>
               <p className="mt-1 text-sm font-semibold text-foreground">{aspect.meaning}</p>

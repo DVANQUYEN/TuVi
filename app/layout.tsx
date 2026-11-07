@@ -48,11 +48,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }):
         />
       </head>
       <body
-        className={`${cormorant.variable} ${notoSerif.variable} ${firaCode.variable} overflow-x-hidden bg-background font-sans text-foreground antialiased`}
+        className={`${cormorant.variable} ${notoSerif.variable} ${firaCode.variable} overflow-x-clip bg-background font-sans text-foreground antialiased`}
       >
         <ThemeProvider>
           <GlobalSkyBackdrop />
-          <div className="relative z-10 min-w-0 overflow-x-hidden">{children}</div>
+          <div className="relative z-10 min-w-0 overflow-x-clip">{children}</div>
         </ThemeProvider>
       </body>
     </html>

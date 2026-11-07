@@ -28,8 +28,8 @@ duyên hôn nhân của mỗi người, không phải một phép đo thuần t�
 ## Năm khía cạnh và trọng số
 
 Điểm tổng trên thang điểm 100 bằng tổng có trọng số của năm khía cạnh, mỗi khía cạnh chấm trên
-thang điểm 10. Điểm số chỉ được giữ ở tầng dữ liệu để bảo đảm tính tất định và chọn nhãn định
-tính; phần giải thích hiển thị cho người dùng không chứa điểm số dạng `x/10` hay `x/100`.
+thang điểm 10. Giao diện hiển thị điểm tổng dạng `x/100` và điểm từng khía cạnh dạng `x/10`;
+phần giải thích định tính đi kèm không chứa điểm số.
 
 | Khía cạnh | Trọng số | Nội dung chính |
 | --- | ---: | --- |
@@ -44,10 +44,10 @@ Lời khuyên tổng cũng dùng đúng ba ngưỡng này.
 
 ## Kết luận khẩu khí
 
-Giao diện **không hiển thị điểm số cá nhân** nào: không có điểm tổng `/100`, không có điểm
-khía cạnh `/10` và không có điểm thời vận `/10`. Các điểm này vẫn được tính và giữ trong
-`CompatibilityResult` để bảo đảm tính tất định, phục vụ kiểm thử nội bộ và chọn nhãn định tính;
-người dùng chỉ thấy mức xếp loại, một câu khẩu khí ngắn và phần luận giải định tính.
+Giao diện hiển thị điểm tổng `/100` và điểm từng khía cạnh `/10`. Điểm thời vận chỉ mang tính
+tham khảo, không nằm trong tỷ lệ tương hợp và không tham gia vào điểm tổng. Khối phương pháp
+trong giao diện nêu rõ trọng số của năm khía cạnh. Câu khẩu khí là kết luận định tính đi kèm
+điểm số; người dùng thấy cả điểm, mức xếp loại, câu khẩu khí ngắn và phần luận giải định tính.
 
 Câu khẩu khí là **cách diễn đạt văn hóa có chọn lọc**, không phải lời phán quyết định mệnh.
 Nó không khẳng định duyên phận cố định, không bảo đảm kết quả và không thay thế lựa chọn, nỗ
@@ -82,7 +82,7 @@ gọn trên một dòng máy tính và tối đa hai dòng trên điện thoại
 
   `quality` được đặt cùng lúc với `meaning` bằng chính ngưỡng của từng khía cạnh: Nền tảng bản
   mệnh dùng 7,5 và 5,5; bốn khía cạnh còn lại dùng 7 và 5. Giao diện chỉ hiển thị nhãn do dữ
-  liệu cung cấp, không tự tính lại ngưỡng. Điểm thời vận được giữ để tính toán nhưng không hiển
+  liệu cung cấp, không tự tính lại ngưỡng. Điểm thời vận chỉ mang tính tham khảo và không hiển
   thị.
 
 

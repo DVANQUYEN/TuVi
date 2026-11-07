@@ -293,13 +293,3 @@
     filter: drop-shadow(0 0 6px rgba(240, 208, 137, 0.55));
   }
 }
-
-/* Vòng 12 con giáp trên mobile: tắt quay để nhãn/medallion không va chạm khi
-   màn hình hẹp. Dùng media query (thay vì utility) để đảm bảo thứ tự thắng
-   của animation mà vẫn giữ nguyên lớp quay trên desktop. */
-@media (max-width: 639.98px) {
-  .zodiac-wheel [data-spin-duration],
-  .zodiac-wheel [data-counter-spin-duration] {
-    animation: none !important;
-  }
-}

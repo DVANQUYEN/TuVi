@@ -42,17 +42,17 @@ export interface CompatibilityTiming {
 export type CompatibilityConclusionTone = 'high' | 'balanced' | 'challenging';
 
 export interface CompatibilityConclusion {
-  /** Câu khẩu khí ngắn thay cho điểm số ở phần kết luận. */
+  /** Câu khẩu khí ngắn ở phần kết luận. */
   quote: string;
   /** Sắc thái tổng quát để giao diện chọn cách trình bày. */
   tone: CompatibilityConclusionTone;
 }
 
 export interface CompatibilityResult {
-  /** Điểm tổng trên thang 0-100, chỉ dùng nội bộ và không hiển thị cho người dùng. */
+  /** Điểm tổng trên thang 0-100, hiển thị cho người dùng như điểm tương hợp tổng. */
   score: number;
   level: 'tốt' | 'trung bình' | 'xấu';
-  /** Kết luận khẩu khí thay cho điểm số hiển thị. */
+  /** Kết luận định tính đi kèm điểm số hiển thị. */
   conclusion: CompatibilityConclusion;
   aspects: Record<CompatibilityAspectKey, CompatibilityAspect>;
   timing: CompatibilityTiming;

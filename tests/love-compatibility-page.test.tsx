@@ -103,15 +103,21 @@ const CONCLUSION_QUOTES = {
   ],
 } as const;
 
-const ASPECT_QUALITY_LABELS = ['Hanh thông', 'Thuận lợi', 'Ổn định', 'Biến động', 'Khó khăn'] as const;
-
-// Hồ sơ cố định của test merge cho tone balanced và năm nhãn định tính.
+// Năm khía cạnh của hồ sơ cố định trong test merge (tone balanced).
 const ASPECT_CARDS = [
-  { key: 'foundation', label: 'Nền tảng bản mệnh', quality: 'Ổn định' },
-  { key: 'marriagePalace', label: 'Cung Phu Thê', quality: 'Thuận lợi' },
-  { key: 'starSynergy', label: 'Tương hợp tinh tú', quality: 'Thuận lợi' },
-  { key: 'canChi', label: 'Can Chi bốn trụ', quality: 'Ổn định' },
-  { key: 'crossPalace', label: 'Tương tác cung vị', quality: 'Ổn định' },
+  { key: 'foundation', label: 'Nền tảng bản mệnh' },
+  { key: 'marriagePalace', label: 'Cung Phu Thê' },
+  { key: 'starSynergy', label: 'Tương hợp tinh tú' },
+  { key: 'canChi', label: 'Can Chi bốn trụ' },
+  { key: 'crossPalace', label: 'Tương tác cung vị' },
+] as const;
+
+const ASPECT_KEYS = [
+  'foundation',
+  'marriagePalace',
+  'starSynergy',
+  'canChi',
+  'crossPalace',
 ] as const;
 
 const LOVE_BRANCHES = [
@@ -1009,10 +1015,17 @@ describe('Tình Duyên compatibility experience', () => {
       within(result).getByRole('heading', { name: 'Duyên phận đôi lứa', level: 2 })
     ).toBeInTheDocument();
 
-    // Điểm tổng chỉ dùng nội bộ; không còn phần tử điểm /100 nào được hiển thị.
-    expect(within(result).queryByTestId('compatibility-score')).not.toBeInTheDocument();
-    const level = within(result).getByTestId('compatibility-level');
-    expect(level).toHaveTextContent('Ổn định');
+    // Điểm tổng hiển thị công khai dạng x/100 kèm nhãn "Điểm hợp nhau".
+    const score = within(result).getByTestId('compatibility-score');
+    expect(score.textContent ?? '').toMatch(/\d{1,3}\/100/);
+    expect(score).toHaveTextContent('Điểm hợp nhau');
+    expect(score).toHaveAttribute('role', 'img');
+    expect(score.getAttribute('aria-label') ?? '').toMatch(
+      /^Điểm hợp nhau \d{1,3} trên 100$/
+    );
+
+    // Nhãn tổng kết định tính đã bị gỡ bỏ hoàn toàn.
+    expect(within(result).queryByTestId('compatibility-level')).not.toBeInTheDocument();
 
     const conclusion = within(result).getByTestId('compatibility-conclusion');
     expect(conclusion).toHaveAttribute('data-tone', 'balanced');
@@ -1025,20 +1038,23 @@ describe('Tình Duyên compatibility experience', () => {
     expect(within(result).getByText('Kết quả luận giải')).toBeInTheDocument();
     expect(within(result).queryByTestId('compatibility-data-quality')).not.toBeInTheDocument();
 
-    // Năm khía cạnh dùng nhãn định tính, không còn x/10 trong thẻ.
-    for (const { key, label, quality } of ASPECT_CARDS) {
+    // Năm khía cạnh hiển thị điểm số x/10, không còn nhãn định tính.
+    for (const { key, label } of ASPECT_CARDS) {
       expect(within(result).getByRole('heading', { name: label, level: 3 })).toBeInTheDocument();
 
-      const qualityBadge = within(result).getByTestId(`compatibility-aspect-${key}`);
-      expect(qualityBadge).toHaveTextContent(quality);
-      expect(ASPECT_QUALITY_LABELS).toContain((qualityBadge.textContent ?? '').trim());
-      expect(qualityBadge.textContent ?? '').not.toMatch(/\d/);
-      expect(qualityBadge.textContent ?? '').not.toMatch(/\/\s*(?:10|100)\b/);
+      const aspectBadge = within(result).getByTestId(`compatibility-aspect-${key}`);
+      const badgeText = (aspectBadge.textContent ?? '').trim();
+      expect(badgeText).toMatch(/^\d+(?:[.,]\d+)?\/10$/);
+      // A numeric badge cannot carry a qualitative level/quality label.
+      expect(badgeText).not.toMatch(/[A-Za-zÀ-ỹ]/);
+      expect(aspectBadge).toHaveAttribute('role', 'img');
+      const ariaLabel = aspectBadge.getAttribute('aria-label') ?? '';
+      expect(ariaLabel).toContain(`${label}: `);
+      expect(ariaLabel).toMatch(/\d+(?:[.,]\d+)?\/10$/);
 
-      const card = qualityBadge.closest('li') as HTMLElement | null;
+      const card = aspectBadge.closest('li') as HTMLElement | null;
       expect(card).not.toBeNull();
       const cardElement = card as HTMLElement;
-      expect(cardElement).not.toHaveTextContent(/\d+(?:[.,]\d+)?\s*\/\s*(?:10|100)\b/);
 
       const paragraphs = Array.from(cardElement.querySelectorAll('p'));
       expect(paragraphs.length).toBeGreaterThanOrEqual(3);
@@ -1046,9 +1062,6 @@ describe('Tình Duyên compatibility experience', () => {
       expect(paragraphs[0].textContent?.trim().length).toBeGreaterThan(0);
       const explanation = paragraphs[1].textContent ?? '';
       expect(explanation.trim().length).toBeGreaterThan(0);
-      expect(explanation).not.toMatch(/\b\d+(?:\.\d+)?\/(?:10|100)\b/);
-      expect(explanation).not.toContain('/100');
-      expect(explanation).not.toMatch(/\/\s*10\b/);
       expect(paragraphs[2]).toHaveTextContent(/Lời khuyên:/);
     }
 
@@ -1081,14 +1094,25 @@ describe('Tình Duyên compatibility experience', () => {
     expect(method).toHaveTextContent(/biên soạn/i);
     expect(method).toHaveTextContent(/không phải quy định cổ điển/i);
 
-    // Không có mẫu điểm cá nhân /100 hoặc /10 nào ngoài phần trọng số % của phương pháp.
+    // Ngoài phần phương pháp, kết quả có điểm tổng /100 và đủ năm khía cạnh /10.
     const resultWithoutMethod = result.cloneNode(true) as HTMLElement;
     resultWithoutMethod.querySelector('[data-testid="compatibility-method"]')?.remove();
     const renderedText = resultWithoutMethod.textContent ?? '';
-    expect(renderedText).not.toMatch(/\d+(?:[.,]\d+)?\s*\/\s*(?:100|10)\b/);
-    expect(renderedText).not.toContain('/100');
-    expect(renderedText).not.toMatch(/\/\s*10\b/);
-    expect(resultWithoutMethod.querySelector('[data-testid="compatibility-score"]')).toBeNull();
+    expect(renderedText).toMatch(/\d{1,3}\/100/);
+
+    const scoreWithoutMethod = resultWithoutMethod.querySelector<HTMLElement>(
+      '[data-testid="compatibility-score"]'
+    );
+    expect(scoreWithoutMethod).not.toBeNull();
+    expect(scoreWithoutMethod?.textContent ?? '').toMatch(/\d{1,3}\/100/);
+
+    const aspectBadges = Array.from(
+      resultWithoutMethod.querySelectorAll<HTMLElement>('[data-testid^="compatibility-aspect-"]')
+    );
+    expect(aspectBadges).toHaveLength(5);
+    aspectBadges.forEach((badge) => {
+      expect((badge.textContent ?? '').trim()).toMatch(/^\d+(?:[.,]\d+)?\/10$/);
+    });
 
     // Lời khuyên chung là khối riêng, tách khỏi câu kết luận ở đầu kết quả.
     const adviceHeading = within(result).getByRole('heading', {
@@ -1125,6 +1149,39 @@ describe('Tình Duyên compatibility experience', () => {
     expect(getLiveStatus()).toHaveTextContent('');
     expect(getRightColumn()).toHaveAttribute('aria-busy', 'false');
     expect(screen.getAllByLabelText(/^Họ tên/)[0]).toHaveFocus();
+  });
+
+  it('renders one responsive overall score badge and /10 aspect labels for mobile and desktop', (): void => {
+    const partial = calculateCompatibility({} as ZiweiChart, {} as ZiweiChart, {
+      currentYear: 2026,
+    });
+    render(
+      <CompatibilityResult
+        result={partial}
+        headingId="responsive-score-heading"
+        strengthsHeadingId="responsive-strengths-heading"
+        challengesHeadingId="responsive-challenges-heading"
+        sectionRef={createRef<HTMLElement>()}
+        onReset={(): void => {}}
+      />
+    );
+
+    // The same element carries the mobile (h-28 w-28) and sm+ (h-32 w-32)
+    // sizes, so mobile and desktop share one responsive score badge.
+    const score = screen.getByTestId('compatibility-score');
+    expect(score).toHaveClass('h-28', 'w-28', 'sm:h-32', 'sm:w-32');
+    expect(score.textContent ?? '').toMatch(/\d{1,3}\/100/);
+    expect(score).toHaveTextContent('Điểm hợp nhau');
+    expect(screen.queryByTestId('compatibility-level')).not.toBeInTheDocument();
+
+    // Every aspect badge exposes a numeric x/10 in both its text and its
+    // accessible label, regardless of viewport.
+    ASPECT_KEYS.forEach((key) => {
+      const badge = screen.getByTestId(`compatibility-aspect-${key}`);
+      expect(badge).toHaveAttribute('role', 'img');
+      expect((badge.textContent ?? '').trim()).toMatch(/^\d+(?:[.,]\d+)?\/10$/);
+      expect(badge.getAttribute('aria-label') ?? '').toMatch(/\d+(?:[.,]\d+)?\/10$/);
+    });
   });
 
   it('scrolls the emblem wrapper to the start when a valid submit enters merging', (): void => {
@@ -1193,6 +1250,29 @@ describe('Tình Duyên compatibility experience', () => {
       Array.from(grid.children).indexOf(emblemWrapper)
     );
     expect(rightWrapper).toContainElement(result);
+  });
+
+  it('gives the revealed result a desktop-only fixed-height scroll area', (): void => {
+    installReducedMotion(true);
+    render(<CompatibilityForm />);
+    fillBothProfiles();
+    fireEvent.click(screen.getByRole('button', { name: 'Luận Định Duyên Đôi Lứa' }));
+
+    const result = screen.getByTestId('compatibility-result');
+    // Tokenize via classList: `lg:overflow-y-auto` contains `overflow-y-auto`
+    // as a substring, so a raw string check would give a false positive.
+    const resultClasses = Array.from(result.classList);
+
+    // Scroll chaining stays at the page default: no overscroll containment.
+    expect(resultClasses).not.toContain('overscroll-contain');
+    expect(resultClasses).toContain('lg:h-[calc(100svh_-_8rem)]');
+    expect(resultClasses).toContain('lg:overflow-y-auto');
+
+    // Mobile keeps its natural height: no unprefixed overflow or height token.
+    expect(resultClasses).not.toContain('overflow-y-auto');
+    expect(
+      resultClasses.filter((token) => /^(?:min-|max-)?h-/.test(token))
+    ).toEqual([]);
   });
 
   it('reveals immediately and renders the static emblem path under reduced motion', (): void => {
@@ -2195,9 +2275,8 @@ describe('Tình Duyên compatibility experience', () => {
 
     // Merge animations live only inside the motion-preference media gate.
     expect(preMedia).not.toMatch(/animation\s*:/);
-    // Scope the slice to the merge media block only: later unrelated media
-    // queries (e.g. the mobile zodiac-wheel spin override) must not be
-    // mistaken for love-emblem merge animations.
+    // Scope the slice to the merge media block only; it is currently the last
+    // media query in globals.css, so the slice runs to the end of the file.
     const nextMediaStart = css.indexOf('@media', mergeMediaStart + 1);
     const mergeMediaCss = css.slice(
       mergeMediaStart,

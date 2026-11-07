@@ -1085,7 +1085,7 @@ describe('kết luận định tính', () => {
     expect(result.conclusion.tone).toBe(expectedTone(result.score));
     expect(EXPECTED_CONCLUSION_QUOTES.high).toContain(result.conclusion.quote);
     expect(result.conclusion.quote.trim().length).toBeGreaterThan(0);
-    // Điểm số vẫn được tính nội bộ; yêu cầu không hiển thị điểm là của lớp giao diện.
+    // Điểm tổng hiển thị dạng x/100 nên vẫn là số nguyên trong khoảng 0-100.
     expect(Number.isInteger(result.score)).toBe(true);
   });
 
