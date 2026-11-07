@@ -6,6 +6,7 @@ import type {
   PalaceId,
 } from '@/lib/ziwei/types/enums';
 import { getBranchLabel } from '@/lib/chart/display-helpers';
+import { getNapAmMeaning } from '@/lib/ziwei/data/stems-branches';
 
 export interface PersonalSummary {
   /** Tên đương số, giữ lại cho tương thích dữ liệu cũ. */
@@ -16,7 +17,7 @@ export interface PersonalSummary {
   lifePath: string;
   /** Chính tinh chủ đạo của cung Mệnh; `Vô Chính Diệu` khi không có. */
   starName?: string;
-  /** Các đoạn luận giải kỹ thuật (Nạp Âm, chính tinh, Tứ Hóa, Tam Hợp...). */
+  /** Các đoạn luận giải kỹ thuật (Cục diện, cung Mệnh, Tam Hợp, Tổng kết). */
   technicalParagraphs?: string[];
   /** Đoạn mở đầu về nhịp đi nội tâm. */
   introParagraph?: string;
@@ -394,46 +395,6 @@ const BODY_PALACE_FOCUS: Readonly<Record<PalaceId, string>> = {
   huynhDe: 'anh em và các mối quan hệ đồng trang lứa',
 };
 
-interface StarFormation {
-  /** Các chính tinh phải xuất hiện (gộp) trong ba cung Mệnh, Tài Bạch, Quan Lộc. */
-  stars: readonly string[];
-  meaning: string;
-}
-
-/** Sắp xếp từ bộ nhiều sao đến ít sao để ưu tiên cách cục cụ thể nhất. */
-const STAR_FORMATIONS: readonly StarFormation[] = [
-  {
-    stars: ['Tử Vi', 'Thiên Phủ', 'Vũ Khúc', 'Thiên Tướng'],
-    meaning:
-      'Một hướng đi thiên về dựng nền và giữ vững những gì đã gây dựng; bạn dễ được tín nhiệm ở vai trò điều phối, quản trị hoặc dẫn dắt một tập thể. ' +
-      'Sức mạnh nằm ở sự ổn định và khả năng nhìn xa, hơn là những cú bứt phá liều lĩnh.',
-  },
-  {
-    stars: ['Thiên Cơ', 'Thái Âm', 'Thiên Đồng', 'Thiên Lương'],
-    meaning:
-      'Một hướng đi của trí tuệ và sự thấu cảm: bạn dễ tìm được chỗ đứng ở những nơi cần phân tích, hoạch định và chăm sóc con người. ' +
-      'Con đường ấy có thể tiến bằng sự bền bỉ và tích lũy, không cần ồn ào.',
-  },
-  {
-    stars: ['Thất Sát', 'Phá Quân', 'Tham Lang'],
-    meaning:
-      'Một hướng đi của người tiên phong: bạn dễ bị cuốn vào những nơi cần đổi mới, cạnh tranh và dám phá cái cũ. ' +
-      'Phần thưởng thường lớn nhưng đi kèm thử thách, nên biết giữ nhịp và lượng sức là điều quan trọng.',
-  },
-  {
-    stars: ['Tử Vi', 'Vũ Khúc', 'Liêm Trinh'],
-    meaning:
-      'Một hướng đi của kỷ luật và trách nhiệm: bạn hợp với những nơi cần sự rõ ràng, minh bạch và một chuẩn mực đủ vững. ' +
-      'Điểm mạnh là sự ngay thẳng và bền chí; điều cần giữ là đừng để nguyên tắc thành cứng nhắc.',
-  },
-  {
-    stars: ['Cự Môn', 'Thái Dương'],
-    meaning:
-      'Một hướng đi của tiếng nói và sự hiện diện: bạn dễ phát huy ở nơi cần thuyết phục, truyền đạt hoặc đứng ra kết nối người khác. ' +
-      'Càng được nhiều người biết đến, càng cần giữ lời nói có trọng lượng.',
-  },
-];
-
 interface TamHopArchetype {
   name: string;
   /** Các chính tinh phải xuất hiện (gộp) trong ba cung Mệnh, Tài Bạch, Quan Lộc. */
@@ -530,36 +491,6 @@ function buildMenhParagraph(narrative: StarNarrative): string {
   return `${narrative.essence} ${narrative.gift} ${narrative.shadow}`;
 }
 
-function lowerFirst(text: string): string {
-  return text.charAt(0).toLowerCase() + text.slice(1);
-}
-
-function buildTamHopAndThanParagraph(chart: ZiweiChart, narrative: StarNarrative): string {
-  const parts: string[] = [];
-
-  const bodyPalace = findBodyPalace(chart);
-  if (bodyPalace) {
-    parts.push(
-      `trọng tâm nửa sau cuộc đời thường nghiêng về ${BODY_PALACE_FOCUS[bodyPalace.id]}. ` +
-        'Đây là lĩnh vực bạn nên dành nhiều thời gian và công sức.'
-    );
-  }
-
-  const tamHopPalaces = (['menh', 'taiBach', 'quanLoc'] as const)
-    .map((id) => findPalace(chart, id))
-    .filter((p): p is Palace => p !== undefined);
-  const combined = new Set(tamHopPalaces.flatMap((p) => (p.majorStars ?? []).map((s) => s.name)));
-  const formation = STAR_FORMATIONS.find((item) =>
-    item.stars.every((name) => combined.has(name))
-  );
-  if (formation) parts.push(formation.meaning);
-
-  parts.push(`Bạn hợp với ${lowerFirst(narrative.lifePath)}`);
-
-  const rest = parts.join(' ');
-  return `Về tương lai, ${lowerFirst(rest)}`;
-}
-
 function buildTechnicalIntro(chart: ZiweiChart): string {
   const plate = chart.heavenPlate;
   if (!plate?.napAm || !plate.fiveElementsClass) return '';
@@ -569,8 +500,11 @@ function buildTechnicalIntro(chart: ZiweiChart): string {
       ? plate.elementRelationSummary
       : describeElementRelation(plate.napAm.element, plate.fiveElementsClass.element);
 
+  const meaning = getNapAmMeaning(plate.napAm.name);
+  const napAm = meaning ? `**${plate.napAm.name}** (${meaning})` : `**${plate.napAm.name}**`;
+
   return [
-    `Bạn thuộc **${plate.yinYangGenderLabel}**, Bản Mệnh Nạp Âm là **${plate.napAm.name}**, lập ở **${plate.fiveElementsClass.name}**.`,
+    `Bạn thuộc **${plate.yinYangGenderLabel}**, mang **${plate.fiveElementsClass.name}**, bản mệnh nạp âm là ${napAm}.`,
     relationSummary,
     `Chủ Mệnh là **${plate.soulLord}**, Chủ Thân là **${plate.bodyLord}**.`,
   ]
@@ -870,8 +804,7 @@ export function generatePersonalSummary(chart: ZiweiChart): PersonalSummary {
 
   const introParagraph = buildIntroParagraph(narrative);
   const menhStarParagraph = buildMenhParagraph(narrative);
-  const tamHopAndThanParagraph = buildTamHopAndThanParagraph(chart, narrative);
-  const description = [introParagraph, menhStarParagraph, tamHopAndThanParagraph].join(' ');
+  const description = [introParagraph, menhStarParagraph].join(' ');
 
   const technicalParagraphs = [
     buildTechnicalIntro(chart),
@@ -890,7 +823,7 @@ export function generatePersonalSummary(chart: ZiweiChart): PersonalSummary {
     technicalParagraphs,
     introParagraph,
     menhStarParagraph,
-    tamHopAndThanParagraph,
+    tamHopAndThanParagraph: '',
     conclusionParagraph: '',
     conclusionQuote: conclusion.quote,
     conclusionTone: conclusion.tone,

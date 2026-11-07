@@ -114,3 +114,44 @@ export const NAP_AM_60: readonly string[] = [
   'Nhâm Tuất - Đại Hải Thủy',
   'Quý Hợi - Đại Hải Thủy',
 ] as const;
+
+/**
+ * Giải nghĩa tên 30 Nạp Âm, dùng để diễn giải Bản Mệnh Ngũ Hành cho người đọc.
+ */
+export const NAP_AM_MEANINGS: Readonly<Record<string, string>> = {
+  'Hải Trung Kim': 'vàng dưới biển',
+  'Lư Trung Hỏa': 'lửa trong lò',
+  'Đại Lâm Mộc': 'gỗ rừng lớn',
+  'Lộ Bàng Thổ': 'đất ven đường',
+  'Kiếm Phong Kim': 'vàng đầu mũi kiếm',
+  'Sơn Đầu Hỏa': 'lửa đầu núi',
+  'Giải Hạ Thủy': 'nước dưới khe',
+  'Thành Đầu Thổ': 'đất trên thành',
+  'Bạch Lạp Kim': 'vàng sáp trắng',
+  'Dương Liễu Mộc': 'gỗ cây dương liễu',
+  'Tuyền Trung Thủy': 'nước trong suối',
+  'Ốc Thượng Thổ': 'đất trên nóc nhà',
+  'Tích Lịch Hỏa': 'lửa sấm sét',
+  'Tòng Bá Mộc': 'gỗ tùng bách',
+  'Trường Lưu Thủy': 'nước chảy dài',
+  'Sa Trung Kim': 'vàng trong cát',
+  'Sơn Hạ Hỏa': 'lửa dưới núi',
+  'Bình Địa Mộc': 'gỗ đồng bằng',
+  'Bích Thượng Thổ': 'đất trên vách',
+  'Kim Bạc Kim': 'vàng trong vàng',
+  'Phú Đăng Hỏa': 'lửa ngọn đèn',
+  'Thiên Hà Thủy': 'nước sông trời',
+  'Đại Trạch Thổ': 'đất đầm lớn',
+  'Thoa Xuyến Kim': 'vàng trang sức',
+  'Tang Đốc Mộc': 'gỗ cây dâu',
+  'Đại Khê Thủy': 'nước khe lớn',
+  'Sa Trung Thổ': 'đất trong cát',
+  'Thiên Thượng Hỏa': 'lửa trên trời',
+  'Thạch Lựu Mộc': 'gỗ cây thạch lựu',
+  'Đại Hải Thủy': 'nước biển lớn',
+};
+
+/** Trả về nghĩa của tên Nạp Âm, hoặc chuỗi rỗng nếu không có trong bảng. */
+export function getNapAmMeaning(name: string): string {
+  return NAP_AM_MEANINGS[name] ?? '';
+}

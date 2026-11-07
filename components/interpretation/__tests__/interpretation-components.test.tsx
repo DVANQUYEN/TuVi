@@ -155,7 +155,7 @@ describe('PersonalSummaryCard', () => {
     expect(screen.getByText('Lãnh đạo, quản lý')).toBeInTheDocument();
   });
 
-  it('hiển thị các đoạn luận giải chi tiết, nhãn Mệnh và khối kỹ thuật', () => {
+  it('hiển thị các đoạn luận giải chi tiết dạng đoạn văn, nhãn Mệnh và nhấn mạnh', () => {
     const { container } = render(
       <PersonalSummaryCard
         summary={{
@@ -173,8 +173,10 @@ describe('PersonalSummaryCard', () => {
             'Về nửa sau cuộc đời, trọng tâm có xu hướng nghiêng về **bản thân và việc tự lập nghiệp**.',
           conclusionParagraph: '',
           technicalParagraphs: [
-            'Bạn thuộc Âm Nam, Bản Mệnh Nạp Âm là Kim Tứ Cục.',
-            'Cung Mệnh tọa Tý, có chính tinh Tử Vi (Miếu địa). Tam Hợp Mệnh - Tài Bạch - Quan Lộc hội tụ cách Tử Phủ Vũ Tướng.',
+            'Bạn thuộc **Âm Nam**, mang **Kim Tứ Cục**, bản mệnh nạp âm là **Hải Trung Kim** (vàng dưới biển).',
+            'Cung Mệnh tọa **Tý**, có chính tinh **Tử Vi** tọa thủ.',
+            'Tam Hợp Mệnh - Tài Bạch - Quan Lộc hội tụ cách **Tử Phủ Vũ Tướng**.',
+            'Xét riêng cung Mệnh, nền tảng khá vững.',
           ],
         }}
       />
@@ -187,8 +189,23 @@ describe('PersonalSummaryCard', () => {
     expect(screen.getByRole('heading', { name: 'Luận giải chi tiết' })).toBeInTheDocument();
 
     const technical = screen.getByTestId('personal-summary-technical');
-    expect(within(technical).getByText(/Nạp Âm/)).toBeInTheDocument();
-    expect(within(technical).getByText(/Cung Mệnh tọa Tý/)).toBeInTheDocument();
+    expect(
+      within(technical).getByRole('heading', { name: 'Luận giải chi tiết' })
+    ).toBeInTheDocument();
+
+    const paragraphsContainer = technical.querySelector('.space-y-3');
+    expect(paragraphsContainer).not.toBeNull();
+
+    const paragraphs = Array.from(technical.querySelectorAll('p'));
+    expect(paragraphs).toHaveLength(4);
+    expect(paragraphs[0]).toHaveTextContent(
+      'Bạn thuộc Âm Nam, mang Kim Tứ Cục, bản mệnh nạp âm là Hải Trung Kim (vàng dưới biển).'
+    );
+    expect(paragraphs[1]).toHaveTextContent('Cung Mệnh tọa Tý, có chính tinh Tử Vi tọa thủ.');
+    expect(paragraphs[2]).toHaveTextContent(
+      'Tam Hợp Mệnh - Tài Bạch - Quan Lộc hội tụ cách Tử Phủ Vũ Tướng.'
+    );
+    expect(paragraphs[3]).toHaveTextContent('Xét riêng cung Mệnh, nền tảng khá vững.');
 
     const emphasized = Array.from(container.querySelectorAll('strong')).map(
       (node) => node.textContent
@@ -197,6 +214,12 @@ describe('PersonalSummaryCard', () => {
       'nhịp đi riêng',
       'dòng nước ngầm',
       'bản thân và việc tự lập nghiệp',
+      'Âm Nam',
+      'Kim Tứ Cục',
+      'Hải Trung Kim',
+      'Tý',
+      'Tử Vi',
+      'Tử Phủ Vũ Tướng',
     ]);
     expect(container.textContent).not.toContain('**');
   });

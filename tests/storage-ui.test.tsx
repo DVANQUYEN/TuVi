@@ -290,7 +290,7 @@ describe('LapLaSoClient personal summary', () => {
 
     expect(await screen.findByRole('heading', { name: 'Luận giải' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Đương số mẫu' })).toBeInTheDocument();
-    expect(screen.getByText(/Người mang mệnh/)).toBeInTheDocument();
+    expect(screen.getAllByText(/Người mang mệnh/).length).toBeGreaterThan(0);
   });
 });
 

@@ -21,17 +21,13 @@ const MAJOR_STARS = [
   'Phá Quân',
 ] as const;
 
-const TOP_NARRATIVE_KEYS = [
-  'introParagraph',
-  'menhStarParagraph',
-  'tamHopAndThanParagraph',
-] as const;
+const TOP_NARRATIVE_KEYS = ['introParagraph', 'menhStarParagraph'] as const;
 
 const TECHNICAL_JARGON = [
-  'Nạp Âm',
+  'nạp âm',
   'Cục',
   'Mệnh sinh Cục',
-  'Tam Hợp',
+  'Tam hợp',
   'Tài Bạch',
   'Quan Lộc',
   'cung Thân',
@@ -76,13 +72,13 @@ describe('generatePersonalSummary', () => {
     expect(summary.introParagraph?.startsWith('Người mang mệnh')).toBe(true);
     expect(summary.menhStarParagraph?.trim().length).toBeGreaterThan(0);
     expect(summary.menhStarParagraph?.startsWith('Bạn')).toBe(true);
-    expect(summary.tamHopAndThanParagraph?.startsWith('Về tương lai')).toBe(true);
+    expect(summary.tamHopAndThanParagraph).toBe('');
     expect(summary.conclusionParagraph).toBe('');
     for (const key of TOP_NARRATIVE_KEYS) {
       expect(summary[key]?.trim().length ?? 0, `${starName} thiếu ${key}`).toBeGreaterThan(0);
     }
     expect(summary.description).toBe(
-      [summary.introParagraph, summary.menhStarParagraph, summary.tamHopAndThanParagraph].join(' ')
+      [summary.introParagraph, summary.menhStarParagraph].join(' ')
     );
     expect(summary.keyTraits.length).toBeGreaterThanOrEqual(3);
     expect(summary.keyTraits.length).toBeLessThanOrEqual(5);
@@ -97,7 +93,7 @@ describe('generatePersonalSummary', () => {
     expect(summary.headline).not.toContain('Bạn là người');
     expect(summary.introParagraph?.startsWith('Người mang mệnh')).toBe(true);
     expect(summary.menhStarParagraph?.trim().length).toBeGreaterThan(0);
-    expect(summary.tamHopAndThanParagraph?.startsWith('Về tương lai')).toBe(true);
+    expect(summary.tamHopAndThanParagraph).toBe('');
     expect(summary.conclusionParagraph).toBe('');
     expect(summary.keyTraits).toHaveLength(4);
     expect(summary.lifePath.trim().length).toBeGreaterThan(0);
@@ -153,7 +149,7 @@ describe('generatePersonalSummary - luận giải chi tiết', () => {
     location: { region: 'north', longitude: 105.8542, provinceId: 'HN', provinceName: 'Hà Nội' },
   });
 
-  it('có đủ ba đoạn luận giải cấp cao, kết luận rỗng và không lặp description', () => {
+  it('có đủ hai đoạn luận giải cấp cao, các đoạn còn lại rỗng và không lặp description', () => {
     const summary = generatePersonalSummary(chart);
 
     expect(summary.ownerName).toBe('Đương số kiểm thử');
@@ -164,13 +160,12 @@ describe('generatePersonalSummary - luận giải chi tiết', () => {
     expect(chart.palaces.find((p) => p.id === 'menh')).toBeDefined();
     expect(summary.menhStarParagraph?.trim().length).toBeGreaterThan(0);
     expect(summary.menhStarParagraph?.startsWith('Bạn')).toBe(true);
-    expect(summary.tamHopAndThanParagraph?.startsWith('Về tương lai')).toBe(true);
+    expect(summary.tamHopAndThanParagraph).toBe('');
     expect(summary.conclusionParagraph).toBe('');
 
     const topNarrative = [
       summary.introParagraph as string,
       summary.menhStarParagraph as string,
-      summary.tamHopAndThanParagraph as string,
     ];
     expect(summary.description).toBe(topNarrative.join(' '));
     for (const paragraph of topNarrative) {
@@ -179,16 +174,21 @@ describe('generatePersonalSummary - luận giải chi tiết', () => {
     expect(summary.description).not.toContain('Nhìn tổng thể');
   });
 
-  it('tách riêng khối luận giải kỹ thuật cho lá số đầy đủ', () => {
+  it('tách riêng khối luận giải kỹ thuật dạng đoạn văn cho lá số đầy đủ', () => {
     const summary = generatePersonalSummary(chart);
     const technicalParagraphs = summary.technicalParagraphs ?? [];
     const technicalText = technicalParagraphs.join(' ');
 
-    expect(technicalParagraphs.length).toBeGreaterThanOrEqual(2);
-    for (const term of ['Nạp Âm', 'Cục', 'Cung Mệnh', 'Tam Hợp']) {
-      expect(technicalText, `khối kỹ thuật thiếu "${term}"`).toContain(term);
+    expect(technicalParagraphs.length).toBeGreaterThanOrEqual(3);
+    for (const term of ['nạp âm', 'Cục', 'Cung Mệnh', 'Tam Hợp']) {
+      expect.soft(technicalText, `khối kỹ thuật thiếu "${term}"`).toContain(term);
     }
     expect(technicalText).not.toContain('Lá số của');
+
+    expect(chart.heavenPlate.napAm.name).toBe('Hải Trung Kim');
+    const technicalIntro = technicalParagraphs[0];
+    expect(technicalIntro).toContain('Hải Trung Kim');
+    expect(technicalIntro).toContain('(vàng dưới biển)');
 
     const technicalConclusion = technicalParagraphs[technicalParagraphs.length - 1];
     expect(technicalConclusion.startsWith('Xét riêng cung Mệnh')).toBe(true);
