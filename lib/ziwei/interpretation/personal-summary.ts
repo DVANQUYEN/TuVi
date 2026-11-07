@@ -8,19 +8,23 @@ import type {
 import { getBranchLabel } from '@/lib/chart/display-helpers';
 
 export interface PersonalSummary {
-  /** Tên đương số, hiển thị làm ngữ cảnh "Tổng quan lá số của ...". */
+  /** Tên đương số, giữ lại cho tương thích dữ liệu cũ. */
   ownerName?: string;
   headline: string;
   description: string;
   keyTraits: string[];
   lifePath: string;
-  /** Đoạn mở đầu: nền tảng lá số (Âm Dương, Nạp Âm, Cục, Chủ Mệnh/Chủ Thân). */
+  /** Chính tinh chủ đạo của cung Mệnh; `Vô Chính Diệu` khi không có. */
+  starName?: string;
+  /** Các đoạn luận giải kỹ thuật (Nạp Âm, chính tinh, Tứ Hóa, Tam Hợp...). */
+  technicalParagraphs?: string[];
+  /** Đoạn mở đầu về nhịp đi nội tâm. */
   introParagraph?: string;
-  /** Đoạn phân tích cung Mệnh và chính tinh. */
+  /** Đoạn về khí chất và thế mạnh của cung Mệnh. */
   menhStarParagraph?: string;
-  /** Đoạn phân tích Tam Hợp (Mệnh - Tài - Quan) và cung Thân. */
+  /** Đoạn về phần tối và trọng tâm nửa sau cuộc đời. */
   tamHopAndThanParagraph?: string;
-  /** Đoạn kết tổng hợp, kèm nội dung `description`. */
+  /** Đoạn kết tổng hợp và bài học. */
   conclusionParagraph?: string;
   /** Khẩu khí một dòng, hiển thị đầu phần Luận giải. */
   conclusionQuote: string;
@@ -29,6 +33,17 @@ export interface PersonalSummary {
 }
 
 type ConclusionTone = PersonalSummary['conclusionTone'];
+
+interface StarNarrative {
+  headline: string;
+  /** Hai câu mô tả khách quan ở ngôi thứ ba, dùng cho phần tóm tắt dễ đọc. */
+  starNature: string;
+  essence: string;
+  gift: string;
+  shadow: string;
+  keyTraits: readonly string[];
+  lifePath: string;
+}
 
 const BRIGHTNESS_LABELS_VI: Readonly<Record<BrightnessLevel, string>> = {
   mieu: 'Miếu địa',
@@ -90,6 +105,279 @@ function describeElementRelation(menhElement: FiveElement, cucElement: FiveEleme
   return '';
 }
 
+const FALLBACK_NARRATIVE: StarNarrative = {
+  headline: 'Linh hoạt và biết tùy hoàn cảnh',
+  starNature:
+    'Người mang mệnh Vô Chính Diệu thường linh hoạt, dễ thích nghi và thay đổi cách ứng xử tùy hoàn cảnh. ' +
+    'Họ giỏi quan sát môi trường và học nhanh, nhưng cần mục tiêu rõ để không bị cuốn theo người khác.',
+  essence:
+    'Bạn là người linh hoạt, dễ thích nghi với hoàn cảnh mới. ' +
+    'Bạn thường quan sát xung quanh trước rồi mới chọn cách ứng xử phù hợp.',
+  gift:
+    'Bạn học nhanh từ nhiều môi trường khác nhau và có thể bắt nhịp với công việc mới trong thời gian ngắn. ' +
+    'Bạn cũng dễ tạo thiện cảm vì biết lắng nghe và tôn trọng cách sống của người khác.',
+  shadow:
+    'Điểm yếu là dễ thay đổi hướng đi khi hoàn cảnh tác động, nên khó giữ một mục tiêu dài hạn. ' +
+    'Bạn cần tự chọn một hướng đủ quan trọng và kiên trì với nó.',
+  keyTraits: ['Linh hoạt', 'Học nhanh', 'Dễ thích nghi', 'Cần chọn hướng rõ hơn'],
+  lifePath:
+    'Nhiều ngành nghề đều phù hợp; điều quan trọng là chọn một hướng đủ lâu để tích lũy kinh nghiệm.',
+};
+
+const STAR_NARRATIVES: Readonly<Partial<Record<string, StarNarrative>>> = {
+  'Tử Vi': {
+    headline: 'Điềm tĩnh và biết dẫn dắt',
+    starNature:
+      'Người mang mệnh Tử Vi thường điềm tĩnh, có uy tín và hay được người khác tin tưởng giao việc lớn. ' +
+      'Họ có tầm nhìn rộng, nhưng dễ ôm trách nhiệm vào mình mà không nói ra.',
+    essence:
+      'Bạn là người điềm tĩnh và có uy tín trong tập thể. ' +
+      'Bạn thường được người khác tin tưởng giao việc quan trọng.',
+    gift:
+      'Bạn có khả năng nhìn toàn cảnh và sắp xếp công việc thành một hướng rõ ràng. ' +
+      'Bạn cũng biết giữ thể diện cho người khác, nên dễ tạo được sự tín nhiệm.',
+    shadow:
+      'Điểm yếu là dễ tự gánh hết mọi việc rồi thất vọng khi không được ghi nhận. ' +
+      'Bạn nên học cách chia sẻ trách nhiệm và nói ra nhu cầu của mình.',
+    keyTraits: ['Điềm tĩnh trước đám đông', 'Biết nhìn toàn cảnh', 'Giữ chữ tín', 'Dễ tự gánh vác'],
+    lifePath:
+      'Những vai trò cần tầm nhìn và sự tin cậy: điều hành, quản lý, hoặc tự dẫn dắt một công việc riêng.',
+  },
+  'Thiên Phủ': {
+    headline: 'Vững vàng và biết vun vén',
+    starNature:
+      'Người mang mệnh Thiên Phủ thường chín chắn, coi trọng sự an toàn và biết vun vén nguồn lực cho tương lai. ' +
+      'Họ không thích bon chen nhưng là chỗ dựa đáng tin khi mọi thứ rối ren.',
+    essence:
+      'Bạn là người chín chắn, thích sự ổn định và làm mọi việc từng bước. ' +
+      'Bạn không thích hứa nhiều mà thích để kết quả nói thay.',
+    gift:
+      'Bạn có cái nhìn thực tế về tiền bạc và nguồn lực, biết điều gì nên giữ và điều gì nên buông. ' +
+      'Khi mọi thứ rối ren, bạn vẫn có thể sắp xếp lại thành trật tự.',
+    shadow:
+      'Điểm yếu là dễ giữ quá chặt những gì đang có và ngại thử cái mới. ' +
+      'Bạn nên cho phép mình thử nghiệm trong những việc lành mạnh.',
+    keyTraits: ['Vững vàng, đáng dựa', 'Giỏi giữ nguồn lực', 'Kiên nhẫn', 'Thích sự an toàn'],
+    lifePath:
+      'Những công việc cần sự ổn định và quản trị dài hạn: tài chính, vận hành, bất động sản hoặc hành chính.',
+  },
+  'Thái Dương': {
+    headline: 'Nhiệt tình và hay giúp người',
+    starNature:
+      'Người mang mệnh Thái Dương thường rộng lượng, nhiệt tình và dễ truyền năng lượng cho người xung quanh. ' +
+      'Họ thích giúp đỡ và được công nhận, nhưng dễ nhận phần việc nhiều hơn sức mình.',
+    essence:
+      'Bạn là người rộng lượng, nhiệt tình và thích giúp đỡ người khác. ' +
+      'Bạn thường đặt nỗi lo của mình xuống để lo cho người khác trước.',
+    gift:
+      'Bạn có khả năng truyền năng lượng và động viên tập thể bằng sự chân thành. ' +
+      'Khi người khác mất phương hướng, bạn thường là người đưa ra hướng đi rõ ràng.',
+    shadow:
+      'Điểm yếu là dễ nhận quá nhiều việc rồi âm thầm mệt mỏi. ' +
+      'Bạn nên để người khác cùng làm và cho phép mình nghỉ ngơi.',
+    keyTraits: ['Rộng lượng', 'Truyền cảm hứng', 'Lạc quan', 'Dễ ôm đồm'],
+    lifePath:
+      'Những nơi cần sự hiện diện và truyền lửa: giáo dục, truyền thông, cộng đồng hoặc vai trò dẫn dắt tinh thần.',
+  },
+  'Thái Âm': {
+    headline: 'Tinh tế và biết lắng nghe',
+    starNature:
+      'Người mang mệnh Thái Âm thường tinh tế, giàu cảm xúc và nhạy với những điều người khác chưa nói ra. ' +
+      'Họ thích yên tĩnh, hay chăm sóc người khác và dễ bị ảnh hưởng bởi không khí xung quanh.',
+    essence:
+      'Bạn là người tinh tế, nhạy cảm và dễ nhận ra cảm xúc của người khác. ' +
+      'Bạn thích những khoảng yên tĩnh để suy nghĩ và hồi phục.',
+    gift:
+      'Bạn giỏi lắng nghe và nhận ra điều người khác đang cần mà không cần họ nói ra. ' +
+      'Bạn cũng có khả năng biến cảm xúc thành lời nói hoặc công việc có chiều sâu.',
+    shadow:
+      'Điểm yếu là dễ hấp thụ cảm xúc của người khác rồi tự chịu đựng một mình. ' +
+      'Bạn cần đặt ranh giới rõ ràng để giữ được sự cân bằng.',
+    keyTraits: ['Tinh tế', 'Giàu trực giác', 'Biết lắng nghe', 'Dễ bị cảm xúc cuốn'],
+    lifePath:
+      'Những công việc chạm đến cảm xúc và sự chữa lành: nghệ thuật, tư vấn, chăm sóc hoặc giáo dục.',
+  },
+  'Vũ Khúc': {
+    headline: 'Thực tế và làm việc chắc chắn',
+    starNature:
+      'Người mang mệnh Vũ Khúc thường thực tế, kỷ luật và coi trọng những gì đo đếm được. ' +
+      'Họ làm việc chắc chắn, ít nói lời thừa, nhưng đôi khi khó mở lòng và ngại nhờ giúp đỡ.',
+    essence:
+      'Bạn là người thực tế, kỷ luật và làm việc đến nơi đến chốn. ' +
+      'Bạn tin vào những gì làm ra được và kiểm chứng được.',
+    gift:
+      'Bạn biết cách biến nguồn lực thành công việc cụ thể và có kết quả. ' +
+      'Bạn cũng giỏi đặt câu hỏi đúng lúc để tránh những quyết định vội vàng.',
+    shadow:
+      'Điểm yếu là muốn kiểm soát mọi thứ nên khó nhờ người khác giúp. ' +
+      'Bạn nên học cách mềm mỏng hơn và chấp nhận sự giúp đỡ.',
+    keyTraits: ['Thực tế', 'Kỷ luật', 'Giỏi lo liệu', 'Cần học cách nhận giúp đỡ'],
+    lifePath:
+      'Những lĩnh vực cần sự chính xác và tay nghề: tài chính, kinh doanh, kỹ thuật hoặc quản trị nguồn lực.',
+  },
+  'Liêm Trinh': {
+    headline: 'Nguyên tắc và thẳng thắn',
+    starNature:
+      'Người mang mệnh Liêm Trinh thường có nguyên tắc, thẳng thắn và coi trọng sự công bằng. ' +
+      'Họ giữ lập trường vững vàng, nhưng đôi khi quá nghiêm khắc khiến người khác thấy khó gần.',
+    essence:
+      'Bạn là người có nguyên tắc, thẳng thắn và coi trọng sự công bằng. ' +
+      'Bạn không dễ bước qua những giới hạn mình đã đặt ra.',
+    gift:
+      'Bạn đủ kiên định để giữ một chuẩn mực khi xung quanh dao động. ' +
+      'Sự ngay thẳng của bạn tạo được niềm tin ở người khác.',
+    shadow:
+      'Điểm yếu là dễ biến nguyên tắc thành cứng nhắc và khắt khe với người xung quanh. ' +
+      'Bạn nên mềm mỏng hơn mà vẫn giữ được lập trường.',
+    keyTraits: ['Ngay thẳng', 'Có nguyên tắc', 'Giữ lập trường', 'Dễ nghiêm khắc quá mức'],
+    lifePath:
+      'Những nơi cần sự minh bạch và trách nhiệm: pháp lý, quản lý, giáo dục hoặc công việc đòi hỏi chuẩn mực rõ ràng.',
+  },
+  'Tham Lang': {
+    headline: 'Tò mò và nhiều tài lẻ',
+    starNature:
+      'Người mang mệnh Tham Lang thường tò mò, nhiều tài lẻ và có sức hút tự nhiên với đám đông. ' +
+      'Họ ham trải nghiệm và học nhanh, nhưng cần giữ độ sâu để không bị phân tán.',
+    essence:
+      'Bạn là người tò mò, thích trải nghiệm và học nhiều thứ mới. ' +
+      'Bạn có sức hút tự nhiên và dễ tạo không khí vui vẻ cho tập thể.',
+    gift:
+      'Bạn học nhanh qua trải nghiệm và biết cách nối những lĩnh vực khác nhau thành một việc có ích. ' +
+      'Bạn cũng khéo giao tiếp nên dễ mở được nhiều cơ hội.',
+    shadow:
+      'Điểm yếu là dễ phân tán vì ham quá nhiều thứ, hoặc để cảm xúc cuốn vào những lựa chọn hấp dẫn. ' +
+      'Bạn nên chọn vài việc đủ sâu để theo lâu dài.',
+    keyTraits: ['Tò mò', 'Có sức hút', 'Học nhiều nghề', 'Cần giữ độ sâu'],
+    lifePath:
+      'Những công việc cần sự giao thoa và cảm hứng: kinh doanh, truyền thông, nghệ thuật hoặc ngoại giao.',
+  },
+  'Cự Môn': {
+    headline: 'Sắc sảo và thẳng thắn',
+    starNature:
+      'Người mang mệnh Cự Môn thường sắc sảo, thẳng thắn và giỏi nhìn ra chỗ chưa thật của vấn đề. ' +
+      'Họ hay đặt câu hỏi và diễn đạt ý phức tạp, nhưng lời nói đôi khi nhanh hơn sự thấu hiểu.',
+    essence:
+      'Bạn là người sắc sảo, thích tìm hiểu vấn đề đến tận cùng. ' +
+      'Bạn không thích sự mơ hồ và thường đặt câu hỏi để làm rõ mọi chuyện.',
+    gift:
+      'Bạn có khả năng diễn đạt những điều phức tạp thành câu dễ hiểu. ' +
+      'Bạn cũng đủ can đảm nói ra điều cần nói, điều giúp tập thể tránh được sai lầm.',
+    shadow:
+      'Điểm yếu là lời nói có thể đến nhanh hơn sự thấu hiểu và làm người khác tổn thương. ' +
+      'Bạn nên chậm lại và chọn cách nói phù hợp hơn.',
+    keyTraits: ['Sắc sảo', 'Thẳng thắn', 'Giỏi đặt câu hỏi', 'Cần giữ hòa khí'],
+    lifePath:
+      'Những nơi cần tiếng nói và sự phân tích: tư vấn, luật, nghiên cứu, giảng dạy hoặc truyền thông.',
+  },
+  'Thiên Cơ': {
+    headline: 'Suy nghĩ kỹ và làm việc có kế hoạch',
+    starNature:
+      'Người mang mệnh Thiên Cơ thường thông minh, thích quan sát và suy nghĩ kỹ trước khi làm. ' +
+      'Họ ít nói nhưng thường nhìn ra vấn đề trước người khác.',
+    essence:
+      'Bạn là người thích quan sát, phân tích và tìm hiểu vấn đề đến tận gốc. ' +
+      'Bạn không thích làm việc qua loa nên thường chuẩn bị kỹ trước khi bắt đầu.',
+    gift:
+      'Bạn học nhanh, có khả năng nhìn ra điểm bất hợp lý và lập kế hoạch khá tốt.',
+    shadow:
+      'Điểm yếu là dễ nghĩ quá nhiều, chờ mọi thứ hoàn hảo rồi mới hành động, nên đôi khi bỏ lỡ cơ hội.',
+    keyTraits: ['Sâu sắc', 'Cẩn trọng', 'Giỏi hoạch định', 'Dễ trì hoãn vì suy nghĩ'],
+    lifePath:
+      'Những công việc cần phân tích và chuẩn bị kỹ: nghiên cứu, giáo dục, công nghệ hoặc tư vấn.',
+  },
+  'Thiên Đồng': {
+    headline: 'Hiền hòa và dễ chịu',
+    starNature:
+      'Người mang mệnh Thiên Đồng thường hiền hòa, dễ chịu và biết tìm niềm vui trong những điều giản dị. ' +
+      'Họ ngại va chạm, hay nhường nhịn, nhưng đôi khi vì thế mà chịu thiệt.',
+    essence:
+      'Bạn là người hiền hòa, dễ chịu và biết tận hưởng những điều giản dị. ' +
+      'Bạn ít khi tranh cãi và thường nhường nhịn người khác.',
+    gift:
+      'Bạn có mặt ở đâu là ở đó bớt căng thẳng, vì bạn biết lắng nghe và chấp nhận người khác. ' +
+      'Bạn cũng biết tạo niềm vui từ những việc nhỏ.',
+    shadow:
+      'Điểm yếu là dễ đồng ý cho xong rồi tự chịu thiệt. ' +
+      'Bạn nên học cách nói lời từ chối nhẹ nhàng khi cần.',
+    keyTraits: ['Hiền hòa', 'Dễ chịu', 'Biết đủ', 'Cần học cách từ chối'],
+    lifePath:
+      'Những công việc cần sự tận tâm và chăm sóc: y tế, dịch vụ, giáo dục, hoặc nơi cần hóa giải căng thẳng.',
+  },
+  'Thiên Tướng': {
+    headline: 'Đáng tin và có trách nhiệm',
+    starNature:
+      'Người mang mệnh Thiên Tướng thường đáng tin, có trách nhiệm và giữ lời như một nguyên tắc sống. ' +
+      'Họ thích sự rõ ràng, ổn định, nhưng đôi khi bám vào khuôn mẫu nên ngại thay đổi.',
+    essence:
+      'Bạn là người đáng tin, có trách nhiệm và giữ lời. ' +
+      'Bạn thích sự rõ ràng và làm việc theo kế hoạch đã định.',
+    gift:
+      'Bạn giữ cho công việc vận hành đúng nhịp và là điểm tựa khi mọi thứ chao đảo. ' +
+      'Sự trung thực trong công việc của bạn khiến người khác nhớ lâu.',
+    shadow:
+      'Điểm yếu là bám vào khuôn mẫu nên ngại những thay đổi cần thiết. ' +
+      'Bạn nên linh hoạt hơn để thích nghi với hoàn cảnh mới.',
+    keyTraits: ['Đáng tin', 'Có trách nhiệm', 'Giữ lời', 'Cần linh hoạt hơn'],
+    lifePath:
+      'Những nơi cần sự vận hành và tin cậy: hành chính, quản lý, dịch vụ công hoặc điều phối công việc.',
+  },
+  'Thiên Lương': {
+    headline: 'Nhân hậu và điềm đạm',
+    starNature:
+      'Người mang mệnh Thiên Lương thường nhân hậu, điềm đạm và hay chăm sóc người khác trước khi nghĩ đến mình. ' +
+      'Họ từng trải và lo xa, nhưng dễ bận tâm chuyện bao đồng đến mức quên nhu cầu của bản thân.',
+    essence:
+      'Bạn là người nhân hậu, điềm đạm và quan tâm đến người khác. ' +
+      'Bạn thường nghĩ đến những điều lâu bền hơn là niềm vui trước mắt.',
+    gift:
+      'Bạn nhận ra điều gì đang cần được chăm sóc trước khi nó đổ vỡ, ở người khác cũng như trong tập thể. ' +
+      'Sự điềm đạm của bạn khiến người khác thấy an tâm.',
+    shadow:
+      'Điểm yếu là lo cho người khác quá nhiều mà quên hỏi mình cần gì. ' +
+      'Bạn nên giữ lại một phần năng lượng cho bản thân.',
+    keyTraits: ['Nhân hậu', 'Điềm đạm', 'Từng trải', 'Dễ lo chuyện bao đồng'],
+    lifePath:
+      'Những công việc chạm tới sự chăm sóc và đạo đức: y tế, giáo dục, tâm lý, hoặc công việc thiện nguyện.',
+  },
+  'Thất Sát': {
+    headline: 'Mạnh mẽ và quyết đoán',
+    starNature:
+      'Người mang mệnh Thất Sát thường mạnh mẽ, quyết đoán và không ngại đương đầu với thử thách. ' +
+      'Họ phản ứng nhanh và dám đi đầu, nhưng đôi khi sự quyết liệt khiến người thân thấy khó gần.',
+    essence:
+      'Bạn là người mạnh mẽ, quyết đoán và không ngại thử thách. ' +
+      'Bạn thích hành động hơn là ngồi chờ và thường dám đi trước người khác.',
+    gift:
+      'Khi việc khó cần một người dám bước lên trước, bạn thường là người đó. ' +
+      'Bạn có khả năng chịu áp lực và đứng dậy nhanh sau thất bại.',
+    shadow:
+      'Điểm yếu là sự quyết liệt dễ thành cứng nhắc, khiến người thân khó gần. ' +
+      'Bạn nên học cách lắng nghe và giảm tốc đúng lúc.',
+    keyTraits: ['Mạnh mẽ', 'Quyết đoán', 'Dám đi đầu', 'Cần học lắng nghe'],
+    lifePath:
+      'Những lĩnh vực cần sự quyết liệt và bản lĩnh: kinh doanh, quản lý, công việc tiên phong hoặc xử lý khủng hoảng.',
+  },
+  'Phá Quân': {
+    headline: 'Sáng tạo và thích đổi mới',
+    starNature:
+      'Người mang mệnh Phá Quân thường sáng tạo, ưa đổi mới và muốn tự tay dựng lại những gì đã cũ. ' +
+      'Họ dám khởi đầu và học nhanh qua va chạm, nhưng dễ bốc đồng và đổi hướng trước khi kịp nhìn lại.',
+    essence:
+      'Bạn là người sáng tạo, thích đổi mới và không muốn đứng yên. ' +
+      'Bạn bị thu hút bởi những điều chưa có và muốn tự tay làm lại theo cách của mình.',
+    gift:
+      'Bạn dám tạo ra những khởi đầu mà người khác ngại làm. ' +
+      'Bạn học rất nhanh qua va chạm và thường rút ra được bài học cụ thể.',
+    shadow:
+      'Điểm yếu là dễ phá bỏ cái cũ trước khi giữ lại những gì còn tốt, hoặc đổi hướng quá nhanh. ' +
+      'Bạn nên chậm lại để nhìn lại trước khi quyết định.',
+    keyTraits: ['Sáng tạo', 'Dũng cảm', 'Thích đổi mới', 'Dễ bốc đồng'],
+    lifePath:
+      'Những nơi cần sự đổi mới và tinh thần khởi tạo: khởi nghiệp, sáng tạo, đổi mới sản phẩm hoặc công việc cần phá cách.',
+  },
+  fallback: FALLBACK_NARRATIVE,
+};
+
 /** Hướng luận cốt lõi của từng cung khi cung Thân đóng tại cung đó. */
 const BODY_PALACE_FOCUS: Readonly<Record<PalaceId, string>> = {
   menh: 'bản thân và việc tự lập nghiệp',
@@ -105,6 +393,46 @@ const BODY_PALACE_FOCUS: Readonly<Record<PalaceId, string>> = {
   phuThe: 'hôn nhân và đời sống tình cảm',
   huynhDe: 'anh em và các mối quan hệ đồng trang lứa',
 };
+
+interface StarFormation {
+  /** Các chính tinh phải xuất hiện (gộp) trong ba cung Mệnh, Tài Bạch, Quan Lộc. */
+  stars: readonly string[];
+  meaning: string;
+}
+
+/** Sắp xếp từ bộ nhiều sao đến ít sao để ưu tiên cách cục cụ thể nhất. */
+const STAR_FORMATIONS: readonly StarFormation[] = [
+  {
+    stars: ['Tử Vi', 'Thiên Phủ', 'Vũ Khúc', 'Thiên Tướng'],
+    meaning:
+      'Một hướng đi thiên về dựng nền và giữ vững những gì đã gây dựng; bạn dễ được tín nhiệm ở vai trò điều phối, quản trị hoặc dẫn dắt một tập thể. ' +
+      'Sức mạnh nằm ở sự ổn định và khả năng nhìn xa, hơn là những cú bứt phá liều lĩnh.',
+  },
+  {
+    stars: ['Thiên Cơ', 'Thái Âm', 'Thiên Đồng', 'Thiên Lương'],
+    meaning:
+      'Một hướng đi của trí tuệ và sự thấu cảm: bạn dễ tìm được chỗ đứng ở những nơi cần phân tích, hoạch định và chăm sóc con người. ' +
+      'Con đường ấy có thể tiến bằng sự bền bỉ và tích lũy, không cần ồn ào.',
+  },
+  {
+    stars: ['Thất Sát', 'Phá Quân', 'Tham Lang'],
+    meaning:
+      'Một hướng đi của người tiên phong: bạn dễ bị cuốn vào những nơi cần đổi mới, cạnh tranh và dám phá cái cũ. ' +
+      'Phần thưởng thường lớn nhưng đi kèm thử thách, nên biết giữ nhịp và lượng sức là điều quan trọng.',
+  },
+  {
+    stars: ['Tử Vi', 'Vũ Khúc', 'Liêm Trinh'],
+    meaning:
+      'Một hướng đi của kỷ luật và trách nhiệm: bạn hợp với những nơi cần sự rõ ràng, minh bạch và một chuẩn mực đủ vững. ' +
+      'Điểm mạnh là sự ngay thẳng và bền chí; điều cần giữ là đừng để nguyên tắc thành cứng nhắc.',
+  },
+  {
+    stars: ['Cự Môn', 'Thái Dương'],
+    meaning:
+      'Một hướng đi của tiếng nói và sự hiện diện: bạn dễ phát huy ở nơi cần thuyết phục, truyền đạt hoặc đứng ra kết nối người khác. ' +
+      'Càng được nhiều người biết đến, càng cần giữ lời nói có trọng lượng.',
+  },
+];
 
 interface TamHopArchetype {
   name: string;
@@ -185,25 +513,72 @@ function bestBrightness(stars: readonly Star[]): BrightnessLevel | undefined {
   return best;
 }
 
-function buildIntroParagraph(chart: ZiweiChart): string {
+function resolveStarNarrative(chart: ZiweiChart): StarNarrative {
+  const menh = findPalace(chart, 'menh');
+  for (const star of menh?.majorStars ?? []) {
+    const narrative = STAR_NARRATIVES[star.name];
+    if (narrative) return narrative;
+  }
+  return FALLBACK_NARRATIVE;
+}
+
+function buildIntroParagraph(narrative: StarNarrative): string {
+  return narrative.starNature;
+}
+
+function buildMenhParagraph(narrative: StarNarrative): string {
+  return `${narrative.essence} ${narrative.gift} ${narrative.shadow}`;
+}
+
+function lowerFirst(text: string): string {
+  return text.charAt(0).toLowerCase() + text.slice(1);
+}
+
+function buildTamHopAndThanParagraph(chart: ZiweiChart, narrative: StarNarrative): string {
+  const parts: string[] = [];
+
+  const bodyPalace = findBodyPalace(chart);
+  if (bodyPalace) {
+    parts.push(
+      `trọng tâm nửa sau cuộc đời thường nghiêng về ${BODY_PALACE_FOCUS[bodyPalace.id]}. ` +
+        'Đây là lĩnh vực bạn nên dành nhiều thời gian và công sức.'
+    );
+  }
+
+  const tamHopPalaces = (['menh', 'taiBach', 'quanLoc'] as const)
+    .map((id) => findPalace(chart, id))
+    .filter((p): p is Palace => p !== undefined);
+  const combined = new Set(tamHopPalaces.flatMap((p) => (p.majorStars ?? []).map((s) => s.name)));
+  const formation = STAR_FORMATIONS.find((item) =>
+    item.stars.every((name) => combined.has(name))
+  );
+  if (formation) parts.push(formation.meaning);
+
+  parts.push(`Bạn hợp với ${lowerFirst(narrative.lifePath)}`);
+
+  const rest = parts.join(' ');
+  return `Về tương lai, ${lowerFirst(rest)}`;
+}
+
+function buildTechnicalIntro(chart: ZiweiChart): string {
   const plate = chart.heavenPlate;
-  if (!plate) return '';
+  if (!plate?.napAm || !plate.fiveElementsClass) return '';
 
   const relationSummary =
     plate.elementRelationSummary && plate.elementRelationSummary !== 'Cần tính chi tiết'
       ? plate.elementRelationSummary
       : describeElementRelation(plate.napAm.element, plate.fiveElementsClass.element);
 
-  return (
-    `Lá số của **${plate.name || 'Đương số'}** thuộc **${plate.yinYangGenderLabel}**, ` +
-    `Bản Mệnh Nạp Âm là **${plate.napAm.name}**, lập ở **${plate.fiveElementsClass.name}**. ` +
-    `${relationSummary} ` +
-    `Chủ Mệnh là **${plate.soulLord}**, Chủ Thân là **${plate.bodyLord}**. ` +
-    'Đây là nền tảng cho tính cách và cách đương số đối diện với hoàn cảnh sống.'
-  );
+  return [
+    `Bạn thuộc **${plate.yinYangGenderLabel}**, Bản Mệnh Nạp Âm là **${plate.napAm.name}**, lập ở **${plate.fiveElementsClass.name}**.`,
+    relationSummary,
+    `Chủ Mệnh là **${plate.soulLord}**, Chủ Thân là **${plate.bodyLord}**.`,
+  ]
+    .filter(Boolean)
+    .join(' ');
 }
 
-function buildMenhParagraph(chart: ZiweiChart): string {
+function buildTechnicalMenh(chart: ZiweiChart): string {
   const menh = findPalace(chart, 'menh');
   if (!menh) return '';
 
@@ -289,7 +664,7 @@ function buildPalaceSentence(label: string, palace: Palace | undefined): string 
   return `Cung ${label} tọa **${getBranchLabel(palace.branch)}**, ${body}.`;
 }
 
-function buildTamHopAndThanParagraph(chart: ZiweiChart): string {
+function buildTechnicalFormation(chart: ZiweiChart): string {
   const tamHopPalaces = (['menh', 'taiBach', 'quanLoc'] as const)
     .map((id) => findPalace(chart, id))
     .filter((p): p is Palace => p !== undefined);
@@ -332,6 +707,44 @@ function buildTamHopAndThanParagraph(chart: ZiweiChart): string {
   }
 
   return parts.join(' ');
+}
+
+function buildTechnicalConclusion(chart: ZiweiChart): string {
+  const menh = findPalace(chart, 'menh');
+  const stars = menh?.majorStars ?? [];
+  const best = bestBrightness(stars);
+
+  let trajectory: string;
+  if (stars.length === 0) {
+    trajectory =
+      'số mệnh thường thăng trầm theo hoàn cảnh, thành công đến khi đương số tự xác định được hướng đi và kiên trì theo đuổi.';
+  } else if (best === 'mieu' || best === 'vuong' || best === 'dac') {
+    trajectory =
+      'nền tảng khá vững, tiềm năng tích lũy đều và càng về sau càng rõ nét, đặc biệt khi chọn đúng lĩnh vực.';
+  } else if (best === 'binh') {
+    trajectory =
+      'số mệnh thăng trầm xen kẽ, giai đoạn đầu thường phải nỗ lực nhiều, thành quả đến từ sự bền bỉ và tích lũy kinh nghiệm.';
+  } else if (best === 'ham') {
+    trajectory =
+      'số mệnh nhiều biến động, đương số dễ gặp thử thách lớn hơn người khác, nhưng nếu kiên trì vượt qua được thì bài học rút ra rất sâu sắc.';
+  } else {
+    trajectory =
+      'số mệnh mang tính trung tính, thành công phụ thuộc vào sự cân bằng giữa nỗ lực bản thân và hoàn cảnh, càng về sau càng rõ nét khi biết phát huy thế mạnh.';
+  }
+
+  const lessons: string[] = [];
+  if (menh?.hasTuan) lessons.push('học cách kiên nhẫn chờ thời cơ');
+  if (menh?.hasTriet) lessons.push('giữ mục tiêu rõ ràng khi hoàn cảnh thay đổi');
+  if (menh?.maleficStars?.length) {
+    lessons.push('tiết chế những điểm mạnh đã thành thói quen cực đoan');
+  }
+  lessons.push('tin vào lộ trình dài hạn thay vì chỉ nhìn kết quả ngắn hạn');
+
+  return (
+    `Xét riêng cung Mệnh, ${trajectory} ` +
+    `Bài học cần rèn luyện là ${lessons.join('; ')}. ` +
+    'Điểm số từng chủ đề được trình bày riêng trong mục “Khái quát lá số”.'
+  );
 }
 
 const SAT_PHA_THAM_STARS: readonly string[] = ['Thất Sát', 'Phá Quân', 'Tham Lang'];
@@ -449,279 +862,36 @@ function buildConclusionQuote(chart: ZiweiChart): { quote: string; tone: Conclus
   return { quote: pickConclusionQuote(category, menh), tone };
 }
 
-function buildConclusionParagraph(chart: ZiweiChart, description: string): string {
-  const menh = findPalace(chart, 'menh');
-  const stars = menh?.majorStars ?? [];
-  const best = bestBrightness(stars);
-
-  let trajectory: string;
-  if (stars.length === 0) {
-    trajectory =
-      'số mệnh thường thăng trầm theo hoàn cảnh, thành công đến khi đương số tự xác định được hướng đi và kiên trì theo đuổi.';
-  } else if (best === 'mieu' || best === 'vuong' || best === 'dac') {
-    trajectory =
-      'số mệnh có nền tảng khá vững, thành tựu tích lũy đều và càng về sau càng rõ nét, đặc biệt khi chọn đúng lĩnh vực.';
-  } else if (best === 'binh') {
-    trajectory =
-      'số mệnh thăng trầm xen kẽ, giai đoạn đầu thường phải nỗ lực nhiều, thành quả đến từ sự bền bỉ và tích lũy kinh nghiệm.';
-  } else if (best === 'ham') {
-    trajectory =
-      'số mệnh nhiều biến động, đương số dễ gặp thử thách lớn hơn người khác, nhưng nếu kiên trì vượt qua được thì bài học rút ra rất sâu sắc.';
-  } else {
-    trajectory =
-      'số mệnh mang tính trung tính, thành công phụ thuộc vào sự cân bằng giữa nỗ lực bản thân và hoàn cảnh, càng về sau càng rõ nét khi biết phát huy thế mạnh.';
-  }
-
-  const lessons: string[] = [];
-  if (menh?.hasTuan) lessons.push('học cách kiên nhẫn chờ thời cơ');
-  if (menh?.hasTriet) lessons.push('giữ mục tiêu rõ ràng khi hoàn cảnh thay đổi');
-  if (menh?.maleficStars?.length) {
-    lessons.push('tiết chế những điểm mạnh đã thành thói quen cực đoan');
-  }
-  lessons.push('tin vào lộ trình dài hạn thay vì chỉ nhìn kết quả ngắn hạn');
-
-  return (
-    `${description} Nhìn tổng thể, ${trajectory} ` +
-    `Bài học cần rèn luyện là ${lessons.join('; ')}.`
-  );
-}
-
 export function generatePersonalSummary(chart: ZiweiChart): PersonalSummary {
-  const menhPalace = chart.palaces.find((p) => p.id === 'menh');
-  const majorStars = menhPalace?.majorStars || [];
-  const starNames = majorStars.map((s) => s.name);
-
-  let headline = '';
-  let description = '';
-  let keyTraits: string[] = [];
-  let lifePath = '';
-
-  if (starNames.includes('Tử Vi')) {
-    headline = 'Bạn là người lãnh đạo bẩm sinh';
-    description =
-      'Với khí chất cao quý và tố chất lãnh đạo, bạn được mọi người tôn trọng và nể phục. ' +
-      'Bạn có khả năng quyết đoán, tầm nhìn xa, và thích hợp với vai trò quản lý. ' +
-      'Tuy nhiên, đôi khi quá tự cao và cố chấp có thể khiến người khác e dè. ' +
-      'Nếu biết tiết chế, bạn sẽ giữ được những người đồng hành bền lâu. ' +
-      'Con đường thành công của bạn là lãnh đạo, quản lý hoặc chủ doanh nghiệp.';
-    keyTraits = [
-      'Khí chất cao quý, được tôn trọng',
-      'Khả năng lãnh đạo, quyết đoán',
-      'Tầm nhìn xa, chiến lược',
-      'Cần tiết chế cái tôi',
-    ];
-    lifePath = 'Lãnh đạo, quản lý, chính trị, kinh doanh';
-  } else if (starNames.includes('Thiên Phủ')) {
-    headline = 'Bạn là người ổn định, đáng tin cậy';
-    description =
-      'Với tính cách ổn định và đáng tin cậy, bạn là chỗ dựa vững chắc cho gia đình và bạn bè. ' +
-      'Bạn có khả năng quản lý tài chính tốt, thích sự an toàn và ổn định. ' +
-      'Bạn không thích rủi ro, nhưng bù lại rất kiên nhẫn và bền bỉ. ' +
-      'Con đường thành công của bạn là trong lĩnh vực tài chính, bất động sản, hoặc hành chính.';
-    keyTraits = [
-      'Ổn định, đáng tin cậy',
-      'Quản lý tài chính tốt',
-      'Kiên nhẫn, bền bỉ',
-      'Không thích rủi ro',
-    ];
-    lifePath = 'Tài chính, bất động sản, hành chính';
-  } else if (starNames.includes('Thái Dương')) {
-    headline = 'Bạn là người nhiệt tình, tràn đầy năng lượng';
-    description =
-      'Với tính cách phóng khoáng và nhiệt tình, bạn luôn tràn đầy năng lượng và lạc quan. ' +
-      'Bạn có khả năng truyền cảm hứng cho người khác, thích hợp với vai trò lãnh đạo tinh thần. ' +
-      'Tuy nhiên, đôi khi bạn quá nhiệt tình mà ôm đồm quá nhiều việc. ' +
-      'Con đường thành công của bạn là trong lĩnh vực giáo dục, truyền thông, hoặc diễn thuyết.';
-    keyTraits = [
-      'Nhiệt tình, lạc quan',
-      'Có khả năng truyền cảm hứng',
-      'Phóng khoáng, rộng rãi',
-      'Đôi khi ôm đồm quá nhiều',
-    ];
-    lifePath = 'Giáo dục, truyền thông, diễn thuyết';
-  } else if (starNames.includes('Thái Âm')) {
-    headline = 'Bạn là người nhạy cảm, giàu tình cảm';
-    description =
-      'Với tính cách nhạy cảm và giàu tình cảm, bạn có trực giác tốt và thấu hiểu người khác. ' +
-      'Bạn thích sự yên tĩnh, nghệ thuật, và có tài năng sáng tạo. ' +
-      'Tuy nhiên, đôi khi bạn quá nhạy cảm và dễ bị ảnh hưởng bởi cảm xúc. ' +
-      'Con đường thành công của bạn là trong lĩnh vực nghệ thuật, tâm lý, hoặc y tế.';
-    keyTraits = [
-      'Nhạy cảm, giàu tình cảm',
-      'Trực giác tốt, thấu hiểu người khác',
-      'Có tài năng nghệ thuật',
-      'Đôi khi quá nhạy cảm',
-    ];
-    lifePath = 'Nghệ thuật, tâm lý, y tế';
-  } else if (starNames.includes('Vũ Khúc')) {
-    headline = 'Bạn là người thực tế, giỏi quản lý tài chính';
-    description =
-      'Với tính cách thực tế và giỏi quản lý, bạn có khả năng kiếm tiền và giữ tiền tốt. ' +
-      'Bạn thích sự rõ ràng, minh bạch, và không thích những thứ mơ hồ. ' +
-      'Bạn có khả năng kinh doanh tốt, nhưng đôi khi quá tập trung vào tiền bạc. ' +
-      'Con đường thành công của bạn là trong lĩnh vực tài chính, ngân hàng, hoặc kinh doanh.';
-    keyTraits = [
-      'Thực tế, giỏi quản lý',
-      'Khả năng kiếm tiền tốt',
-      'Thích sự rõ ràng, minh bạch',
-      'Đôi khi quá tập trung vào tiền bạc',
-    ];
-    lifePath = 'Tài chính, ngân hàng, kinh doanh';
-  } else if (starNames.includes('Liêm Trinh')) {
-    headline = 'Bạn là người chính trực, có nguyên tắc';
-    description =
-      'Với tính cách chính trực và có nguyên tắc, bạn luôn giữ vững lập trường và không dễ bị lung lay. ' +
-      'Bạn có khả năng lãnh đạo, nhưng đôi khi quá cứng nhắc và không linh hoạt. ' +
-      'Bạn thích sự công bằng, minh bạch, và không thích những thứ mờ ám. ' +
-      'Con đường thành công của bạn là trong lĩnh vực pháp luật, chính trị, hoặc quản lý.';
-    keyTraits = [
-      'Chính trực, có nguyên tắc',
-      'Giữ vững lập trường',
-      'Thích sự công bằng, minh bạch',
-      'Đôi khi quá cứng nhắc',
-    ];
-    lifePath = 'Pháp luật, chính trị, quản lý';
-  } else if (starNames.includes('Tham Lang')) {
-    headline = 'Bạn là người tài năng, có sức hút';
-    description =
-      'Với tính cách tài năng và có sức hút, bạn dễ dàng thu hút người khác và có nhiều cơ hội trong cuộc sống. ' +
-      'Bạn có khả năng giao tiếp tốt, thích hợp với vai trò ngoại giao, kinh doanh. ' +
-      'Tuy nhiên, sự đào hoa có thể khiến bạn vướng vào thị phi tình cảm; cần giữ chừng mực để tránh rạn nứt. ' +
-      'Con đường thành công của bạn là trong lĩnh vực kinh doanh, ngoại giao, hoặc nghệ thuật.';
-    keyTraits = [
-      'Tài năng, có sức hút',
-      'Khả năng giao tiếp tốt',
-      'Nhiều cơ hội trong cuộc sống',
-      'Cần giữ chừng mực trong tình cảm',
-    ];
-    lifePath = 'Kinh doanh, ngoại giao, nghệ thuật';
-  } else if (starNames.includes('Cự Môn')) {
-    headline = 'Bạn là người thẳng thắn, có tài phân tích';
-    description =
-      'Với tính cách thẳng thắn và có tài phân tích, bạn có khả năng nhìn nhận vấn đề một cách sắc bén. ' +
-      'Bạn thích tranh luận, nghiên cứu, và không sợ đối mặt với sự thật. ' +
-      'Tuy nhiên, lời nói đôi khi sắc bén dễ sinh hiểu lầm; cần giữ hòa khí trong giao tiếp. ' +
-      'Con đường thành công của bạn là trong lĩnh vực luật, tư vấn, hoặc nghiên cứu.';
-    keyTraits = [
-      'Thẳng thắn, có tài phân tích',
-      'Nhìn nhận vấn đề sắc bén',
-      'Thích tranh luận, nghiên cứu',
-      'Cần giữ hòa khí trong lời nói',
-    ];
-    lifePath = 'Luật, tư vấn, nghiên cứu';
-  } else if (starNames.includes('Thiên Cơ')) {
-    headline = 'Bạn là người thông minh, có trí tuệ';
-    description =
-      'Với trí tuệ thông minh và khả năng phân tích tốt, bạn dễ dàng giải quyết các vấn đề phức tạp. ' +
-      'Bạn thích học hỏi, nghiên cứu, và không ngừng phát triển bản thân. ' +
-      'Tuy nhiên, đôi khi bạn quá suy nghĩ mà không hành động. ' +
-      'Con đường thành công của bạn là trong lĩnh vực giáo dục, nghiên cứu, hoặc công nghệ.';
-    keyTraits = [
-      'Thông minh, có trí tuệ',
-      'Khả năng phân tích tốt',
-      'Thích học hỏi, nghiên cứu',
-      'Đôi khi quá suy nghĩ',
-    ];
-    lifePath = 'Giáo dục, nghiên cứu, công nghệ';
-  } else if (starNames.includes('Thiên Đồng')) {
-    headline = 'Bạn là người hiền lành, tốt bụng';
-    description =
-      'Với tính cách hiền lành và tốt bụng, bạn được mọi người yêu mến và tin tưởng. ' +
-      'Bạn thích sự hòa bình, không thích tranh chấp, và luôn sẵn sàng giúp đỡ người khác. ' +
-      'Tuy nhiên, đôi khi bạn quá nhu mì và dễ bị người khác lợi dụng. ' +
-      'Con đường thành công của bạn là trong lĩnh vực y tế, từ thiện, hoặc dịch vụ khách hàng.';
-    keyTraits = [
-      'Hiền lành, tốt bụng',
-      'Được mọi người yêu mến',
-      'Thích sự hòa bình',
-      'Đôi khi quá nhu mì',
-    ];
-    lifePath = 'Y tế, từ thiện, dịch vụ khách hàng';
-  } else if (starNames.includes('Thiên Tướng')) {
-    headline = 'Bạn là người có trách nhiệm, đáng tin cậy';
-    description =
-      'Với tính cách có trách nhiệm và đáng tin cậy, bạn luôn hoàn thành nhiệm vụ được giao. ' +
-      'Bạn thích sự ổn định, không thích thay đổi, và là người bạn đồng hành lý tưởng. ' +
-      'Tuy nhiên, đôi khi bạn quá bảo thủ và không thích nghi với thay đổi. ' +
-      'Con đường thành công của bạn là trong lĩnh vực hành chính, quản lý, hoặc dịch vụ công.';
-    keyTraits = [
-      'Có trách nhiệm, đáng tin cậy',
-      'Hoàn thành nhiệm vụ',
-      'Thích sự ổn định',
-      'Đôi khi quá bảo thủ',
-    ];
-    lifePath = 'Hành chính, quản lý, dịch vụ công';
-  } else if (starNames.includes('Thiên Lương')) {
-    headline = 'Bạn là người thiện lương, có phúc đức';
-    description =
-      'Với tính cách thiện lương và có phúc đức, bạn được quý nhân phù trợ và gặp nhiều may mắn. ' +
-      'Bạn thích giúp đỡ người khác, làm việc thiện, và luôn giữ tâm hồn trong sáng. ' +
-      'Tuy nhiên, đôi khi bạn quá tin người và dễ bị lợi dụng. ' +
-      'Con đường thành công của bạn là trong lĩnh vực y tế, giáo dục, hoặc từ thiện.';
-    keyTraits = [
-      'Thiện lương, có phúc đức',
-      'Được quý nhân phù trợ',
-      'Thích giúp đỡ người khác',
-      'Đôi khi quá tin người',
-    ];
-    lifePath = 'Y tế, giáo dục, từ thiện';
-  } else if (starNames.includes('Thất Sát')) {
-    headline = 'Bạn là người mạnh mẽ, quyết đoán';
-    description =
-      'Với tính cách mạnh mẽ và quyết đoán, bạn không sợ khó khăn và luôn tiến về phía trước. ' +
-      'Bạn có khả năng lãnh đạo, nhưng đôi khi quá cứng nhắc và độc đoán có thể khiến người khác e dè. ' +
-      'Cuộc đời nhiều thăng trầm, có thể gặp tai nạn hoặc thị phi; nếu thiếu kiềm chế, dễ rơi vào cảnh cô độc, ít người thân cận. ' +
-      'Biết lắng nghe và tiết chế sẽ giúp biến thử thách thành bản lĩnh. ' +
-      'Con đường phù hợp là những lĩnh vực cần sự quyết liệt và tinh thần tiên phong.';
-    keyTraits = [
-      'Mạnh mẽ, quyết đoán',
-      'Không sợ khó khăn',
-      'Thích sự thách thức',
-      'Cần mềm mỏng hơn trong giao tiếp',
-    ];
-    lifePath = 'Quân đội, cảnh sát, kinh doanh mạo hiểm';
-  } else if (starNames.includes('Phá Quân')) {
-    headline = 'Bạn là người sáng tạo, không ngại thay đổi';
-    description =
-      'Với tính cách sáng tạo và không ngại thay đổi, bạn luôn tìm kiếm những điều mới mẻ. ' +
-      'Bạn có khả năng đột phá, không thích sự gò bó, và luôn muốn thay đổi thế giới. ' +
-      'Tuy nhiên, sự bốc đồng có thể khiến bạn đưa ra quyết định vội vàng; cần cân nhắc hậu quả trước khi hành động. ' +
-      'Con đường thành công của bạn là trong lĩnh vực khởi nghiệp, sáng tạo, hoặc nghiên cứu.';
-    keyTraits = [
-      'Sáng tạo, không ngại thay đổi',
-      'Khả năng đột phá',
-      'Không thích sự gò bó',
-      'Cần tiết chế bốc đồng',
-    ];
-    lifePath = 'Khởi nghiệp, sáng tạo, nghiên cứu';
-  } else {
-    headline = 'Bạn là người linh hoạt, dễ thích nghi';
-    description =
-      'Với tính cách linh hoạt và dễ thích nghi, bạn có thể phù hợp với nhiều môi trường khác nhau. ' +
-      'Bạn cần xác định mục tiêu rõ ràng và tập trung vào đó. ' +
-      'Bạn có tiềm năng lớn, nhưng cần nỗ lực nhiều hơn để đạt được thành công. ' +
-      'Con đường thành công của bạn phụ thuộc vào nỗ lực và lựa chọn của bản thân.';
-    keyTraits = [
-      'Linh hoạt, dễ thích nghi',
-      'Có tiềm năng lớn',
-      'Cần xác định mục tiêu rõ ràng',
-      'Cần nỗ lực nhiều hơn',
-    ];
-    lifePath = 'Đa dạng, phụ thuộc vào nỗ lực bản thân';
-  }
-
+  const narrative = resolveStarNarrative(chart);
+  const menh = findPalace(chart, 'menh');
+  const starName = menh?.majorStars?.[0]?.name ?? 'Vô Chính Diệu';
   const conclusion = buildConclusionQuote(chart);
+
+  const introParagraph = buildIntroParagraph(narrative);
+  const menhStarParagraph = buildMenhParagraph(narrative);
+  const tamHopAndThanParagraph = buildTamHopAndThanParagraph(chart, narrative);
+  const description = [introParagraph, menhStarParagraph, tamHopAndThanParagraph].join(' ');
+
+  const technicalParagraphs = [
+    buildTechnicalIntro(chart),
+    buildTechnicalMenh(chart),
+    buildTechnicalFormation(chart),
+    buildTechnicalConclusion(chart),
+  ].filter((paragraph): paragraph is string => Boolean(paragraph));
 
   return {
     ownerName: chart.heavenPlate?.name || 'Đương số',
-    headline,
+    headline: narrative.headline,
     description,
-    keyTraits,
-    lifePath,
-    introParagraph: buildIntroParagraph(chart),
-    menhStarParagraph: buildMenhParagraph(chart),
-    tamHopAndThanParagraph: buildTamHopAndThanParagraph(chart),
-    conclusionParagraph: buildConclusionParagraph(chart, description),
+    keyTraits: [...narrative.keyTraits],
+    lifePath: narrative.lifePath,
+    starName,
+    technicalParagraphs,
+    introParagraph,
+    menhStarParagraph,
+    tamHopAndThanParagraph,
+    conclusionParagraph: '',
     conclusionQuote: conclusion.quote,
     conclusionTone: conclusion.tone,
   };

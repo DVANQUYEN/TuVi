@@ -35,8 +35,11 @@ export function PersonalSummaryCard({ summary }: PersonalSummaryProps): React.Re
     summary.introParagraph,
     summary.menhStarParagraph,
     summary.tamHopAndThanParagraph,
-    summary.conclusionParagraph,
   ].filter((paragraph): paragraph is string => Boolean(paragraph));
+
+  const technicalParagraphs = (summary.technicalParagraphs ?? []).filter((paragraph) =>
+    Boolean(paragraph)
+  );
 
   return (
     <section
@@ -46,13 +49,14 @@ export function PersonalSummaryCard({ summary }: PersonalSummaryProps): React.Re
       <CornerOrnaments size="md" />
       <h2
         id="personal-summary-heading"
-        className="mb-2 flex items-center gap-2 font-serif text-xl font-bold md:text-2xl"
+        className="mb-4 flex items-center gap-2 font-serif text-xl font-bold md:text-2xl"
       >
         <HanIcon han="命" size="lg" />
         <span>Luận giải</span>
       </h2>
-      {summary.ownerName && (
-        <p className="mb-4 text-sm text-muted">Lá số của {summary.ownerName}</p>
+
+      {summary.starName && (
+        <p className="mb-2 text-sm text-muted">Mệnh {summary.starName}</p>
       )}
 
       <div className="mb-4 text-xl font-bold text-gold">{summary.headline}</div>
@@ -99,6 +103,23 @@ export function PersonalSummaryCard({ summary }: PersonalSummaryProps): React.Re
         </h3>
         <p className="text-foreground">{summary.lifePath}</p>
       </div>
+
+      {technicalParagraphs.length > 0 && (
+        <div
+          data-testid="personal-summary-technical"
+          className="mt-6 border-t border-gold/20 pt-5"
+        >
+          <h3 className="mb-3 flex items-center gap-2 font-semibold">
+            <HanIcon han="理" size="sm" />
+            <span>Luận giải chi tiết</span>
+          </h3>
+          <div className="space-y-3 text-sm leading-relaxed text-muted">
+            {technicalParagraphs.map((paragraph, i) => (
+              <p key={i}>{renderEmphasizedText(paragraph)}</p>
+            ))}
+          </div>
+        </div>
+      )}
     </section>
   );
 }

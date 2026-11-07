@@ -2,28 +2,53 @@ import { describe, it, expect } from 'vitest';
 import { generatePersonalSummary } from '../personal-summary';
 import type { BirthInfo, BrightnessLevel, Palace, PalaceId, Star, ZiweiChart } from '../../types';
 import { createChartEngine } from '@/lib/ziwei/engine';
-import { getBranchLabel } from '@/lib/chart/display-helpers';
 import { ALL_FIXTURES } from '../../__tests__/golden/fixtures';
 
-const STAR_CASES = [
-  ['Tử Vi', 'Bạn là người lãnh đạo bẩm sinh'],
-  ['Thiên Phủ', 'Bạn là người ổn định, đáng tin cậy'],
-  ['Thái Dương', 'Bạn là người nhiệt tình, tràn đầy năng lượng'],
-  ['Thái Âm', 'Bạn là người nhạy cảm, giàu tình cảm'],
-  ['Vũ Khúc', 'Bạn là người thực tế, giỏi quản lý tài chính'],
-  ['Liêm Trinh', 'Bạn là người chính trực, có nguyên tắc'],
-  ['Tham Lang', 'Bạn là người tài năng, có sức hút'],
-  ['Cự Môn', 'Bạn là người thẳng thắn, có tài phân tích'],
-  ['Thiên Cơ', 'Bạn là người thông minh, có trí tuệ'],
-  ['Thiên Đồng', 'Bạn là người hiền lành, tốt bụng'],
-  ['Thiên Tướng', 'Bạn là người có trách nhiệm, đáng tin cậy'],
-  ['Thiên Lương', 'Bạn là người thiện lương, có phúc đức'],
-  ['Thất Sát', 'Bạn là người mạnh mẽ, quyết đoán'],
-  ['Phá Quân', 'Bạn là người sáng tạo, không ngại thay đổi'],
+const MAJOR_STARS = [
+  'Tử Vi',
+  'Thiên Phủ',
+  'Thái Dương',
+  'Thái Âm',
+  'Vũ Khúc',
+  'Liêm Trinh',
+  'Tham Lang',
+  'Cự Môn',
+  'Thiên Cơ',
+  'Thiên Đồng',
+  'Thiên Tướng',
+  'Thiên Lương',
+  'Thất Sát',
+  'Phá Quân',
 ] as const;
+
+const TOP_NARRATIVE_KEYS = [
+  'introParagraph',
+  'menhStarParagraph',
+  'tamHopAndThanParagraph',
+] as const;
+
+const TECHNICAL_JARGON = [
+  'Nạp Âm',
+  'Cục',
+  'Mệnh sinh Cục',
+  'Tam Hợp',
+  'Tài Bạch',
+  'Quan Lộc',
+  'cung Thân',
+  'Đắc địa',
+  'Hãm địa',
+  'cát tinh',
+  'hung tinh',
+  'Tứ Hóa',
+  'Tuần',
+  'Triệt',
+] as const;
+
+const OWNER_NAME = 'Đương số kiểm thử';
 
 function makeChart(starNames: readonly string[]): ZiweiChart {
   return {
+    heavenPlate: { name: OWNER_NAME },
     palaces: [
       {
         id: 'menh',
@@ -40,28 +65,78 @@ function makeChart(starNames: readonly string[]): ZiweiChart {
 }
 
 describe('generatePersonalSummary', () => {
-  it.each(STAR_CASES)('tạo kết luận phù hợp cho %s', (starName, expectedHeadline) => {
+  it.each(MAJOR_STARS)('tạo kết luận phù hợp cho %s', (starName) => {
     const summary = generatePersonalSummary(makeChart([starName]));
 
-    expect(summary.headline).toBe(expectedHeadline);
-    expect(summary.description.length).toBeGreaterThan(0);
+    expect(summary.ownerName).toBe(OWNER_NAME);
+    expect(summary.starName).toBe(starName);
+    expect(summary.headline.trim().length).toBeGreaterThan(0);
+    expect(summary.headline).not.toContain('Bạn là người');
+    expect(summary.description.trim().length).toBeGreaterThan(0);
+    expect(summary.introParagraph?.startsWith('Người mang mệnh')).toBe(true);
+    expect(summary.menhStarParagraph?.trim().length).toBeGreaterThan(0);
+    expect(summary.menhStarParagraph?.startsWith('Bạn')).toBe(true);
+    expect(summary.tamHopAndThanParagraph?.startsWith('Về tương lai')).toBe(true);
+    expect(summary.conclusionParagraph).toBe('');
+    for (const key of TOP_NARRATIVE_KEYS) {
+      expect(summary[key]?.trim().length ?? 0, `${starName} thiếu ${key}`).toBeGreaterThan(0);
+    }
+    expect(summary.description).toBe(
+      [summary.introParagraph, summary.menhStarParagraph, summary.tamHopAndThanParagraph].join(' ')
+    );
     expect(summary.keyTraits.length).toBeGreaterThanOrEqual(3);
     expect(summary.keyTraits.length).toBeLessThanOrEqual(5);
-    expect(summary.lifePath.length).toBeGreaterThan(0);
+    expect(summary.lifePath.trim().length).toBeGreaterThan(0);
   });
 
   it('dùng kết luận mặc định khi cung Mệnh Vô Chính Diệu', () => {
     const summary = generatePersonalSummary(makeChart([]));
 
-    expect(summary.headline).toBe('Bạn là người linh hoạt, dễ thích nghi');
+    expect(summary.starName).toBe('Vô Chính Diệu');
+    expect(summary.headline.trim().length).toBeGreaterThan(0);
+    expect(summary.headline).not.toContain('Bạn là người');
+    expect(summary.introParagraph?.startsWith('Người mang mệnh')).toBe(true);
+    expect(summary.menhStarParagraph?.trim().length).toBeGreaterThan(0);
+    expect(summary.tamHopAndThanParagraph?.startsWith('Về tương lai')).toBe(true);
+    expect(summary.conclusionParagraph).toBe('');
     expect(summary.keyTraits).toHaveLength(4);
+    expect(summary.lifePath.trim().length).toBeGreaterThan(0);
   });
 
-  it('dùng kết luận mặc định khi không xác định được chính tinh', () => {
-    const summary = generatePersonalSummary(makeChart(['Sao Không Xác Định']));
+  it('dùng cùng kết luận mặc định khi không xác định được chính tinh', () => {
+    const empty = generatePersonalSummary(makeChart([]));
+    const unknown = generatePersonalSummary(makeChart(['Sao Không Xác Định']));
 
-    expect(summary.headline).toBe('Bạn là người linh hoạt, dễ thích nghi');
-    expect(summary.lifePath).toBe('Đa dạng, phụ thuộc vào nỗ lực bản thân');
+    expect(unknown.headline).toBe(empty.headline);
+    expect(unknown.description).toBe(empty.description);
+    expect(unknown.lifePath).toBe(empty.lifePath);
+    expect(unknown.starName).toBe('Sao Không Xác Định');
+    expect(empty.starName).toBe('Vô Chính Diệu');
+  });
+
+  it('đặt headline khác nhau cho 14 chính tinh và fallback', () => {
+    const charts = [...MAJOR_STARS.map((starName) => makeChart([starName])), makeChart([])];
+    const headlines = charts.map((chart) => generatePersonalSummary(chart).headline);
+
+    expect(headlines).toHaveLength(MAJOR_STARS.length + 1);
+    expect(new Set(headlines).size).toBe(headlines.length);
+    for (const headline of headlines) {
+      expect(headline).not.toContain('Bạn là người');
+    }
+  });
+
+  it('không dùng thuật ngữ kỹ thuật trong các đoạn luận giải', () => {
+    const charts = [...MAJOR_STARS.map((starName) => makeChart([starName])), makeChart([])];
+
+    for (const chart of charts) {
+      const summary = generatePersonalSummary(chart);
+      for (const key of TOP_NARRATIVE_KEYS) {
+        const paragraph = summary[key] ?? '';
+        for (const term of TECHNICAL_JARGON) {
+          expect(paragraph, `${key} không được chứa "${term}"`).not.toContain(term);
+        }
+      }
+    }
   });
 });
 
@@ -78,19 +153,46 @@ describe('generatePersonalSummary - luận giải chi tiết', () => {
     location: { region: 'north', longitude: 105.8542, provinceId: 'HN', provinceName: 'Hà Nội' },
   });
 
-  it('có đủ các đoạn luận giải và tên đương số', () => {
+  it('có đủ ba đoạn luận giải cấp cao, kết luận rỗng và không lặp description', () => {
     const summary = generatePersonalSummary(chart);
 
     expect(summary.ownerName).toBe('Đương số kiểm thử');
-    expect(summary.introParagraph).toContain(chart.heavenPlate.napAm.name);
-    expect(summary.introParagraph).toContain(chart.heavenPlate.yinYangGenderLabel);
-    const menh = chart.palaces.find((p) => p.id === 'menh');
-    expect(menh).toBeDefined();
-    expect(summary.menhStarParagraph).toContain(getBranchLabel(menh?.branch ?? 'ty'));
-    expect(summary.tamHopAndThanParagraph).toContain(
-      getBranchLabel(chart.heavenPlate.bodyPalaceBranch)
-    );
-    expect(summary.conclusionParagraph).toContain(summary.description);
+    expect(summary.starName?.trim().length).toBeGreaterThan(0);
+    expect(summary.introParagraph?.startsWith('Người mang mệnh')).toBe(true);
+    expect(summary.introParagraph).not.toContain(chart.heavenPlate.napAm.name);
+    expect(summary.introParagraph).not.toContain(chart.heavenPlate.yinYangGenderLabel);
+    expect(chart.palaces.find((p) => p.id === 'menh')).toBeDefined();
+    expect(summary.menhStarParagraph?.trim().length).toBeGreaterThan(0);
+    expect(summary.menhStarParagraph?.startsWith('Bạn')).toBe(true);
+    expect(summary.tamHopAndThanParagraph?.startsWith('Về tương lai')).toBe(true);
+    expect(summary.conclusionParagraph).toBe('');
+
+    const topNarrative = [
+      summary.introParagraph as string,
+      summary.menhStarParagraph as string,
+      summary.tamHopAndThanParagraph as string,
+    ];
+    expect(summary.description).toBe(topNarrative.join(' '));
+    for (const paragraph of topNarrative) {
+      expect(summary.description.split(paragraph)).toHaveLength(2);
+    }
+    expect(summary.description).not.toContain('Nhìn tổng thể');
+  });
+
+  it('tách riêng khối luận giải kỹ thuật cho lá số đầy đủ', () => {
+    const summary = generatePersonalSummary(chart);
+    const technicalParagraphs = summary.technicalParagraphs ?? [];
+    const technicalText = technicalParagraphs.join(' ');
+
+    expect(technicalParagraphs.length).toBeGreaterThanOrEqual(2);
+    for (const term of ['Nạp Âm', 'Cục', 'Cung Mệnh', 'Tam Hợp']) {
+      expect(technicalText, `khối kỹ thuật thiếu "${term}"`).toContain(term);
+    }
+    expect(technicalText).not.toContain('Lá số của');
+
+    const technicalConclusion = technicalParagraphs[technicalParagraphs.length - 1];
+    expect(technicalConclusion.startsWith('Xét riêng cung Mệnh')).toBe(true);
+    expect(technicalConclusion).toContain('Khái quát lá số');
   });
 });
 

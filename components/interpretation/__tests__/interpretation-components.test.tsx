@@ -139,7 +139,7 @@ describe('PersonalSummaryCard', () => {
     render(
       <PersonalSummaryCard
         summary={{
-          headline: 'Bạn là người lãnh đạo bẩm sinh',
+          headline: 'Ngọn đèn không cần phô bày',
           description: 'Bạn có tố chất lãnh đạo và tầm nhìn xa.',
           keyTraits: ['Quyết đoán', 'Tầm nhìn xa'],
           lifePath: 'Lãnh đạo, quản lý',
@@ -148,38 +148,56 @@ describe('PersonalSummaryCard', () => {
     );
 
     expect(screen.getByRole('heading', { name: /Luận giải/ })).toBeInTheDocument();
-    expect(screen.getByText('Bạn là người lãnh đạo bẩm sinh')).toBeInTheDocument();
+    expect(screen.getByText('Ngọn đèn không cần phô bày')).toBeInTheDocument();
     expect(screen.getByText('Bạn có tố chất lãnh đạo và tầm nhìn xa.')).toBeInTheDocument();
     expect(screen.getByText('Quyết đoán')).toBeInTheDocument();
     expect(screen.getByText('Tầm nhìn xa')).toBeInTheDocument();
     expect(screen.getByText('Lãnh đạo, quản lý')).toBeInTheDocument();
   });
 
-  it('hiển thị các đoạn luận giải chi tiết và nhấn mạnh thuật ngữ', () => {
+  it('hiển thị các đoạn luận giải chi tiết, nhãn Mệnh và khối kỹ thuật', () => {
     const { container } = render(
       <PersonalSummaryCard
         summary={{
           ownerName: 'Nguyễn A',
-          headline: 'Bạn là người lãnh đạo bẩm sinh',
+          headline: 'Ngọn đèn không cần phô bày',
           description: 'Mô tả dự phòng',
           keyTraits: ['Quyết đoán'],
           lifePath: 'Lãnh đạo, quản lý',
-          introParagraph: 'Lá số của **Nguyễn A** thuộc **Dương Nam**.',
-          menhStarParagraph: 'Cung Mệnh tọa **Tý**.',
-          tamHopAndThanParagraph: 'Cung Thân an tại **Ngọ**.',
-          conclusionParagraph: 'Nhìn tổng thể, **thành tựu** tích lũy đều.',
+          starName: 'Tử Vi',
+          introParagraph:
+            'Trong mỗi người đều có một **nhịp đi riêng**, thứ thường hiện ra trước khi ta kịp gọi tên nó.',
+          menhStarParagraph:
+            'Bạn giống một **dòng nước ngầm**, lặng mà vẫn soi rõ những điều người khác bỏ qua.',
+          tamHopAndThanParagraph:
+            'Về nửa sau cuộc đời, trọng tâm có xu hướng nghiêng về **bản thân và việc tự lập nghiệp**.',
+          conclusionParagraph: '',
+          technicalParagraphs: [
+            'Bạn thuộc Âm Nam, Bản Mệnh Nạp Âm là Kim Tứ Cục.',
+            'Cung Mệnh tọa Tý, có chính tinh Tử Vi (Miếu địa). Tam Hợp Mệnh - Tài Bạch - Quan Lộc hội tụ cách Tử Phủ Vũ Tướng.',
+          ],
         }}
       />
     );
 
-    expect(screen.getByText(/Lá số của Nguyễn A/)).toBeInTheDocument();
+    expect(screen.queryByText(/Lá số của/)).not.toBeInTheDocument();
     expect(screen.queryByText('Mô tả dự phòng')).not.toBeInTheDocument();
-    expect(screen.getByText(/Cung Thân an tại/)).toBeInTheDocument();
+    expect(screen.getByText('Mệnh Tử Vi')).toBeInTheDocument();
+    expect(screen.getByText(/nửa sau cuộc đời/)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Luận giải chi tiết' })).toBeInTheDocument();
+
+    const technical = screen.getByTestId('personal-summary-technical');
+    expect(within(technical).getByText(/Nạp Âm/)).toBeInTheDocument();
+    expect(within(technical).getByText(/Cung Mệnh tọa Tý/)).toBeInTheDocument();
 
     const emphasized = Array.from(container.querySelectorAll('strong')).map(
       (node) => node.textContent
     );
-    expect(emphasized).toEqual(['Nguyễn A', 'Dương Nam', 'Tý', 'Ngọ', 'thành tựu']);
+    expect(emphasized).toEqual([
+      'nhịp đi riêng',
+      'dòng nước ngầm',
+      'bản thân và việc tự lập nghiệp',
+    ]);
     expect(container.textContent).not.toContain('**');
   });
 
@@ -189,12 +207,14 @@ describe('PersonalSummaryCard', () => {
       <PersonalSummaryCard
         summary={{
           ownerName: 'Nguyễn A',
-          headline: 'Bạn là người lãnh đạo bẩm sinh',
+          headline: 'Ngọn đèn không cần phô bày',
           description: 'Mô tả dự phòng',
           keyTraits: ['Quyết đoán'],
           lifePath: 'Lãnh đạo, quản lý',
-          introParagraph: 'Lá số của **Nguyễn A** thuộc **Dương Nam**.',
-          tamHopAndThanParagraph: 'Cung Thân an tại **Ngọ**.',
+          introParagraph:
+            'Trong mỗi người đều có một **nhịp đi riêng**, thứ thường hiện ra trước khi ta kịp gọi tên nó.',
+          tamHopAndThanParagraph:
+            'Về nửa sau cuộc đời, trọng tâm có xu hướng nghiêng về **bản thân và việc tự lập nghiệp**.',
           conclusionQuote: quote,
           conclusionTone: 'challenging',
         }}
@@ -202,9 +222,9 @@ describe('PersonalSummaryCard', () => {
     );
 
     const heading = screen.getByRole('heading', { name: /Luận giải/ });
-    const headline = screen.getByText('Bạn là người lãnh đạo bẩm sinh');
+    const headline = screen.getByText('Ngọn đèn không cần phô bày');
     const banner = screen.getByTestId('personal-summary-conclusion');
-    const narrative = screen.getByText(/Cung Thân an tại/);
+    const narrative = screen.getByText(/nửa sau cuộc đời/);
 
     expect(banner).toHaveAttribute('data-tone', 'challenging');
     expect(banner.textContent).toBe(`“${quote}”`);
@@ -227,7 +247,7 @@ describe('PersonalSummaryCard', () => {
     render(
       <PersonalSummaryCard
         summary={{
-          headline: 'Bạn là người lãnh đạo bẩm sinh',
+          headline: 'Ngọn đèn không cần phô bày',
           description: 'Mô tả dự phòng',
           keyTraits: ['Quyết đoán'],
           lifePath: 'Lãnh đạo, quản lý',

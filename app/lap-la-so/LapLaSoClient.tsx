@@ -410,7 +410,7 @@ export function LapLaSoClient({ savedId }: LapLaSoClientProps): React.ReactEleme
         const currentUser = userRef.current;
         const saveSeq = savedLoadSeqRef.current;
         void saveCurrentChart(currentUser, {
-          birthInfo: result.birthInfo,
+          birthInfo,
           preferences,
         }).catch((err) => {
           console.error('Failed to save current chart:', err);

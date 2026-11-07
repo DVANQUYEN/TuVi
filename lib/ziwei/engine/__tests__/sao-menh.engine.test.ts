@@ -97,6 +97,86 @@ describe('SaoMenhChartEngine', () => {
     expect(second.auditTrail.steps.map((step) => step.step)).toContain('trueSolarTime');
   });
 
+  it('refreshes the display identity on a cache hit when only the name changes', () => {
+    const engine = createChartEngine();
+    const first = engine.generateChart({ ...sampleBirthInfo, name: 'Nguyễn A' });
+    const second = engine.generateChart({ ...sampleBirthInfo, name: 'Nguyễn B' });
+
+    expect(second).not.toBe(first);
+    expect(second.birthInfo.name).toBe('Nguyễn B');
+    expect(second.heavenPlate.name).toBe('Nguyễn B');
+    expect(second.palaces).toBe(first.palaces);
+    expect(second.heavenPlate.effectiveSolarDateStr).toBe(first.heavenPlate.effectiveSolarDateStr);
+
+    expect(first.birthInfo.name).toBe('Nguyễn A');
+    expect(first.heavenPlate.name).toBe('Nguyễn A');
+
+    const third = engine.generateChart({ ...sampleBirthInfo, name: 'Nguyễn B' });
+    expect(third).toBe(second);
+    expect(third.birthInfo.name).toBe('Nguyễn B');
+    expect(third.heavenPlate.name).toBe('Nguyễn B');
+  });
+
+  it('does not reuse the cached chart when isLeapMonthInput differs', () => {
+    const engine = createChartEngine();
+    const lunarBirthInfo: BirthInfo = {
+      ...sampleBirthInfo,
+      calendarType: 'lunar',
+      year: 1990,
+      month: 5,
+      day: 15,
+    };
+
+    const first = engine.generateChart({ ...lunarBirthInfo, isLeapMonthInput: false });
+    const second = engine.generateChart({ ...lunarBirthInfo, isLeapMonthInput: true });
+
+    expect(second).not.toBe(first);
+    expect(second.palaces).not.toBe(first.palaces);
+  });
+
+  it('does not reuse the cached chart when viewingYear differs', () => {
+    const engine = createChartEngine();
+    const first = engine.generateChart(sampleBirthInfo);
+    const second = engine.generateChart({ ...sampleBirthInfo, viewingYear: 2026 });
+
+    expect(second).not.toBe(first);
+    expect(second.periods.find((period) => period.type === 'luuNien')?.solarYear).toBe(2026);
+  });
+
+  it('does not reuse the cached chart when location region differs', () => {
+    const engine = createChartEngine();
+    const base = { ...sampleBirthInfo, year: 1970 };
+    const north = engine.generateChart({
+      ...base,
+      location: { region: 'north', longitude: 105.8542 },
+    });
+    const south = engine.generateChart({
+      ...base,
+      location: { region: 'south', longitude: 105.8542 },
+    });
+
+    expect(south).not.toBe(north);
+    expect(south.palaces).not.toBe(north.palaces);
+  });
+
+  it('does not reuse the cached chart when tuanTrietPrimary differs', () => {
+    const engine = createChartEngine();
+    const first = engine.generateChart(sampleBirthInfo);
+    const second = engine.generateChart(sampleBirthInfo, { tuanTrietPrimary: 'first' });
+
+    expect(second).not.toBe(first);
+    expect(second.appliedConfig.tuanTrietPrimary).toBe('first');
+  });
+
+  it('does not reuse the cached chart when applyHistoricalTimezone differs', () => {
+    const engine = createChartEngine();
+    const first = engine.generateChart(sampleBirthInfo);
+    const second = engine.generateChart(sampleBirthInfo, { applyHistoricalTimezone: false });
+
+    expect(second).not.toBe(first);
+    expect(second.appliedConfig.applyHistoricalTimezone).toBe(false);
+  });
+
   it('rejects invalid birth info', () => {
     const engine = createChartEngine();
 

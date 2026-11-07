@@ -62,7 +62,23 @@ export class SaoMenhChartEngine implements ChartEngine {
     const cacheKey = this.buildCacheKey(validatedBirthInfo, config);
     const cached = this.cache.get(cacheKey);
     if (cached) {
-      return cached;
+      // Tên chỉ ảnh hưởng hiển thị nên không nằm trong cache key; cập nhật lại
+      // danh tính/ngữ cảnh đã gửi khi trả về để tránh hiển thị tên cũ.
+      if (JSON.stringify(cached.birthInfo) === JSON.stringify(validatedBirthInfo)) {
+        return cached;
+      }
+
+      const refreshed = {
+        ...cached,
+        birthInfo: validatedBirthInfo,
+        heavenPlate: {
+          ...cached.heavenPlate,
+          name: validatedBirthInfo.name ?? '',
+        },
+      };
+      this.cache.set(cacheKey, refreshed);
+
+      return refreshed;
     }
 
     try {
@@ -168,23 +184,32 @@ export class SaoMenhChartEngine implements ChartEngine {
    * @returns Cache key dạng chuỗi.
    */
   private buildCacheKey(birthInfo: BirthInfo, config: ResolvedZiweiConfig): string {
-    const parts = [
-      birthInfo.year,
-      birthInfo.month,
-      birthInfo.day,
-      birthInfo.hour,
-      birthInfo.minute,
-      birthInfo.gender,
-      birthInfo.calendarType,
-      birthInfo.location?.longitude ?? 105.8542,
-      config.school,
-      config.dayBoundary,
-      config.leapMonth,
-      config.yearBoundary,
-      config.useTrueSolarTime,
-    ];
-
-    return parts.join(':');
+    return JSON.stringify({
+      birth: {
+        year: birthInfo.year,
+        month: birthInfo.month,
+        day: birthInfo.day,
+        hour: birthInfo.hour,
+        minute: birthInfo.minute,
+        gender: birthInfo.gender,
+        calendarType: birthInfo.calendarType,
+        isLeapMonthInput: birthInfo.isLeapMonthInput ?? false,
+        viewingYear: birthInfo.viewingYear ?? null,
+        region: birthInfo.location?.region ?? '',
+        longitude: birthInfo.location?.longitude ?? 105.8542,
+      },
+      config: {
+        school: config.school,
+        dayBoundary: config.dayBoundary,
+        leapMonth: config.leapMonth,
+        yearBoundary: config.yearBoundary,
+        tuanTrietPrimary: config.tuanTrietPrimary,
+        useTrueSolarTime: config.useTrueSolarTime,
+        applyHistoricalTimezone: config.applyHistoricalTimezone,
+        useVietnameseBrightnessTable: config.useVietnameseBrightnessTable,
+        standardMeridian: config.standardMeridian,
+      },
+    });
   }
 }
 
