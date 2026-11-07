@@ -465,6 +465,56 @@ describe('Tình Duyên compatibility experience', () => {
     expect(status).toHaveAttribute('aria-atomic', 'true');
   });
 
+  it('uses a numeric text input for the birth year instead of a select', (): void => {
+    render(<CompatibilityForm />);
+
+    const yearFields = screen.getAllByLabelText(/^Năm/) as HTMLInputElement[];
+    expect(yearFields).toHaveLength(2);
+
+    yearFields.forEach((field): void => {
+      expect(field).toBeInstanceOf(HTMLInputElement);
+      expect(field.tagName).toBe('INPUT');
+      expect(field).toHaveAttribute('type', 'text');
+      expect(field).toHaveAttribute('inputMode', 'numeric');
+      expect(field).toHaveAttribute('maxLength', '4');
+      expect(field).toHaveAttribute('placeholder', 'VD: 1990');
+    });
+
+    // The year is no longer a combobox; the other date/gender selects remain.
+    expect(screen.queryByRole('combobox', { name: /^Năm/ })).not.toBeInTheDocument();
+    expect(screen.getAllByRole('combobox', { name: /^Giới tính/ })).toHaveLength(2);
+    expect(screen.getAllByRole('combobox', { name: /^Tháng/ })).toHaveLength(2);
+  });
+
+  it('sanitizes the birth year input to digits and caps it at four characters', (): void => {
+    render(<CompatibilityForm />);
+
+    const yearInput = screen.getAllByLabelText(/^Năm/)[0] as HTMLInputElement;
+
+    fireEvent.change(yearInput, { target: { value: '19a90x' } });
+    expect(yearInput).toHaveValue('1990');
+
+    fireEvent.change(yearInput, { target: { value: '19901' } });
+    expect(yearInput).toHaveValue('1990');
+  });
+
+  it.each(['1899', '2100'])(
+    'still rejects an out-of-range birth year (%s)',
+    (year: string): void => {
+      render(<CompatibilityForm />);
+      fillBothProfiles();
+      changeField(/^Năm/, 0, year);
+      fireEvent.click(screen.getByRole('button', { name: 'Luận Định Duyên Đôi Lứa' }));
+
+      const summary = screen.getByRole('alert');
+      expect(summary).toHaveTextContent('Năm sinh phải từ 1900 đến 2099.');
+      expect(summary).toHaveTextContent('Đệ Nhất');
+      expect(screen.queryByTestId('compatibility-result')).not.toBeInTheDocument();
+      expect(getLiveStatus()).toBeEmptyDOMElement();
+      expect(getEmblem()).toHaveAttribute('data-phase', 'idle');
+    }
+  );
+
   it('keeps advanced location collapsed until each profile requests it', (): void => {
     render(<CompatibilityForm />);
 
@@ -529,6 +579,22 @@ describe('Tình Duyên compatibility experience', () => {
       expect(screen.queryByTestId('compatibility-result')).not.toBeInTheDocument();
       expect(getLiveStatus()).toBeEmptyDOMElement();
       expect(getEmblem()).toHaveAttribute('data-phase', 'idle');
+      expect(saveLoveCompatibilityRequestMock).not.toHaveBeenCalled();
+    }
+  );
+
+  it.each([0, 1])(
+    'requires a non-empty birth year for profile %i before calculating',
+    (index: number): void => {
+      render(<CompatibilityForm />);
+      fillBothProfiles();
+      changeField(/^Năm/, index, '');
+      fireEvent.click(screen.getByRole('button', { name: 'Luận Định Duyên Đôi Lứa' }));
+
+      const summary = screen.getByRole('alert');
+      expect(summary).toHaveTextContent('Vui lòng nhập năm sinh.');
+      expect(summary).toHaveTextContent(index === 0 ? 'Đệ Nhất' : 'Đệ Nhị');
+      expect(screen.queryByTestId('compatibility-result')).not.toBeInTheDocument();
       expect(saveLoveCompatibilityRequestMock).not.toHaveBeenCalled();
     }
   );

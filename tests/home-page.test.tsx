@@ -167,6 +167,21 @@ describe('Homepage hero', () => {
     ).toBeInTheDocument();
   });
 
+  it('keeps the zodiac wheel from collapsing by giving its wrapper and wheel explicit widths', (): void => {
+    render(<Home />);
+
+    const wheel = screen.getByTestId('zodiac-wheel');
+    const wrapper = wheel.parentElement;
+
+    expect(wrapper).not.toBeNull();
+    expect(wrapper).toHaveClass('w-full');
+
+    // Default mobile/desktop sizes stay explicit; the old cyclic min() width
+    // resolved against the wheel itself and could shrink it to ~120px.
+    expect(wheel).toHaveClass('w-[22rem]', 'md:w-[26rem]');
+    expect(wheel.className).not.toContain('w-[min(22rem,100%)]');
+  });
+
   it('keeps hero copy on fixed light colors independent of theme', (): void => {
     render(<Home />);
 

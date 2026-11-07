@@ -308,6 +308,8 @@ function WheelRings(): React.ReactElement {
 interface BranchMedallionProps {
   han: string;
   label: string;
+  /** Nhánh ở đáy vòng tròn cần siết nhãn để không bị `overflow-hidden` cắt. */
+  isBottom?: boolean;
 }
 
 /**
@@ -315,7 +317,11 @@ interface BranchMedallionProps {
  * và tên nhánh tiếng Việt ngay bên dưới. Nhãn không có nền/viền để giữ bố cục tĩnh,
  * nhẹ như ảnh tham chiếu.
  */
-function BranchMedallion({ han, label }: BranchMedallionProps): React.ReactElement {
+function BranchMedallion({
+  han,
+  label,
+  isBottom = false,
+}: BranchMedallionProps): React.ReactElement {
   return (
     <span
       data-testid="branch-content"
@@ -376,7 +382,9 @@ function BranchMedallion({ han, label }: BranchMedallionProps): React.ReactEleme
           Đặt tuyệt đối bên dưới medallion để không đẩy tâm medallion lệch khỏi quỹ đạo 40%. */}
       <span
         data-testid="branch-label"
-        className="absolute left-1/2 top-full mt-0.5 -translate-x-1/2 whitespace-nowrap font-serif text-[11px] italic leading-none text-[#d8ccae] max-sm:text-[10px] max-sm:leading-tight sm:text-xs"
+        className={`absolute left-1/2 top-full -translate-x-1/2 whitespace-nowrap font-serif text-[11px] italic leading-none text-[#d8ccae] max-sm:text-[10px] sm:text-xs ${
+          isBottom ? 'mt-0 max-sm:leading-none' : 'mt-0.5 max-sm:leading-tight'
+        }`}
       >
         {label}
       </span>
@@ -390,10 +398,10 @@ interface ZodiacWheelProps {
 }
 
 export function ZodiacWheel({
-  sizeClassName = 'w-[min(22rem,100%)] md:w-[26rem]',
+  sizeClassName = 'w-[22rem] md:w-[26rem]',
 }: ZodiacWheelProps = {}): React.ReactElement {
   return (
-    <div className="flex max-w-full min-w-0 flex-col items-center gap-4">
+    <div className="flex w-full max-w-full min-w-0 flex-col items-center gap-4 lg:w-auto">
       <div
         role="img"
         aria-label={WHEEL_ARIA_LABEL}
@@ -425,7 +433,7 @@ export function ZodiacWheel({
         <div
           data-testid="branch-nodes"
           data-spin-duration={WHEEL_SPIN_DURATION_SECONDS}
-          className={`absolute inset-0 origin-center ${WHEEL_SPIN_CLASS}`}
+          className={`absolute inset-0 origin-center max-sm:inset-[2%] ${WHEEL_SPIN_CLASS}`}
         >
           {EARTHLY_BRANCHES.map((branch, index) => (
             <div
@@ -435,7 +443,11 @@ export function ZodiacWheel({
               className="absolute -translate-x-1/2 -translate-y-1/2"
               style={getBranchPosition(index)}
             >
-              <BranchMedallion han={branch.han} label={branch.label} />
+              <BranchMedallion
+                han={branch.han}
+                label={branch.label}
+                isBottom={index === 6}
+              />
             </div>
           ))}
         </div>

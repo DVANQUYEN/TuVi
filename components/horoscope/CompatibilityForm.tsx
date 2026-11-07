@@ -128,7 +128,7 @@ function validateProfile(value: LoveProfileValue): LoveProfileErrors {
   }
 
   if (!value.year) {
-    errors.year = 'Vui lòng chọn năm sinh.';
+    errors.year = 'Vui lòng nhập năm sinh.';
   } else if (!isIntegerInRange(value.year, 1900, 2099)) {
     errors.year = 'Năm sinh phải từ 1900 đến 2099.';
   }

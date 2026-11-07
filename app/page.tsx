@@ -61,7 +61,7 @@ export default function Home(): React.ReactElement {
               </p>
             </div>
             <div className="flex min-w-0 justify-center lg:justify-end">
-              <ZodiacWheel sizeClassName="w-[min(22rem,100%)] md:w-[26rem] lg:w-[min(26rem,calc(100svh_-_14rem))]" />
+              <ZodiacWheel sizeClassName="w-[22rem] md:w-[26rem] lg:w-[min(26rem,calc(100svh_-_14rem))]" />
             </div>
           </div>
         </section>

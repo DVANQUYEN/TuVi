@@ -33,7 +33,6 @@ export interface LoveProfileFieldsProps {
 
 const DAYS = Array.from({ length: 31 }, (_, index) => index + 1);
 const MONTHS = Array.from({ length: 12 }, (_, index) => index + 1);
-const YEARS = Array.from({ length: 200 }, (_, index) => 1900 + index);
 const HOURS = Array.from({ length: 24 }, (_, index) => index);
 
 const HOUR_BRANCH_LABELS: Record<EarthlyBranch, string> = {
@@ -161,23 +160,23 @@ export function LoveProfileFields({
             <label htmlFor={fieldId('year')} className="mb-1 block text-xs text-muted">
               Năm <span className="text-gold">*</span>
             </label>
-            <Select
+            <Input
               id={fieldId('year')}
+              type="text"
+              inputMode="numeric"
+              autoComplete="bday-year"
               className="scroll-mt-24"
               value={value.year}
-              onChange={(event) => onChange({ year: event.target.value })}
+              onChange={(event) =>
+                onChange({ year: event.target.value.replace(/\D/g, '').slice(0, 4) })
+              }
+              placeholder="VD: 1990"
               required
+              maxLength={4}
               error={Boolean(errors?.year)}
               aria-invalid={Boolean(errors?.year)}
               aria-describedby={errors?.year ? errorId('year') : undefined}
-            >
-              <option value="">Năm</option>
-              {YEARS.map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </Select>
+            />
             <FieldError id={errorId('year')} message={errors?.year} />
           </div>
         </div>
