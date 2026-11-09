@@ -15,6 +15,7 @@ import {
 import { calculateYearlyFortune } from '../yearly-fortune';
 import { generateTimeline } from '../timeline';
 import { detectStarGroups, STAR_GROUPS } from '../star-groups';
+import { ADVANCED_COMBINATIONS } from '../data/advanced-combinations';
 import { ZiweiInterpreter } from '../interpreter';
 import { ChartSummary } from '@/components/interpretation/ChartSummary';
 import type { BrightnessLevel, Palace, Star, ZiweiChart } from '../../types';
@@ -929,6 +930,44 @@ describe('star groups', () => {
     expect(interpretation.palaces).toHaveLength(12);
     for (const palace of interpretation.palaces) {
       expect(Array.isArray(palace.starGroups)).toBe(true);
+    }
+  });
+});
+
+describe('data style guard', () => {
+  // Chỉ quét phần luận giải (meaning/description), không quét điều kiện nhận diện.
+  const ABSOLUTE_FATALISTIC_PHRASES = [
+    'chắc chắn',
+    'tuyệt đối',
+    'đảm bảo',
+    'định mệnh',
+    'số phận',
+    'đe dọa tính mạng',
+    'tai nạn nghiêm trọng',
+    'tốt cho phụ nữ',
+    'phú quý',
+    'sung túc',
+    'thịnh vượng',
+    'sẽ thành công',
+    'thi cử đỗ đạt',
+  ] as const;
+
+  function expectNoBannedPhrase(text: string, label: string): void {
+    const normalized = text.toLowerCase();
+    for (const phrase of ABSOLUTE_FATALISTIC_PHRASES) {
+      expect(normalized, `${label} chứa "${phrase}": ${text}`).not.toContain(phrase);
+    }
+  }
+
+  it('STAR_GROUPS dùng ngôn từ không tuyệt đối/hóa số phận', () => {
+    for (const group of STAR_GROUPS) {
+      expectNoBannedPhrase(group.meaning, `STAR_GROUPS[${group.id}]`);
+    }
+  });
+
+  it('ADVANCED_COMBINATIONS dùng ngôn từ không tuyệt đối/hóa số phận', () => {
+    for (const combination of ADVANCED_COMBINATIONS) {
+      expectNoBannedPhrase(combination.description, `ADVANCED_COMBINATIONS[${combination.id}]`);
     }
   });
 });

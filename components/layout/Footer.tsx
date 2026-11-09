@@ -14,7 +14,8 @@ export function Footer(): React.ReactElement {
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
           <div className="text-center md:text-left">
             <p className="text-sm text-muted">
-              Theo trường phái Nam phái, bảng độ sáng Tân Biên 1956
+              Mặc định dùng trường phái Nam phái và bảng độ sáng Tân Biên 1956; có thể chọn
+              Trung Châu. Kết quả mang tính tham khảo.
             </p>
             <p className="text-sm text-muted">Lịch âm theo Hồ Ngọc Đức (UTC+7)</p>
             <section aria-labelledby="footer-owner-heading" className="mt-4">

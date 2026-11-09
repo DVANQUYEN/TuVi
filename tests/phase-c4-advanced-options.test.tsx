@@ -47,6 +47,27 @@ describe('C4 Advanced options', () => {
     expect(screen.queryByRole('group', { name: /Giờ Tý/ })).not.toBeInTheDocument();
   });
 
+  it('renders Bắc phái as a disabled option labelled chưa hỗ trợ', (): void => {
+    render(<BirthForm onSubmit={vi.fn()} />);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Tùy chọn nâng cao' }));
+
+    const school = screen.getByLabelText('Trường phái') as HTMLSelectElement;
+    expect(Array.from(school.options).map((option) => option.value)).toEqual([
+      'namPhai',
+      'trungChau',
+      'bacPhai',
+    ]);
+
+    const namPhai = screen.getByRole('option', { name: 'Nam phái (mặc định)' });
+    const trungChau = screen.getByRole('option', { name: 'Trung Châu' });
+    const bacPhai = screen.getByRole('option', { name: 'Bắc phái (chưa hỗ trợ)' });
+
+    expect(namPhai).not.toBeDisabled();
+    expect(trungChau).not.toBeDisabled();
+    expect(bacPhai).toBeDisabled();
+  });
+
   it('passes selected preferences to onSubmit', (): void => {
     const onSubmit = vi.fn();
     const { container } = render(<BirthForm onSubmit={onSubmit} />);

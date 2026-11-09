@@ -41,10 +41,10 @@ export const ADVANCED_COMBINATIONS: AdvancedCombination[] = [
     level: 'tốt',
     description:
       'Thái Dương tại Mão và Thái Âm tại Hợi tạo thế Nhật Nguyệt tịnh minh, ánh sáng hai mặt trời mặt trăng cùng chiếu rọi. ' +
-      'Đương số có sự cân bằng hiếm có giữa lý trí và cảm xúc, vừa quyết đoán vừa tinh tế. ' +
-      'Cách cục này chủ về phú quý, danh tiếng và sự nghiệp hanh thông, đặc biệt khi biết phát huy thế mạnh giao tiếp. ' +
-      'Gia đạo thường êm ấm, con cái thành đạt và có quý nhân phù trợ. ' +
-      'Cần tránh tự mãn để giữ vững vận may dài lâu.',
+      'Đương số có xu hướng cân bằng giữa lý trí và cảm xúc, vừa quyết đoán vừa tinh tế. ' +
+      'Cách cục này nghiêng về danh tiếng và sự nghiệp thuận lợi, đặc biệt khi biết phát huy thế mạnh giao tiếp. ' +
+      'Gia đạo có thể êm ấm nếu biết vun đắp, và quý nhân thường đến khi mình chủ động tạo duyên. ' +
+      'Cần tránh tự mãn để giữ được vận may dài lâu.',
     conditions: ['Thái Dương tại Mão', 'Thái Âm tại Hợi'],
   },
   {
@@ -52,12 +52,12 @@ export const ADVANCED_COMBINATIONS: AdvancedCombination[] = [
     name: 'Cơ nguyệt đồng lương',
     level: 'tốt',
     description:
-      'Thiên Cơ, Thái Âm và Thiên Lương hội tụ tại Mệnh, Tài Bạch hoặc Quan Lộc tạo nên cách Cơ Nguyệt Đồng Lương. ' +
+      'Thiên Cơ, Thái Âm, Thiên Đồng và Thiên Lương hội tụ tại Mệnh, Tài Bạch hoặc Quan Lộc tạo nên cách Cơ Nguyệt Đồng Lương. ' +
       'Đây là bộ sao chủ về trí tuệ, lòng nhân hậu và khả năng học vấn sâu rộng. ' +
       'Đương số thường hiền lành, thông minh, có duyên với văn chương nghệ thuật và công việc thiện nguyện. ' +
-      'Cách cục đặc biệt tốt cho phụ nữ, giúp cuộc sống bình an và được nhiều người yêu mến. ' +
-      'Nên chọn giáo dục, y tế, tư vấn hoặc nghiên cứu để phát huy tối đa tiềm năng.',
-    conditions: ['Thiên Cơ, Thái Âm, Thiên Lương tại Mệnh/Tài/Quan', 'Tam phương hội tụ đủ bộ sao'],
+      'Cách cục nghiêng về cuộc sống bình an nếu biết giữ cân bằng, và dễ được nhiều người yêu mến. ' +
+      'Nên chọn giáo dục, y tế, tư vấn hoặc nghiên cứu để phát huy tiềm năng, tùy môi trường và lựa chọn.',
+    conditions: ['Thiên Cơ, Thái Âm, Thiên Đồng, Thiên Lương tại Mệnh/Tài/Quan', 'Tam phương hội tụ đủ bộ sao'],
   },
   {
     id: 'sat-pha-tham',
@@ -67,7 +67,7 @@ export const ADVANCED_COMBINATIONS: AdvancedCombination[] = [
       'Thất Sát, Phá Quân và Tham Lang kết hợp thành bộ Sát Phá Tham, bộ sao của sự biến động và bứt phá. ' +
       'Đương số có cá tính mạnh mẽ, dám nghĩ dám làm và không ngại đối mặt với thử thách. ' +
       'Cuộc đời thường trải qua nhiều thay đổi lớn về công việc, nơi ở hoặc mối quan hệ. ' +
-      'Nếu biết kiên trì và tiết chế nóng nảy, đương số có thể tạo dựng sự nghiệp đáng nể. ' +
+      'Nếu biết kiên trì và tiết chế nóng nảy, đương số có thể dần tạo dựng sự nghiệp vững vàng. ' +
       'Cần tránh quyết định bốc đồng trong giai đoạn vận hạn mạnh.',
     conditions: ['Thất Sát, Phá Quân, Tham Lang tam hợp', 'Bộ sao chủ về biến động'],
   },
@@ -77,8 +77,8 @@ export const ADVANCED_COMBINATIONS: AdvancedCombination[] = [
     level: 'tốt',
     description:
       'Thiên Phủ và Thiên Tướng cùng chiếu về cung Mệnh tạo thành cách Phủ Tướng triều viên. ' +
-      'Đây là cách cục chủ về phú quý, quyền uy và sự ổn định lâu dài. ' +
-      'Đương số có tố chất lãnh đạo, biết quản lý tài chính và thường được cấp trên tin tưởng. ' +
+      'Đây là cách cục nghiêng về khả năng quản trị, giữ vững nề nếp và sự ổn định khi biết vun vén. ' +
+      'Đương số có tố chất lãnh đạo, biết quản lý tài chính và dễ được cấp trên tin cậy nếu giữ chữ tín. ' +
       'Cách này phù hợp với ngành ngân hàng, bất động sản, quản trị hoặc công tác nhà nước. ' +
       'Cần giữ chữ tín và tránh tham lam để duy trì vận may bền vững.',
     conditions: ['Thiên Phủ và Thiên Tướng chiếu Mệnh', 'Có thể nằm trong tam phương tứ chính'],
@@ -89,9 +89,9 @@ export const ADVANCED_COMBINATIONS: AdvancedCombination[] = [
     level: 'xấu',
     description:
       'Kình Dương, Đà La, Hỏa Tinh và Linh Tinh hội đủ tạo thành bộ Tứ Sát Dương Đà Hỏa Linh. ' +
-      'Đây là bộ sao nặng về hung khí, chủ về tai nạn nghiêm trọng, tranh chấp kiện tụng và thị phi dai dẳng. ' +
-      'Đương số cần đề phòng chấn thương nặng, có thể phải điều trị y tế hoặc đối diện hệ quả pháp lý. ' +
-      'Trong hoàn cảnh bất lợi, nguy cơ tai nạn nghiêm trọng, thậm chí đe dọa tính mạng, là điều cần lưu tâm. ' +
+      'Đây là bộ sao dễ gây va chạm, nóng vội, tranh chấp kiện tụng và thị phi dai dẳng trong giai đoạn bất lợi. ' +
+      'Đương số dễ gặp va chạm, cần cẩn trọng sức khỏe, giao thông và tranh chấp để giảm bớt rủi ro. ' +
+      'Trong hoàn cảnh bất lợi, nên chú ý an toàn và giữ bình tĩnh thay vì hành động theo cảm xúc. ' +
       'Cần đặc biệt cẩn trọng, giữ thiện ý và tránh hành động nóng vội để giảm bớt hung khí.',
     conditions: ['Kình Dương, Đà La, Hỏa Tinh, Linh Tinh hội tụ', 'Bộ Tứ Sát chủ về tai nạn và tranh chấp'],
   },
@@ -103,7 +103,7 @@ export const ADVANCED_COMBINATIONS: AdvancedCombination[] = [
       'Địa Không và Địa Kiếp cùng chiếu về cung Thân tạo thành cách Không Kiếp lâm thân. ' +
       'Đây là cách cục báo hiệu những biến động lớn, dễ hao tán tài lộc và những rủi ro khó lường. ' +
       'Đương số có thể gặp mất mát về tiền bạc, sự nghiệp hoặc tình cảm vào những giai đoạn vận hạn kém thuận lợi. ' +
-      'Tuy nhiên, nếu biết sống thiện, làm việc có đạo đức và tránh tham lam thì mức độ ảnh hưởng sẽ giảm đáng kể. ' +
+      'Tuy nhiên, nếu biết sống thiện, làm việc có đạo đức và tránh tham lam thì mức độ ảnh hưởng có thể giảm. ' +
       'Cần đặc biệt thận trọng khi ký kết hợp đồng hoặc đầu tư lớn.',
     conditions: ['Địa Không và Địa Kiếp chiếu Thân', 'Thân cung hoặc tam phương của Thân'],
   },
@@ -113,10 +113,10 @@ export const ADVANCED_COMBINATIONS: AdvancedCombination[] = [
     level: 'tốt',
     description:
       'Lộc Tồn và Thiên Mã đồng cung tạo thành cách Lộc Mã giao trì, biểu tượng của tài lộc gắn liền với di chuyển. ' +
-      'Đương số thường có thu nhập bất ngờ từ những chuyến đi, công việc xa nhà hoặc kinh doanh lưu động. ' +
-      'Cách cục này chủ về phú quý, may mắn về tiền bạc và được quý nhân phù trợ. ' +
+      'Đương số có thể có thêm thu nhập từ những chuyến đi, công việc xa nhà hoặc kinh doanh lưu động. ' +
+      'Cách cục này nghiêng về thuận lợi tài chính khi biết nắm bắt cơ hội, còn mức độ còn tùy nỗ lực và môi trường. ' +
       'Nên chủ động mở rộng thị trường, giao lưu và nắm bắt cơ hội ở nơi xa. ' +
-      'Cần tránh ở yên một chỗ quá lâu vì sẽ làm giảm vận may.',
+      'Cần tránh ở yên một chỗ quá lâu để không bỏ lỡ cơ duyên.',
     conditions: ['Lộc Tồn và Thiên Mã đồng cung', 'Tài lộc gắn với di chuyển'],
   },
   {
@@ -125,9 +125,9 @@ export const ADVANCED_COMBINATIONS: AdvancedCombination[] = [
     level: 'tốt',
     description:
       'Lộc Tồn và Hóa Lộc nằm ở hai cung giáp cung Mệnh tạo thành cách Song Lộc giáp Mệnh. ' +
-      'Đây là cách cục chủ về phú quý, tiền tài dồi dào và cuộc sống sung túc. ' +
-      'Đương số thường được thừa hưởng tài lộc từ gia đình hoặc có quý nhân giúp đỡ về vật chất. ' +
-      'Cách này đặc biệt thuận lợi cho kinh doanh, đầu tư và quản lý tài sản. ' +
+      'Đây là cách cục nghiêng về thuận lợi tài chính và sự hỗ trợ từ môi trường xung quanh. ' +
+      'Đương số có thể được thừa hưởng tài lộc từ gia đình hoặc nhận được giúp đỡ về vật chất khi biết giữ quan hệ. ' +
+      'Cách này thuận cho kinh doanh, đầu tư và quản lý tài sản nếu biết tính toán kỹ. ' +
       'Cần giữ lòng biết ơn và tránh khoe khoang để bảo vệ vận may.',
     conditions: ['Lộc Tồn và Hóa Lộc giáp cung Mệnh', 'Hai cung liền kề cung Mệnh'],
   },
@@ -148,9 +148,9 @@ export const ADVANCED_COMBINATIONS: AdvancedCombination[] = [
     name: 'Tử Phủ đồng cung',
     level: 'tốt',
     description:
-      'Tử Vi và Thiên Phủ đồng cung tạo thành cách Tử Phủ đồng cung, biểu tượng của quyền lực và tài lộc song toàn. ' +
-      'Đương số có tố chất lãnh đạo, biết quản lý nguồn lực và thường được mọi người kính trọng. ' +
-      'Cách cục này chủ về phú quý, sự nghiệp vững chắc và cuộc sống sung túc. ' +
+      'Tử Vi và Thiên Phủ đồng cung tạo thành cách Tử Phủ đồng cung, biểu tượng của sự ổn định và khả năng quản trị. ' +
+      'Đương số có tố chất lãnh đạo, biết quản lý nguồn lực và có thể được mọi người kính trọng nếu giữ chữ tín. ' +
+      'Cách cục này thuận cho quản trị và giữ nguồn lực nếu biết tránh bảo thủ. ' +
       'Phù hợp với tài chính, bất động sản, quản trị doanh nghiệp hoặc chính trị. ' +
       'Cần tránh độc đoán và biết lắng nghe để giữ vững thành quả.',
     conditions: ['Tử Vi và Thiên Phủ đồng cung', 'Thường tại Dần hoặc Thân'],
@@ -280,9 +280,9 @@ export const ADVANCED_COMBINATIONS: AdvancedCombination[] = [
     name: 'Thân cư Mệnh',
     level: 'tốt',
     description:
-      'Cung Thân trùng với cung Mệnh tạo thành cách Thân cư Mệnh, cuộc đời nhất quán từ đầu đến cuối. ' +
+      'Cung Thân trùng với cung Mệnh tạo thành cách Thân cư Mệnh, Mệnh và Thân cùng một cung. ' +
       'Đương số có lý tưởng rõ ràng, sống theo đuổi mục tiêu đã định và ít thay đổi. ' +
-      'Cách cục này chủ về sự tự lập, bản lĩnh và khả năng tự quyết định số phận. ' +
+      'Cách cục này chủ về sự tự lập, bản lĩnh và khả năng tự quyết định hướng đi của mình. ' +
       'Càng về hậu vận, thành quả càng bền vững nếu đương số kiên trì. ' +
       'Cần tránh bảo thủ và biết lắng nghe để không bỏ lỡ cơ hội.',
     conditions: ['Cung Thân trùng cung Mệnh', 'Thân và Mệnh cùng một cung'],
@@ -296,7 +296,7 @@ export const ADVANCED_COMBINATIONS: AdvancedCombination[] = [
       'Đương số coi trọng tiền bạc, giỏi kiếm tiền và biết quản lý chi tiêu. ' +
       'Cách cục này chủ về sự nghiệp kinh doanh, đầu tư hoặc công việc liên quan đến tài chính. ' +
       'Cần tránh đặt nặng vật chất quá mức dẫn đến mất cân bằng cuộc sống. ' +
-      'Nếu biết chia sẻ và giữ chữ tín, tài lộc sẽ ngày càng vững bền.',
+      'Nếu biết chia sẻ và giữ chữ tín, tài lộc có thể ngày càng vững bền.',
     conditions: ['Cung Thân trùng cung Tài Bạch', 'Cuộc đời gắn với tài lộc'],
   },
   {
@@ -308,7 +308,7 @@ export const ADVANCED_COMBINATIONS: AdvancedCombination[] = [
       'Đương số có chí hướng lớn, ham công danh và thường đặt công việc lên hàng đầu. ' +
       'Cách cục này chủ về sự thăng tiến, quyền lực và thành tựu trong nghề nghiệp. ' +
       'Cần chú ý cân bằng giữa công việc và gia đình để tránh cô đơn. ' +
-      'Nếu biết hợp tác và khiêm tốn, đương số sẽ được cấp trên và đồng nghiệp quý trọng.',
+      'Nếu biết hợp tác và khiêm tốn, đương số có thể được cấp trên và đồng nghiệp quý trọng.',
     conditions: ['Cung Thân trùng cung Quan Lộc', 'Cuộc đời gắn với sự nghiệp'],
   },
   {
@@ -317,10 +317,10 @@ export const ADVANCED_COMBINATIONS: AdvancedCombination[] = [
     level: 'trung bình',
     description:
       'Cung Thân trùng với cung Thiên Di tạo thành cách Thân cư Di, cuộc đời gắn liền với sự di chuyển. ' +
-      'Đương số thích khám phá, dễ thay đổi nơi ở và thường thành công khi hoạt động xa nhà. ' +
+      'Đương số thích khám phá, dễ thay đổi nơi ở và có thể thuận lợi hơn khi hoạt động xa nhà nếu biết thích nghi. ' +
       'Cách cục này chủ về xuất ngoại, kinh doanh lưu động hoặc công việc cần giao tiếp rộng. ' +
       'Cần học cách ổn định cảm xúc và giữ liên lạc với gia đình. ' +
-      'Nếu biết tận dụng mạng lưới quan hệ, đương số có thể mở rộng sự nghiệp nhanh chóng.',
+      'Nếu biết tận dụng mạng lưới quan hệ, đương số có thể dần mở rộng sự nghiệp.',
     conditions: ['Cung Thân trùng cung Thiên Di', 'Cuộc đời gắn với di chuyển'],
   },
   {
@@ -330,9 +330,9 @@ export const ADVANCED_COMBINATIONS: AdvancedCombination[] = [
     description:
       'Cung Thân trùng với cung Phu Thê tạo thành cách Thân cư Phu Thê, cuộc đời gắn liền với hôn nhân và gia đình. ' +
       'Đương số coi trọng tình cảm, biết chăm sóc người thân và thường đặt gia đình lên hàng đầu. ' +
-      'Cách cục này chủ về hôn nhân êm ấm, được bạn đời hỗ trợ trong sự nghiệp. ' +
+      'Cách cục này nghiêng về đời sống gia đình gắn bó, có thể được bạn đời hỗ trợ trong sự nghiệp nếu cả hai biết chia sẻ. ' +
       'Cần tránh phụ thuộc quá mức và giữ không gian riêng cho bản thân. ' +
-      'Nếu biết dung hòa, cuộc sống gia đình sẽ là chỗ dựa vững chắc.',
+      'Nếu biết dung hòa, cuộc sống gia đình có thể là chỗ dựa tinh thần vững chắc.',
     conditions: ['Cung Thân trùng cung Phu Thê', 'Cuộc đời gắn với gia đình'],
   },
   {
@@ -342,9 +342,9 @@ export const ADVANCED_COMBINATIONS: AdvancedCombination[] = [
     description:
       'Cung Thân trùng với cung Phúc Đức tạo thành cách Thân cư Phúc Đức, cuộc đời gắn liền với phúc phần và hưởng thụ. ' +
       'Đương số thường được thừa hưởng phúc khí từ gia đình, sống an nhàn và ít bon chen. ' +
-      'Cách cục này chủ về sự bình an, may mắn và được quý nhân phù trợ. ' +
+      'Cách cục này nghiêng về sự bình an, có thể gặp thuận lợi và người giúp đỡ khi biết vun đắp quan hệ. ' +
       'Cần biết trân trọng những gì đang có và tránh ỷ lại vào may mắn. ' +
-      'Nếu biết tích đức, phúc phần sẽ ngày càng dày thêm.',
+      'Nếu biết tích đức, phúc phần có thể ngày càng dày thêm.',
     conditions: ['Cung Thân trùng cung Phúc Đức', 'Cuộc đời gắn với phúc phần'],
   },
   {
@@ -368,7 +368,7 @@ export const ADVANCED_COMBINATIONS: AdvancedCombination[] = [
       'Đương số có thể gặp nhiều khó khăn trong giai đoạn đầu đời nhưng dần khẳng định được bản thân. ' +
       'Cách cục này chủ về sự trưởng thành từ thử thách và thành công bền vững ở tuổi trung niên. ' +
       'Cần kiên nhẫn, không bỏ cuộc giữa chừng và biết học hỏi từ thất bại. ' +
-      'Nếu biết nắm bắt cơ hội, hậu vận sẽ rất sung túc.',
+      'Nếu biết nắm bắt cơ hội, hậu vận có thể ổn định và đủ đầy hơn.',
     conditions: ['Cung Thân mạnh hơn cung Mệnh', 'Hậu vận tốt hơn tiền vận'],
   },
   {
@@ -378,7 +378,7 @@ export const ADVANCED_COMBINATIONS: AdvancedCombination[] = [
     description:
       'Long Trì, Phụng Các, Hồng Loan và Đào Hoa hội tụ tạo thành cách Tứ Linh, biểu tượng của sự quý hiển. ' +
       'Đương số có dung mạo thanh tú, khí chất sang trọng và sức hút tự nhiên. ' +
-      'Cách cục này chủ về danh tiếng, hôn nhân tốt đẹp và được quý nhân phù trợ. ' +
+      'Cách cục này nghiêng về danh tiếng; hôn nhân có thể hài hòa nếu biết nhường nhịn, và có thể gặp người hỗ trợ khi chủ động vun đắp quan hệ. ' +
       'Phù hợp với nghệ thuật, truyền thông, ngoại giao hoặc công việc cần hình ảnh cá nhân. ' +
       'Cần giữ phẩm hạnh và tránh kiêu ngạo để bảo vệ vận may.',
     conditions: ['Long Trì, Phụng Các, Hồng Loan, Đào Hoa hội tụ', 'Thường trong tam phương tứ chính'],
@@ -497,7 +497,7 @@ const DETECTORS: Readonly<Record<string, CombinationDetector>> = {
     hasStarAtBranch(chart, 'thaiAm', 'hoi'),
   'co-nguyet-dong-luong': (chart) => {
     const palaces = getMenhTamPhuong(chart);
-    return ['thienCo', 'thaiAm', 'thienLuong'].every((star) =>
+    return ['thienCo', 'thaiAm', 'thienDong', 'thienLuong'].every((star) =>
       palaces.some((palace) => palaceHasStar(palace, star))
     );
   },

@@ -355,7 +355,9 @@ export function BirthForm({
               >
                 <option value="namPhai">Nam phái (mặc định)</option>
                 <option value="trungChau">Trung Châu</option>
-                <option value="bacPhai">Bắc phái</option>
+                <option value="bacPhai" disabled>
+                  Bắc phái (chưa hỗ trợ)
+                </option>
               </Select>
             </div>
 

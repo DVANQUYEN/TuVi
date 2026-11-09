@@ -202,12 +202,12 @@ type ExpectedQuoteCategory = ExpectedTone | 'voChinhDieu' | 'thanCuThienDi' | 's
 /** Bảng khẩu khí kỳ vọng, sao chép từ nguồn để kiểm tra đúng nhóm được chọn. */
 const EXPECTED_QUOTES: Readonly<Record<ExpectedQuoteCategory, readonly string[]>> = {
   high: [
-    'Phú quý tại thiên, sinh phùng thời vận, cả đời an khang thịnh vượng.',
-    'Phúc trạch sâu dày, quý nhân phù trợ, gặp hung hóa cát.',
-    'Mệnh đắc chính tinh, vận trình hanh thông, hậu vận an khang.',
-    'Khí chất đường hoàng, tài lộc hanh thông, gia đạo vững bền.',
+    'Phúc lộc có lúc đến, biết nắm thời và giữ đức thì đường dài mới vững.',
+    'Phúc trạch sâu dày là nền, song quý nhân chỉ đến khi mình biết tạo duyên.',
+    'Mệnh đắc chính tinh, vận trình thuận hơn, song hậu vận an khang còn tùy sức giữ.',
+    'Khí chất đường hoàng dễ tạo thiện cảm; tài lộc và gia đạo còn tùy cách vun vén.',
     'Căn cơ vững chắc, gặp thời thì phát, giữ đức thì bền lâu.',
-    'Sao sáng chiếu mệnh, đường đời rộng mở, càng về sau càng hanh thông.',
+    'Sao sáng chiếu mệnh mở nhiều cơ duyên, càng về sau càng cần biết giữ nhịp.',
   ],
   balanced: [
     'Cục diện trung hòa, có thăng có trầm, cốt ở chữ nhẫn mà vững bước.',
@@ -226,29 +226,44 @@ const EXPECTED_QUOTES: Readonly<Record<ExpectedQuoteCategory, readonly string[]>
     'Vận có lúc ngặt nghèo, cốt lấy thiện tâm và nghị lực mà vượt qua.',
   ],
   voChinhDieu: [
-    'Mệnh vô chính diệu, nên ly hương lập nghiệp, mượn thế tam phương mà dựng cơ đồ.',
+    'Mệnh vô chính diệu, nên linh hoạt tùy thế, mượn sức tam phương mà định hướng.',
     'Mệnh vô chính diệu, tiền vận nhiều phen thử sức, hậu vận vững vàng nếu biết bền chí.',
-    'Mệnh vô chính diệu, linh hoạt ứng biến, càng đi xa càng gặp quý nhân nâng đỡ.',
+    'Mệnh vô chính diệu, linh hoạt ứng biến, mở lòng học hỏi thì dễ gặp người nâng đỡ.',
     'Mệnh vô chính diệu, chẳng nên thủ cựu, biết tùy duyên mà lập nghiệp thì về sau yên ổn.',
-    'Mệnh vô chính diệu, lấy tam phương chiếu về làm chỗ dựa, bền chí ắt có ngày nên.',
+    'Mệnh vô chính diệu, lấy tam phương chiếu về làm chỗ dựa, bền chí thì dần vững.',
   ],
   thanCuThienDi: [
-    'Thân cư Thiên Di, bôn ba bốn bể nhưng hậu vận viên mãn.',
-    'Thân cư Thiên Di, càng đi xa càng mở rộng cơ duyên.',
-    'Thân cư Thiên Di, nửa đời lưu động, đổi thay là lẽ thường nhưng càng về sau càng vững.',
+    'Thân cư Thiên Di, bôn ba bốn bể, hậu vận an yên nếu biết giữ gốc gia đạo.',
+    'Thân cư Thiên Di, đi xa mở được cơ duyên nếu biết giữ mình và kết giao.',
+    'Thân cư Thiên Di, nửa đời lưu động, đổi thay là lẽ thường, giữ tâm thì dần vững.',
     'Thân cư Thiên Di, lấy phương xa làm đất dụng võ, giữ tâm vững thì đường dài hanh thông.',
     'Thân cư Thiên Di, ra ngoài lập nghiệp dễ gặp quý nhân, nhưng cần giữ gốc gia đạo.',
   ],
   satPhaTham: [
-    'Sát Phá Tham hội hợp, anh hùng tạo thời thế, thăng trầm bất định nhưng lập nên cơ đồ.',
-    'Sát Phá Tham hội hợp, càng trải sóng gió càng mở rộng cơ nghiệp.',
+    'Sát Phá Tham hội hợp, khí phách mạnh mẽ, thăng trầm bất định, tiết chế thì giữ được thành quả.',
+    'Sát Phá Tham hội hợp, trải sóng gió có thể mở rộng cơ nghiệp nếu biết giữ nhịp.',
     'Sát Phá Tham hội hợp, dám phá cũ lập mới, biết tiết chế thì thăng trầm hóa thành bản lĩnh.',
     'Sát Phá Tham hội hợp, tiền vận nhiều phen đổi dời, hậu vận vững vàng nếu biết tích lũy.',
     'Sát Phá Tham hội hợp, khí phách hơn người, cốt lấy nhẫn nại và chừng mực mà giữ thành quả.',
   ],
 };
 
-const FATALISTIC_PHRASES = ['yểu chiết', 'chắc chắn', 'tuyệt đối', 'đảm bảo', 'định mệnh'];
+const FATALISTIC_PHRASES = [
+  'yểu chiết',
+  'chắc chắn',
+  'tuyệt đối',
+  'đảm bảo',
+  'định mệnh',
+  'phú quý',
+  'cả đời',
+  'thịnh vượng',
+  'sung túc',
+  'mãn nguyện',
+  'cam kết',
+  'số phận',
+  'đe dọa tính mạng',
+  'tai nạn nghiêm trọng',
+] as const;
 
 function makeStar(name: string, brightness?: BrightnessLevel): Star {
   return { id: name, name, brightness } as unknown as Star;
@@ -284,6 +299,8 @@ function makePalaceFixture(options: PalaceFixtureOptions): Palace {
 
 interface ChartFixtureOptions {
   majorStars?: Star[];
+  taiBachStars?: Star[];
+  quanLocStars?: Star[];
   auspiciousStars?: Star[];
   maleficStars?: Star[];
   hasTuan?: boolean;
@@ -291,7 +308,7 @@ interface ChartFixtureOptions {
   bodyPalaceId?: PalaceId;
 }
 
-/** Lá số tối giản chỉ gồm cung Mệnh (và cung Thân khi cần). */
+/** Lá số tối giản gồm cung Mệnh, tùy chọn thêm Tài Bạch, Quan Lộc và cung Thân. */
 function makeChartFixture(options: ChartFixtureOptions = {}): ZiweiChart {
   const palaces: Palace[] = [
     makePalaceFixture({
@@ -305,11 +322,33 @@ function makeChartFixture(options: ChartFixtureOptions = {}): ZiweiChart {
     }),
   ];
 
+  if (options.taiBachStars) {
+    palaces.push(
+      makePalaceFixture({
+        id: 'taiBach',
+        index: palaces.length,
+        branch: 'ngo',
+        majorStars: options.taiBachStars,
+      })
+    );
+  }
+
+  if (options.quanLocStars) {
+    palaces.push(
+      makePalaceFixture({
+        id: 'quanLoc',
+        index: palaces.length,
+        branch: 'tuat',
+        majorStars: options.quanLocStars,
+      })
+    );
+  }
+
   if (options.bodyPalaceId) {
     palaces.push(
       makePalaceFixture({
         id: options.bodyPalaceId,
-        index: 1,
+        index: palaces.length,
         branch: 'ngo',
         isBodyPalace: true,
       })
@@ -379,7 +418,12 @@ describe('generatePersonalSummary - khẩu khí kết luận', () => {
     {
       category: 'satPhaTham',
       marker: 'Sát Phá Tham',
-      chart: makeChartFixture({ majorStars: [makeStar('Thất Sát', 'ham')] }),
+      chart: makeChartFixture({
+        // Đủ bộ Sát Phá Tham trải trên Mệnh/Tài/Quan, ít nhất 2 sao từ Bình trở lên.
+        majorStars: [makeStar('Thất Sát', 'binh')],
+        taiBachStars: [makeStar('Phá Quân', 'dac')],
+        quanLocStars: [makeStar('Tham Lang', 'ham')],
+      }),
     },
   ];
 
@@ -423,6 +467,19 @@ describe('generatePersonalSummary - khẩu khí kết luận', () => {
     expect(EXPECTED_QUOTES[category]).toContain(summary.conclusionQuote);
     expect(summary.conclusionQuote).toContain(marker);
   });
+
+  it.each(['Thất Sát', 'Phá Quân', 'Tham Lang'] as const)(
+    'không chọn nhóm Sát Phá Tham khi chỉ có %s tại cung Mệnh',
+    (starName) => {
+      const chart = makeChartFixture({ majorStars: [makeStar(starName, 'binh')] });
+      const summary = generatePersonalSummary(chart);
+
+      expect(EXPECTED_QUOTES.satPhaTham).not.toContain(summary.conclusionQuote);
+      expect(summary.conclusionQuote).not.toContain('Sát Phá Tham');
+      expect(EXPECTED_QUOTES[summary.conclusionTone]).toContain(summary.conclusionQuote);
+      expect(summary.conclusionTone).toBe('balanced');
+    }
+  );
 
   it.each(QUOTE_CHARTS)('khẩu khí của %s đúng chuẩn nội dung', (_label, chart) => {
     const quote = generatePersonalSummary(chart).conclusionQuote;
